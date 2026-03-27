@@ -75,9 +75,5 @@ Plugins/**/Intermediate/*
 DerivedDataCache/*
 
 # 에셋 제외
-Content/Hospital_Meshingun/
-Content/FreeKillerDoll/
-Content/Characters/
-Content/Animation/
-Content/Monster/
 Content/Movies/
+Content/Asset/

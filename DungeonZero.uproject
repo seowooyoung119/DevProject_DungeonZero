@@ -3,20 +3,59 @@
 	"EngineAssociation": "5.7",
 	"Category": "",
 	"Description": "",
-	"Modules": [
+	"Modules": 
+	[
 		{
 			"Name": "DungeonZero",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies":
+			[
+				"GameplayAbilities",
+				"GameplayTags",
+				"GameplayTasks",
+				"Engine",
+				"AIModule"
+			]
 		}
 	],
-	"Plugins": [
+	"Plugins": 
+	[
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
-			"TargetAllowList": [
+			"TargetAllowList":
+			[
 				"Editor"
 			]
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "AnimationWarping",
+			"Enabled": true
+		},
+		{
+			"Name": "StateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayStateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "SteamSockets",
+			"Enabled": true
+		},
+		{
+			"Name": "SoundUtilities",
+			"Enabled": true
 		}
+	],
+	"TargetPlatforms":
+	[
+		"Windows"
 	]
 }
