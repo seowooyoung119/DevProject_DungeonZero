@@ -75,6 +75,6 @@ Plugins/**/Intermediate/*
 DerivedDataCache/*
 
 # 에셋 제외
-Content/Movies/
-Content/Asset/
-Contenr/ThirParty/
+/Content/Movies/
+/Content/Asset/
+/Content/ThirParty/
