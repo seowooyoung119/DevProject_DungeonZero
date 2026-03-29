@@ -31,14 +31,7 @@ void UDZGA_CharacterJump::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	ACharacter* TargetCharacter = CastChecked<ACharacter>(GetAvatarActorFromActorInfo());
 	if (!IsValid(TargetCharacter)) { K2_EndAbility(); return; }
 	
-	// 인터페이스 체크 
-	IDZJobRoleInterface* JobInterface = Cast<IDZJobRoleInterface>(GetAvatarActorFromActorInfo());
-	if (!JobInterface) { K2_EndAbility(); return; }
-	
-	// 직업 가져오기
-	FGameplayTag CurrentJobTag = IDZJobRoleInterface::Execute_GetJobRoleTag(GetAvatarActorFromActorInfo());
-	
-	// 직업 일치시 점프 후 종료
-	if (CurrentJobTag == JumpJobRoleTag) TargetCharacter->Jump();
+	// 점프
+	TargetCharacter->Jump();
 	K2_EndAbility();
 }

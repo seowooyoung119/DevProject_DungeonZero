@@ -37,7 +37,7 @@ void ADZPlayerCharacter::OnRep_JobRole()
 ADZPlayerCharacter::ADZPlayerCharacter()
 {
 	// tick
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	// net
 	bReplicates = true;
@@ -90,7 +90,6 @@ void ADZPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 void ADZPlayerCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ADZPlayerCharacter, JobRole);
 }
 
 void ADZPlayerCharacter::PossessedBy(AController* NewController)
@@ -108,7 +107,7 @@ void ADZPlayerCharacter::PossessedBy(AController* NewController)
 	if (!IsValid(ASC)) return;
 	ASC->InitAbilityActorInfo(GetPlayerState(), this);
 	// GA 부여
-	InitGAS_internal(ASC, PC);
+	InitGAS_internal(ASC);
 }
 
 void ADZPlayerCharacter::OnRep_PlayerState()
@@ -135,9 +134,9 @@ void ADZPlayerCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 #pragma endregion
 //======================================================================================================================	
 
-void ADZPlayerCharacter::InitGAS_internal(UAbilitySystemComponent* InASC, APlayerController* InPC)
+void ADZPlayerCharacter::InitGAS_internal(UAbilitySystemComponent* InASC)
 {
-	if (!IsValid(InPC) || !IsValid(InASC) || !IsValid(BaseGAGEData)) return;
+	if (!IsValid(InASC) || !IsValid(BaseGAGEData)) return;
 	for (auto& GA : BaseGAGEData->BaseGameplayAbilities)
 	{
 		if (!IsValid(GA)) continue;

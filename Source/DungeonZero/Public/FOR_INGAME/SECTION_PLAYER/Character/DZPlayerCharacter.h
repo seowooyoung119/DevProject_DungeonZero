@@ -64,7 +64,7 @@ protected:
 	// ~ IAbilitySystemInterface
 	
 	// GAS 관련 초기화
-	virtual void InitGAS_internal(UAbilitySystemComponent* InASC, APlayerController* InPC);
+	virtual void InitGAS_internal(UAbilitySystemComponent* InASC);
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ")
 	TObjectPtr<UDZGiveGAGEDataAsset> BaseGAGEData = nullptr;
@@ -84,26 +84,6 @@ protected:
 	
 #pragma endregion
 //======================================================================================================================
-#pragma region 직업 
-	
-	//━━━━━━━━━━━━━━━━━━━━
-	// 직업
-	//━━━━━━━━━━━━━━━━━━━━
-	
-	
-public:
-	// IDZJobRoleInterface ~ 
-	FORCEINLINE virtual FGameplayTag GetJobRoleTag_Implementation() const override { return JobRole; };
-	FORCEINLINE virtual void SetJobRole_Implementation(FGameplayTag& InJobRoleTag) override { JobRole = MoveTemp(InJobRoleTag); };
-	// ~ IDZJobRoleInterface
-	
-protected:
-	// 직업
-	UPROPERTY(ReplicatedUsing = OnRep_JobRole, EditAnywhere, BlueprintReadWrite, Category = "DZ")
-	FGameplayTag JobRole = DZ::JobRole::DZ_JOBROLE_NONE;
-
-#pragma endregion
-//======================================================================================================================	
 #pragma region 입력_섹션
 	
 	

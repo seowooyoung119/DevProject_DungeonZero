@@ -11,16 +11,128 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82f95613-b89e-4dfc-abac-60371a46ba0a" name="변경" comment="">
+    <list default="true" id="abb067bb-ee97-4490-89e3-f77c44529196" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DungeonZero.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonZero.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/DungeonZero.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/DungeonZero.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_InGameTest.umap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_FRAMEWORK/BP_InGameGM.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_FRAMEWORK/BP_InGameGM.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_PLAYER/BP_InGamePC.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_PLAYER/BP_InGamePC.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_PLAYER/BP_InGamePlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_PLAYER/BP_InGamePlayerCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_PLAYER/BP_InGamePlayerState.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_PLAYER/BP_InGamePlayerState.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/BodyCam/M_BodyCam.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/BodyCam/M_BodyCam_Inst1_ForLobby.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/BodyCam/M_BodyCam_Inst_InGame.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Material/Camera/M_FishEye.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Material/Camera/M_FishEye_Inst.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/BGM/SW_MainBGM.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/BGM/SW_MainBGM.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/MainFallPart/universfield-cinematic-impact-hit-352702.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_199_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_299_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_399_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_499_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_599_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_799_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Buttons/button_press_99_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Cancel/cancel_100_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Cancel/cancel_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Cancel/cancel_200_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_380_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_480_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_580_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_680_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_780_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/High_Pitched/highpitched_80_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Ok/ok_100_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Ok/ok_150_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Ok/ok_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Ok/ok_50_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Purchase/coins_170_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Purchase/coins_270_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Purchase/coins_70_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Repair/repair_100_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Repair/repair_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Repair/repair_200_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Sliders/slide_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Sliders/slide_loop_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Warning_Popup/warning_105_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Warning_Popup/warning_155_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Warning_Popup/warning_1_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Cues/Warning_Popup/warning_55_Cue.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_199.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_299.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_399.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_499.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_599.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_799.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Buttons/button_press_99.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Cancel/cancel_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Cancel/cancel_100.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Cancel/cancel_200.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_380.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_480.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_580.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_680.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_780.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/High_Pitched/highpitched_80.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Ok/ok_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Ok/ok_100.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Ok/ok_150.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Ok/ok_50.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Purchase/coins_170.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Purchase/coins_270.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Purchase/coins_70.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Repair/repair_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Repair/repair_100.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Repair/repair_200.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Sliders/slide_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Sliders/slide_loop_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Warning_Popup/warning_1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Warning_Popup/warning_105.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Warning_Popup/warning_155.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Sound/UI_SFX_Free_Pack/Wavs/Warning_Popup/warning_55.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Texture/T_EdgeBox.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/Texture/T_Reset_Black.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/InGame/MP_VHS2.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/InGame/MP_VHS2_Video.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/InGame/M_MP_VHS2.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/InGame/VHS2.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/InGame/WBP_VHSOverlay_inGame.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/Lobby/MP_VHS.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/Lobby/MP_VHS_Video.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/Lobby/M_MP_VHS.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/Lobby/VHS.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Asset/VHS/Lobby/WBP_VHSOverlay_Lobby.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Data/S_LobbyPlayerInfo.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/GAMEINSTANCE/IF_USE_STEAM/BP_SteamGameInstance.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/GAMEINSTANCE/IF_USE_STEAM/BP_SteamGameInstance.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Blueprints/BP_AvatarWalkStartPoint.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Blueprints/BP_LobbyLight.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Blueprints/BP_LobbySpawnPoint.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Blueprints/LobbyLevelSequence/LS_Intro.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/BP_LobbyGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/BP_LobbyGameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/Player/Avatar/BP_LobbyAvatar.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/Player/BP_LobbyPlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/Player/BP_LobbyPlayer.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/Player/BP_LobbyPlayerController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Framework/Player/BP_LobbyPlayerController.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Map/Lv_Lobby.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/Map/Lv_Lobby.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/UI/BP_LobbyOverlay.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_LOBBY/UI/BP_LobbyOverlay.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/Map/Lv_Main.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/Map/Lv_Main.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/UI/BP_MainOverlay.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/UI/BP_MainOverlay.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/UI/Default/BP_MainDefaultSubOverlay.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/UI/Default/BP_MainDefaultSubOverlay.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/UI/Lodaing/BP_LoadingGame.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/RYGamesCoreSystem/Content/Template/SECTION_MAIN/UI/Lodaing/BP_LoadingGame.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/DungeonZero.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/DungeonZero.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_GAS/GA/Movement/DZGA_CharacterJump.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_GAS/GA/Movement/DZGA_CharacterJump.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +143,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="20" />
+    <option name="cachedIndexableFilesCount" value="4" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -51,39 +163,33 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_ROLE/Job/DZJobRoleInterface.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_TAG/GAS/Movement/DZMovementTag.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_GAS/GA/Movement/DZGA_CharacterJump.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_INPUT/Comp/DZInputHandleComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_INPUT/Data/Asset/DZInputDataAsset.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_PLAYER/PlayerState/DZPlayerState.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_LIBRARY/Getter/DZGetControllerLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_ROLE/Job/DZJobRoleInterface.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_TAG/GAS/Movement/DZMovementTag.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_GAS/GA/Movement/DZGA_CharacterJump.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_INPUT/Comp/DZInputHandleComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_INPUT/Data/Asset/DZInputDataAsset.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/PlayerState/DZPlayerState.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_LIBRARY/Getter/DZGetControllerLibrary.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Editor/UnrealEd/Private/ObjectTools.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Private/Logging/StructuredLog.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Private/Windows/WindowsErrorOutputDevice.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Public/Containers/LockFreeFixedSizeAllocator.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Public/Containers/SparseArray.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Engine/Private/GameplayStatics.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/DungeonZero/UHT/DZStageLoadUnLoadManager.gen.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/Data/Table/DZAnomlaySettingTable.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZStageLoadUnLoadManager.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Data/Table/DZAnomlaySettingTable.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Actor/DZStageLoadUnLoadManager.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
 }</component>
-  <component name="ProjectId" id="3BWs53NEWwR10ENkqIfn8mddObE" />
+  <component name="ProjectId" id="3BZmsc9ZxIZfEqD6FO3Tgr3JsPP" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
@@ -91,35 +197,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ 프로젝트.DungeonZero.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ 프로젝트.DungeonZero.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1774756902633" />
-    <option name="spentUsd" value="0.12858275" />
+    <option name="spentUsd" value="0.207634" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="9" />
+    <option name="suspendCountdown" value="0" />
   </component>
   <component name="RunManager" selected="C/C++ 프로젝트.DungeonZero">
     <configuration name="DungeonZero" type="CppProject" factoryName="C++ Project">
@@ -193,7 +299,10 @@
       </method>
     </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile" />
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
       <method v="2" />
     </configuration>
     <configuration name="EpicGames.Perforce.Fixture/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
@@ -210,26 +319,28 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">
-      <changelist id="82f95613-b89e-4dfc-abac-60371a46ba0a" name="변경" comment="" />
-      <created>1774615979462</created>
+      <changelist id="abb067bb-ee97-4490-89e3-f77c44529196" name="변경" comment="" />
+      <created>1774705179175</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1774615979462</updated>
-      <workItem from="1774615980942" duration="7000" />
-      <workItem from="1774616156362" duration="17000" />
-      <workItem from="1774616233086" duration="38000" />
-      <workItem from="1774616284981" duration="6943000" />
+      <updated>1774705179175</updated>
+      <workItem from="1774705216430" duration="508000" />
+      <workItem from="1774743245326" duration="9430000" />
+      <workItem from="1774766416724" duration="10449000" />
+      <workItem from="1774787582456" duration="1022000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnrealLogPanelSettings">
+    <option name="clearOnStart" value="true" />
+    <option name="showMessages" value="false" />
+  </component>
   <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/.." />
-    </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="XDebuggerManager">

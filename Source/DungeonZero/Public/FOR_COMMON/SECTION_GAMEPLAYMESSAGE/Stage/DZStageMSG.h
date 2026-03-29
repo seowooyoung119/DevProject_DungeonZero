@@ -1,0 +1,15 @@
+﻿// All CopyRight by BooZaGameStudio // 
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "DZStageMSG.generated.h"
+
+USTRUCT(BlueprintType)
+struct FDZStageMSG
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 LoadStage = 0;
+};

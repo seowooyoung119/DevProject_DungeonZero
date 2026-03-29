@@ -2,6 +2,8 @@
 
 
 #include "DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
+#include "AbilitySystemComponent.h"
+#include "FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h"
 
 
 //======================================================================================================================	
@@ -19,12 +21,28 @@ ADZAnomalyActorBase::ADZAnomalyActorBase()
 	// rep
 	bReplicates = true;
 	SetReplicatingMovement(true);
+	
+	AnomalyAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AnomalyAbilitySystemComponent"));
+	AnomalyAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 }
 
-// Called when the game starts or wen spawned
 void ADZAnomalyActorBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	AnomalyAbilitySystemComponent->InitAbilityActorInfo(this,this);
+	
+}
+
+void ADZAnomalyActorBase::InitGAS_internal(UAbilitySystemComponent* InASC)
+{
+	if (!IsValid(InASC) || !IsValid(BaseGAGEData)) return;
+	for (auto& GA : BaseGAGEData->BaseGameplayAbilities)
+	{
+		if (!IsValid(GA)) continue;
+		FGameplayAbilitySpec AbilitySpec(GA, 1, INDEX_NONE, this);
+		InASC->GiveAbility(AbilitySpec);
+	}
 }
 
 #pragma endregion
