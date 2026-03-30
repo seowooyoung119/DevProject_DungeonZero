@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "GameplayTagContainer.h"
-#include "DungeonZero/Public/FOR_COMMON/SECTION_ROLE/Job/DZJobRoleInterface.h"
-#include "DungeonZero/Public/FOR_COMMON/SECTION_ROLE/Job/DZJobRoleTag.h"
 #include "GameFramework/Character.h"
 #include "DZPlayerCharacter.generated.h"
 
@@ -17,7 +14,7 @@ class USpringArmComponent;
 class UDZInputHandleComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZPlayerCharacter : public ACharacter, public IAbilitySystemInterface, public IDZJobRoleInterface
+class DUNGEONZERO_API ADZPlayerCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	

@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "DZAnomlaySettingTable.generated.h"
+#include "DZAnomalySettingTable.generated.h"
 
 class ADZAnomalyActorBase;
 /**
  * 
  */
 USTRUCT(BlueprintType)
-struct DUNGEONZERO_API FDZAnomlaySettingTable : public FTableRowBase
+struct DUNGEONZERO_API FDZAnomalySettingTable : public FTableRowBase
 {
 	GENERATED_BODY()
 

@@ -7,7 +7,7 @@ namespace DZ
 {
 	namespace Stage
 	{
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_LOAD, "DZ.Stage.Load");
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_UNLOAD, "DZ.Stage.UnLoad");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_PREPARE, "DZ.Stage.Prepare");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_READYNEWSTAGE, "DZ.Stage.ReadyNewStage");
 	}
 }
