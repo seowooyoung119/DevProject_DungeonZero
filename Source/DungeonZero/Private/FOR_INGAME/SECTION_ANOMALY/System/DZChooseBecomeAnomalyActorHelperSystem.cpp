@@ -20,6 +20,10 @@ UDZChooseBecomeAnomalyActorHelperSystem* UDZChooseBecomeAnomalyActorHelperSystem
 
 TArray<AActor*> UDZChooseBecomeAnomalyActorHelperSystem::ChooseRandomAnomalyActors_internal(const TArray<AActor*>& InPossibleActors, int32 MinCount, int32 MaxCount)
 {
+	// 클라이언트 패스
+	if (!IsValid(GetWorld())) return TArray<AActor*>();
+	if (GetWorld()->GetNetMode() == NM_Client) return TArray<AActor*>();
+		
 	TArray<AActor*> SelectedActors;
     
 	// 방어 코드: 후보가 없으면 빈 배열 반환

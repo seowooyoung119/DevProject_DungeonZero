@@ -23,10 +23,10 @@ public:
 #pragma region StageAPI	
 protected:
 	// 준비 전 초기화 (들어온 레벨 언로드 실시)
-	void OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageMSG& Payload);
+	void OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageReadyMSG& Payload);
 	
 	// 준비 :  (1단계 -> 룸 로드)
-	void OnReadyNewStageMessageReceived(FGameplayTag Channel, const FDZStageMSG& Payload);
+	void OnReadyNewStageMessageReceived(FGameplayTag Channel, const FDZStageReadyMSG& Payload);
 	UFUNCTION() void OnReadyNewStageLoadingFinished();
 #pragma endregion
 //======================================================================================================================	

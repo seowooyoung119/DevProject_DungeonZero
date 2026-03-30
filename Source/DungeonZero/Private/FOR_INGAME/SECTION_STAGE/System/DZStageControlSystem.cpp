@@ -2,7 +2,6 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h"
-
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
@@ -10,8 +9,9 @@
 #include "FOR_INGAME/SECTION_ANOMALY/System/DZChooseBecomeAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h"
-#include "FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZTimeReduceManager.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
+
 //======================================================================================================================	
 #pragma region Getter
 UDZStageControlSystem* UDZStageControlSystem::Get(const UObject* WorldContextObject)
@@ -52,13 +52,17 @@ void UDZStageControlSystem::Deinitialize()
 #pragma region StageAPI	
 void UDZStageControlSystem::StartGame()
 {
+	// 클라이언트 패스
+	if (!IsValid(GetWorld())) return;
+	if (GetWorld()->GetNetMode() == NM_Client) return;
+	
 	UE_LOG(LogTemp, Warning, TEXT("StartGame : 스테이지 관리 매니저 : 게임 실시"));
 	PrepareStage_internal();
 }
 
 void UDZStageControlSystem::PrepareStage_internal()
 {
-	// 기존 액터 부수기 
+	// 기존 액터 부수기 (일단 부숨)
 	for (auto& PossibleActor : PossibleActors)
 	{
 		if (IsValid(PossibleActor)) PossibleActor->Destroy();
@@ -71,10 +75,11 @@ void UDZStageControlSystem::PrepareStage_internal()
 	PossibleActors.Empty();	
 	AnomalyActors.Empty();
 	AnomalyCount = 0;
+	RemainingTime = 0.0f;
 	
 	// 초기화 실시 알림 메시지 보내기 (현재 레벨)
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	FDZStageMSG Payload;
+	FDZStageReadyMSG Payload;
 	Payload.LoadStage = CurrentStageLevel;
 	MessageSubsystem.BroadcastMessage(DZ::Stage::DZ_STAGE_PREPARE, Payload);
 	
@@ -92,7 +97,7 @@ void UDZStageControlSystem::ReadyNewStage_internal_RoomLoad()
 {
 	// 준비 실시 알림 메시지 보내기 (다음 레벨)
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	FDZStageMSG Payload;
+	FDZStageReadyMSG Payload;
 	Payload.LoadStage = NextStageLevel;
 	MessageSubsystem.BroadcastMessage(DZ::Stage::DZ_STAGE_READYNEWSTAGE, Payload);
 	UE_LOG(LogTemp, Warning, TEXT("ReadyStage : 스테이지 관리 매니저 : 새 스테이지 준비 알림 메시지 보냄"));
@@ -147,11 +152,12 @@ void UDZStageControlSystem::DoReadyNewStage_internal_GetRandomAnomalyActor()
 	
 	// 문 열고 타이머 돌리기 
 	DoReadyNewStage_internal_OpenDoor();
+	DoReadyNewStage_internal_StartTimer();
 }
 
 void UDZStageControlSystem::DoReadyNewStage_internal_OpenDoor()
 {
-	// 준비 실시 알림 메시지 보내기 (이전 단계에서 스테이지 현재, 다음이 갱신되어 있어야 함)
+	// 문 열기 알림 메시지 보내기 (이전 단계에서 스테이지 현재, 다음이 갱신되어 있어야 함)
 	// 즉, 현재 레벨이 플레이어들이 깨야 하는 레벨임 == 문을 열어줘야 함)
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	FDZDoorMSG Payload;
@@ -159,6 +165,36 @@ void UDZStageControlSystem::DoReadyNewStage_internal_OpenDoor()
 	Payload.bIsDoorOpen = true;
 	MessageSubsystem.BroadcastMessage(DZ::Stage::DZ_STAGE_OPENDOOR, Payload);
 	UE_LOG(LogTemp, Warning, TEXT("ReadyNewStage 3단계 : 룸 로드 매니저 : 문 열기 지시"));
+}
+
+void UDZStageControlSystem::DoReadyNewStage_internal_StartTimer()
+{
+	// 타이머 돌리기 메시지 보내기 (이전 단계에서 스테이지 현재, 다음이 갱신되어 있어야 함)
+	// 즉, 현재 레벨이 플레이어들이 깨야 하는 레벨임 == 문을 열어줘야 함)
+	FDZStageBalanceRow* Row = StageDataMap.Find(CurrentStageLevel);
+	if (Row == nullptr) return;
+	
+	// 타이머 갱신 
+	RemainingTime = Row->Time;
+	
+	// 타이머 감소 및 관리 넘기기 
+	UDZTimeReduceManager* TimeReduceManager = UDZTimeReduceManager::Get(this);
+	if (IsValid(TimeReduceManager)) TimeReduceManager->StartTime();
+}
+
+void UDZStageControlSystem::DoRunningStage_Internal_HandleIfAllAnomalyFound()
+{
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZStageClearMSG Payload;
+	MessageSubsystem.BroadcastMessage(DZ::Stage::DZ_STAGE_STAGECLAER, Payload);
+	UE_LOG(LogTemp, Warning, TEXT("RunningStage 단계 : 스테이지 클리어"));
+	
+	// 타이머 멈추기
+	UDZTimeReduceManager* TimeReduceManager = UDZTimeReduceManager::Get(this);
+	if (IsValid(TimeReduceManager)) TimeReduceManager->StopTime();
+	
+	// 준비 시작 
+	PrepareStage_internal();
 }
 
 #pragma endregion

@@ -16,7 +16,7 @@ UDZGA_CharacterJump::UDZGA_CharacterJump()
 	ActivationOwnedTags.AddTag(DZ::Movement::DZ_MOVEMENT_JUMP);
 	
 	// 규칙
-	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
+	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
 }
 
 void UDZGA_CharacterJump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)

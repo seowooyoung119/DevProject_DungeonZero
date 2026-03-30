@@ -34,6 +34,10 @@ void UDZChangeToAnomalyActorHelperSystem::Initialize(FSubsystemCollectionBase& C
 #pragma region StageAPI
 TArray<AActor*> UDZChangeToAnomalyActorHelperSystem::ReplaceWithAnomalyActors_internal(const TArray<AActor*>& SelectedActors)
 {
+	// 클라이언트 패스
+	if (!IsValid(GetWorld())) return TArray<AActor*>();
+	if (GetWorld()->GetNetMode() == NM_Client) return TArray<AActor*>();
+		
 	// 임시 데이터 생성 및 체크
 	TArray<AActor*> SpawnedAnomalies;
 	UWorld* World = GetWorld();
