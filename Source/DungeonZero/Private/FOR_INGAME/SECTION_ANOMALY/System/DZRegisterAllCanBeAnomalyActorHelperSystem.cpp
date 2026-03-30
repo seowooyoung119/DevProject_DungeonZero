@@ -32,7 +32,7 @@ void UDZRegisterAllCanBeAnomalyActorHelperSystem::OnWorldBeginPlay(UWorld& InWor
 	
 	// 구독 : 초기화
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	PrepareListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::Stage::DZ_STAGE_READYNEWSTAGE, this, &UDZRegisterAllCanBeAnomalyActorHelperSystem::OnPrepareMessageReceived);
+	PrepareListenerHandle = MessageSubsystem.RegisterListener<FDZStageReadyMSG>(DZ::Stage::DZ_STAGE_READYNEWSTAGE, this, &UDZRegisterAllCanBeAnomalyActorHelperSystem::OnPrepareMessageReceived);
 }
 
 void UDZRegisterAllCanBeAnomalyActorHelperSystem::Deinitialize()
@@ -49,7 +49,7 @@ void UDZRegisterAllCanBeAnomalyActorHelperSystem::Deinitialize()
 //======================================================================================================================
 #pragma region StageAPI
 
-void UDZRegisterAllCanBeAnomalyActorHelperSystem::OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageMSG& Payload)
+void UDZRegisterAllCanBeAnomalyActorHelperSystem::OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageReadyMSG& Payload)
 {
 	PossibleActors.Empty();
 	UE_LOG(LogTemp, Warning, TEXT("Prepare : 원본 액터 등록 시스템 배열 초기화"));

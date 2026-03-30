@@ -91,7 +91,7 @@ void ADZDoorActor::OnDoorToggleMessageReceived(FGameplayTag Channel, const FDZDo
 	{
 		// bIsOpened가 메시지의 원하는 상태(bShouldOpen)와 다를 때만 토글
 		if (bIsOpened != Payload.bIsDoorOpen) ToggleDoor(Payload.bIsDoorOpen);
-		UE_LOG(LogTemp, Log, TEXT("%s: 내 레벨과 일치하여 문을 %s합니다."), *GetName(), Payload.bIsDoorOpen ? TEXT("엽니다") : TEXT("닫습니다"));
+		UE_LOG(LogTemp, Log, TEXT("%s: 내 레벨과 일치하여 문을 %s."), *GetName(), Payload.bIsDoorOpen ? TEXT("엽니다") : TEXT("닫습니다"));
 	}
 }
 

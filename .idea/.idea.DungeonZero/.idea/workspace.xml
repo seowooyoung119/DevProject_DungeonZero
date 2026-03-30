@@ -12,11 +12,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="589d2e16-e72f-42a9-81a8-14566d559e61" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_InGameMainLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_InGameMainLevel.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_Room1.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_Room1.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_Room2.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_Room2.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_STAGE/DT_AnomalyTable.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_STAGE/DT_AnomalyTable.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_STAGE/DT_StageBalance.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/SECTION_STAGE/DT_StageBalance.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZChooseBecomeAnomalyActorHelperSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZChooseBecomeAnomalyActorHelperSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_FRAMEWORK/GameMode/DZInGameGM.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_FRAMEWORK/GameMode/DZInGameGM.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_GAS/GA/Movement/DZGA_CharacterJump.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_GAS/GA/Movement/DZGA_CharacterJump.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZDoorActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZDoorActor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZStageLoadUnLoadManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZStageLoadUnLoadManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Actor/DZStageLoadUnLoadManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Actor/DZStageLoadUnLoadManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,20 +67,27 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://14" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://25" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Public/Templates/UnrealTypeTraits.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/Class.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/SoftObjectPtr.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Engine/Private/Subsystems/SubsystemCollection.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZClockActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZDoorActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZTimeReduceManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Actor/DZClockActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Actor/DZDoorActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZTimeReduceManager.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
@@ -109,10 +131,10 @@
 }</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1777348852327" />
-    <option name="spentUsd" value="0.01797155" />
+    <option name="spentUsd" value="0.081671044" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="5" />
+    <option name="suspendCountdown" value="4" />
   </component>
   <component name="RunManager" selected="C/C++ 프로젝트.DungeonZero">
     <configuration name="DungeonZero" type="CppProject" factoryName="C++ Project">
@@ -214,7 +236,7 @@
       <workItem from="1774794724208" duration="2733000" />
       <workItem from="1774832196121" duration="1199000" />
       <workItem from="1774845739029" duration="895000" />
-      <workItem from="1774846748241" duration="12278000" />
+      <workItem from="1774846748241" duration="19837000" />
     </task>
     <task id="LOCAL-00001" summary="삭제">
       <option name="closed" value="true" />
@@ -232,7 +254,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774856380679</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="문 추가">
+      <option name="closed" value="true" />
+      <created>1774859080111</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1774859080111</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,7 +300,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="삭제" />
     <MESSAGE value="레벨 세팅&#10;1. 변환 직전까지 사이클 시스템 구축" />
-    <option name="LAST_COMMIT_MESSAGE" value="레벨 세팅&#10;1. 변환 직전까지 사이클 시스템 구축" />
+    <MESSAGE value="문 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="문 추가" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -22,10 +22,10 @@ void ADZStageLoadUnLoadManager::BeginPlay()
 	
 	// 구독 : 초기화
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	ReadyNewStageListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::Stage::DZ_STAGE_PREPARE, this, &ADZStageLoadUnLoadManager::OnPrepareMessageReceived);
+	ReadyNewStageListenerHandle = MessageSubsystem.RegisterListener<FDZStageReadyMSG>(DZ::Stage::DZ_STAGE_PREPARE, this, &ADZStageLoadUnLoadManager::OnPrepareMessageReceived);
 	
 	// 구독 : 준비 
-	ReadyNewStageListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::Stage::DZ_STAGE_READYNEWSTAGE, this, &ADZStageLoadUnLoadManager::OnReadyNewStageMessageReceived);
+	ReadyNewStageListenerHandle = MessageSubsystem.RegisterListener<FDZStageReadyMSG>(DZ::Stage::DZ_STAGE_READYNEWSTAGE, this, &ADZStageLoadUnLoadManager::OnReadyNewStageMessageReceived);
 }
 
 void ADZStageLoadUnLoadManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -45,11 +45,11 @@ void ADZStageLoadUnLoadManager::EndPlay(const EEndPlayReason::Type EndPlayReason
 #pragma region StageAPI	
 
 // 준비 전 초기화 (들어온 레벨 언로드 실시)
-void ADZStageLoadUnLoadManager::OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageMSG& Payload)
+void ADZStageLoadUnLoadManager::OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageReadyMSG& Payload)
 {
-	// // 서버에서 실행
-	// if (!HasAuthority()) return;
-	//
+	// 서버에서 실행
+	if (!HasAuthority()) return;
+	
 	// // 찾기 
 	// auto FoundLevelPtr = LevelToLoad.Find(Payload.LoadStage);
 	// if (FoundLevelPtr  == nullptr) return;
@@ -65,7 +65,7 @@ void ADZStageLoadUnLoadManager::OnPrepareMessageReceived(FGameplayTag GameplayTa
 }
 
 //  (1단계 -> 룸 로드 -> 2단계 요청 실시)
-void ADZStageLoadUnLoadManager::OnReadyNewStageMessageReceived(FGameplayTag Channel, const FDZStageMSG& Payload)
+void ADZStageLoadUnLoadManager::OnReadyNewStageMessageReceived(FGameplayTag Channel, const FDZStageReadyMSG& Payload)
 {
 	// 서버에서 실행
 	if (!HasAuthority()) return;

@@ -3,16 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DZDoorMSG.generated.h"
+#include "DZTimeMSG.generated.h"
 
 USTRUCT(BlueprintType)
-struct FDZDoorMSG
+struct FDZTimeMSG
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 StageLevel = 0;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsDoorOpen = false;
+	float RemainTime = 0;
 };

@@ -5,12 +5,19 @@
 #include "CoreMinimal.h"
 #include "DZStageMSG.generated.h"
 
-// 스테이지 준비
+// 스테이지 준비 시 호출
 USTRUCT(BlueprintType)
-struct FDZStageMSG
+struct FDZStageReadyMSG
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 LoadStage = 0;
+};
+
+// 스테이지 클리어 시 호출
+USTRUCT(BlueprintType)
+struct FDZStageClearMSG
+{
+	GENERATED_BODY()
 };

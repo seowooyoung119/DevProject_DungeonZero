@@ -35,7 +35,15 @@ public:
 #pragma region RegisterAPI
 
 public:
-	FORCEINLINE void RegisterAllCanBeAnomalyActor(AActor* Actor) { PossibleActors.AddUnique(Actor);};
+	UFUNCTION(BlueprintCallable, Category = "DZ")
+	FORCEINLINE void RegisterAllCanBeAnomalyActor(AActor* Actor)
+	{
+		// 클라이언트 패스
+		if (!IsValid(GetWorld())) return;
+		if (GetWorld()->GetNetMode() == NM_Client) return;
+		
+		PossibleActors.AddUnique(Actor);
+	};
 	
 #pragma endregion
 //======================================================================================================================
@@ -43,7 +51,7 @@ public:
 	
 protected:
 	// 준비 전 초기화 (들어온 레벨 언로드 실시)
-	void OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageMSG& Payload);
+	void OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageReadyMSG& Payload);
 	
 #pragma endregion
 //======================================================================================================================
