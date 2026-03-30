@@ -13,4 +13,8 @@ UCLASS()
 class DUNGEONZERO_API ADZInGameGM : public AGameModeBase
 {
 	GENERATED_BODY()
+	
+public:
+	virtual void BeginPlay() override;
+	
 };

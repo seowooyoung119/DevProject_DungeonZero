@@ -3,14 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DZStageMSG.generated.h"
+#include "DZDoorMSG.generated.h"
 
 // 스테이지 준비
 USTRUCT(BlueprintType)
-struct FDZStageMSG
+struct FDZDoorMSG
 {
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite)
-	int32 LoadStage = 0;
+	int32 StageLevel = 0;
+	
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsDoorOpen = false;
 };

@@ -12,75 +12,107 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="589d2e16-e72f-42a9-81a8-14566d559e61" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonZero/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyHandleComponent.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyHandleComponent.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_InGameMainLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FOR_INGAME/Map/Lv_InGameMainLevel.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="26" />
+    <option name="cachedIndexableFilesCount" value="4" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "seowooyoung119"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;seowooyoung119&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/seowooyoung119/DungeonZero.git",
-    "accountId": "e6c3e96f-c54a-47a8-9c3b-5042ef0f33e7"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/seowooyoung119/DungeonZero.git&quot;,
+    &quot;accountId&quot;: &quot;e6c3e96f-c54a-47a8-9c3b-5042ef0f33e7&quot;
   }
-}]]></component>
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://14" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Public/Templates/UnrealTypeTraits.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/SoftObjectPtr.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Engine/Private/Subsystems/SubsystemCollection.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Actor/DZDoorActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Private/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Actor/DZDoorActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DungeonZero/Public/FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="3BciNRKFmRRgWKNeeNszJEeuxH1" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ 프로젝트.DungeonZero.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Dev1&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1777348852327" />
-    <option name="spentUsd" value="0.0064325" />
+    <option name="spentUsd" value="0.01797155" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="9" />
+    <option name="suspendCountdown" value="5" />
   </component>
   <component name="RunManager" selected="C/C++ 프로젝트.DungeonZero">
     <configuration name="DungeonZero" type="CppProject" factoryName="C++ Project">
@@ -154,7 +186,10 @@
       </method>
     </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile" />
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
       <method v="2" />
     </configuration>
     <configuration name="EpicGames.Perforce.Fixture/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
@@ -176,16 +211,66 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1774794722132</updated>
-      <workItem from="1774794724208" duration="2160000" />
+      <workItem from="1774794724208" duration="2733000" />
+      <workItem from="1774832196121" duration="1199000" />
+      <workItem from="1774845739029" duration="895000" />
+      <workItem from="1774846748241" duration="12278000" />
     </task>
+    <task id="LOCAL-00001" summary="삭제">
+      <option name="closed" value="true" />
+      <created>1774797009358</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774797009358</updated>
+    </task>
+    <task id="LOCAL-00002" summary="레벨 세팅&#10;1. 변환 직전까지 사이클 시스템 구축">
+      <option name="closed" value="true" />
+      <created>1774856380679</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774856380679</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnrealLogPanelSettings">
+    <option name="clearOnStart" value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Dev1" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="삭제" />
+    <MESSAGE value="레벨 세팅&#10;1. 변환 직전까지 사이클 시스템 구축" />
+    <option name="LAST_COMMIT_MESSAGE" value="레벨 세팅&#10;1. 변환 직전까지 사이클 시스템 구축" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
