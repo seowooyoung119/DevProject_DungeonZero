@@ -2,6 +2,8 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h"
+
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.h"
@@ -25,22 +27,17 @@ UDZStageControlSystem* UDZStageControlSystem::Get(const UObject* WorldContextObj
 	return StageControlSystem;
 }
 
+#pragma endregion
+//======================================================================================================================	
+#pragma region LifeCycle
+
 void UDZStageControlSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	
 	UStageBalanceDataLibrary::CacheStageDataToMap(StageDataMap);
 	UStageBalanceDataLibrary::DebugLogStageMap(StageDataMap);
 }
 
-void UDZStageControlSystem::OnWorldBeginPlay(UWorld& InWorld)
-{
-	Super::OnWorldBeginPlay(InWorld);
-	
-}
-#pragma endregion
-//======================================================================================================================	
-#pragma region LifeCycle
 void UDZStageControlSystem::Deinitialize()
 {
 	if (IsValid(GetWorld()))
@@ -61,12 +58,21 @@ void UDZStageControlSystem::StartGame()
 
 void UDZStageControlSystem::PrepareStage_internal()
 {
-	// 데이터 초기화
+	// 기존 액터 부수기 
+	for (auto& PossibleActor : PossibleActors)
+	{
+		if (IsValid(PossibleActor)) PossibleActor->Destroy();
+	}
+	for (auto& AnomalyActor : AnomalyActors)
+	{
+		if (IsValid(AnomalyActor)) AnomalyActor->Destroy();
+	}
+	// 초기화 
 	PossibleActors.Empty();	
 	AnomalyActors.Empty();
 	AnomalyCount = 0;
 	
-	// 초기화 실시 알림 메시지 보내기
+	// 초기화 실시 알림 메시지 보내기 (현재 레벨)
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	FDZStageMSG Payload;
 	Payload.LoadStage = CurrentStageLevel;
@@ -84,7 +90,7 @@ void UDZStageControlSystem::PrepareStage_internal()
 
 void UDZStageControlSystem::ReadyNewStage_internal_RoomLoad()
 {
-	// 준비 실시 알림 메시지 보내기
+	// 준비 실시 알림 메시지 보내기 (다음 레벨)
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	FDZStageMSG Payload;
 	Payload.LoadStage = NextStageLevel;
@@ -116,7 +122,7 @@ void UDZStageControlSystem::DoReadyNewStage_internal_GetRandomAnomalyActor()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ReadyNewStage 3단계 : 룸 로드 매니저 : 랜덤 뽑기 실시"));
 
-	// 데이터 찾기
+	// 데이터 찾기 (다음 레벨)
 	FDZStageBalanceRow* Row = StageDataMap.Find(NextStageLevel);
 	if (Row == nullptr) return;
 
@@ -132,8 +138,29 @@ void UDZStageControlSystem::DoReadyNewStage_internal_GetRandomAnomalyActor()
 	if (!IsValid(ChangeToAnomalyActorHelperSystem)) return;
 	AnomalyActors = ChangeToAnomalyActorHelperSystem->ReplaceWithAnomalyActors_internal(SelectedActors);
 	
+	// 갯수 저장 
+	AnomalyCount = AnomalyActors.Num();
 	
+	// 스테이지 값 갱신 (이제 다음 레벨이 준비가 끝났으므로 현재 레벨, 다음 레벨은 한칸 증가)
+	CurrentStageLevel = NextStageLevel;
+	NextStageLevel++;
+	
+	// 문 열고 타이머 돌리기 
+	DoReadyNewStage_internal_OpenDoor();
 }
+
+void UDZStageControlSystem::DoReadyNewStage_internal_OpenDoor()
+{
+	// 준비 실시 알림 메시지 보내기 (이전 단계에서 스테이지 현재, 다음이 갱신되어 있어야 함)
+	// 즉, 현재 레벨이 플레이어들이 깨야 하는 레벨임 == 문을 열어줘야 함)
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZDoorMSG Payload;
+	Payload.StageLevel = CurrentStageLevel;
+	Payload.bIsDoorOpen = true;
+	MessageSubsystem.BroadcastMessage(DZ::Stage::DZ_STAGE_OPENDOOR, Payload);
+	UE_LOG(LogTemp, Warning, TEXT("ReadyNewStage 3단계 : 룸 로드 매니저 : 문 열기 지시"));
+}
+
 #pragma endregion
 //======================================================================================================================	
 	

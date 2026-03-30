@@ -26,7 +26,6 @@ public:
 #pragma region LifeCycle
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
 #pragma endregion	
 //======================================================================================================================	
@@ -47,6 +46,9 @@ protected:
 	
 	// 스테이지 준비하기 (3단계 -> 최대 갯수, 최소 갯수 계산해서 랜덤하게 가져오기)
 	void DoReadyNewStage_internal_GetRandomAnomalyActor();
+	
+	// 스테이지 준비하기 (4단계 -> 문을 열기)
+	void DoReadyNewStage_internal_OpenDoor();
 	
 #pragma endregion
 //======================================================================================================================	
