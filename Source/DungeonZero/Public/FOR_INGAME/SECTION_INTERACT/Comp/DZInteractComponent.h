@@ -82,6 +82,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
 	TWeakObjectPtr<AActor> LastInteractActor = nullptr;
 
+	// 디버그
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TS | Interact")
+	bool bDebugDrawLine = false;
+	
 #pragma endregion 
 //======================================================================================================================
 };

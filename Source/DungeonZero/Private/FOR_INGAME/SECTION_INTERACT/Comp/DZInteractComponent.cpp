@@ -22,7 +22,6 @@ void UDZInteractComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-
 void UDZInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -87,7 +86,7 @@ AActor* UDZInteractComponent::LineTrace_internal()
 	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult,TraceStart,TraceEnd,ECC_Visibility,QueryParams);
 	
 	// [추가] 디버그 함수 호출 (결과값과 HitResult를 같이 전달)
-	DrawInteractionDebugLine_internal(TraceStart, TraceEnd, HitResult, bHit);
+	if (bDebugDrawLine) DrawInteractionDebugLine_internal(TraceStart, TraceEnd, HitResult, bHit);
 	
 	// 맞은 게 있으면 반환 
 	if (HitResult.bBlockingHit) return HitResult.GetActor();
@@ -106,6 +105,17 @@ void UDZInteractComponent::DrawInteractionDebugLine_internal(const FVector& Star
 
 	// 3. 충돌 시에만 해당 위치에 스피어 그리기
 	if (bHit) DrawDebugSphere(GetWorld(),HitResult.ImpactPoint, 10.0f,12, DebugColor,false, 0.1f);
+	
+	// 이름 디버그 
+	if (CurrentInteractActor.IsValid() && IsValid(CurrentInteractActor.Get()))
+	{
+		UE_LOG(LogTemp, Log, TEXT("Current Interact Actor : %s"), *CurrentInteractActor->GetName())
+	}
+	if (LastInteractActor.IsValid() && IsValid(LastInteractActor.Get()))
+	{
+		UE_LOG(LogTemp, Log, TEXT("Last Interact Actor : %s"), *LastInteractActor->GetName())
+	}
+	
 }
 
 void UDZInteractComponent::DoInteractUILogicAfterLineTrace()

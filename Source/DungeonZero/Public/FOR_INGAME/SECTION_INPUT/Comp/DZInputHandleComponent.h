@@ -51,9 +51,9 @@ protected:
 	
 protected:
 	// 실제 이동 로직 (Callback)
-	void Move_internal(const FInputActionValue& Value);
-	void Look_internal(const FInputActionValue& Value);
-	void Jump_internal(const FInputActionValue& Value);
+	void Move_internal(const FInputActionValue& Value); // WASD 움직임
+	void Look_internal(const FInputActionValue& Value);	// 시야 회전
+	void Jump_internal(const FInputActionValue& Value); // 점프 
 	
 #pragma endregion
 //======================================================================================================================	
@@ -64,7 +64,30 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━	
 	
 protected:
-	void InteractByLeftClick_internal(const FInputActionValue& Value);
+	void InteractByLeftClick_internal(const FInputActionValue& Value);	// 왼쪽 마우스 (사물 들어올리기)
+	void InteractByRightClick_internal(const FInputActionValue& Value);	// 오른쪽 마우스 (아이템 사용)
+	void SpecialInteract_internal(const FInputActionValue& Value);		// 특수 상호작용
+	void PickUpItem_internal(const FInputActionValue& Value);			// 아이템 줍기
+	void DropItem_internal(const FInputActionValue& Value);				// 아이템 버리기 
+	
+#pragma endregion
+//======================================================================================================================	
+#pragma region 핫키 
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 상호작용_관련
+	//━━━━━━━━━━━━━━━━━━━━	
+
+protected:
+	void HotKey_internal1(const FInputActionValue& Value);
+	void HotKey_internal2(const FInputActionValue& Value);
+	void HotKey_internal3(const FInputActionValue& Value);
+	void HotKey_internal4(const FInputActionValue& Value);
+	void HotKey_internal5(const FInputActionValue& Value);
+	void HotKey_internal6(const FInputActionValue& Value);
+	void HotKey_internal7(const FInputActionValue& Value);
+	void HotKey_internal8(const FInputActionValue& Value);
+	void HotKey_internal9(const FInputActionValue& Value);
 	
 #pragma endregion
 //======================================================================================================================	

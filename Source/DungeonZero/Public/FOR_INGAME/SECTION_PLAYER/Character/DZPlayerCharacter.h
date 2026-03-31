@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
+#include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Interface/ForOwner/DZInventoryOwnerActionInterface.h"
 #include "DZPlayerCharacter.generated.h"
 
 class UDZGiveGAGEDataAsset;
@@ -14,10 +16,23 @@ class USpringArmComponent;
 class UDZInputHandleComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZPlayerCharacter : public ACharacter, public IAbilitySystemInterface
+class DUNGEONZERO_API ADZPlayerCharacter : public ACharacter, public IAbilitySystemInterface, public IDZInventoryOwnerActionInterface, public IPlayerCompGetterInterface
 {
 	GENERATED_BODY()
 	
+//======================================================================================================================	
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
+	
+public:
+	virtual UDZHotKeyInventoryComponent* GetDZHotKeyInventoryCompo_Implementation() override { return HotKeyInventoryComponent; };
+	virtual UDZInteractComponent* GetDZInteractCompo_Implementation() override { return InteractComponent; };
+	virtual UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualCompo_Implementation() override { return HotKeyEquipVisualComponent; } 
+	
+#pragma endregion
 //======================================================================================================================	
 #pragma region OnRep
 	
@@ -110,6 +125,32 @@ protected:
 	
 #pragma endregion
 //======================================================================================================================	
+#pragma region 인벤토리
 	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 인벤토리
+	//━━━━━━━━━━━━━━━━━━━━	
+
+public:
+	// IDZInventoryOwnerActionInterface~ 
+	virtual UDZHotKeyInventoryComponent* GetHotKeyComponent_Implementation() override { return HotKeyInventoryComponent; };
+	// ~ IDZInventoryOwnerActionInterface
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<UDZHotKeyInventoryComponent> HotKeyInventoryComponent = nullptr;
+
+#pragma endregion
+//======================================================================================================================	
+#pragma region 인벤토리_비쥬얼
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 인벤토리_비쥬얼
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<UDZHotKeyEquipVisualComponent> HotKeyEquipVisualComponent = nullptr;
+
+#pragma endregion
+//======================================================================================================================	
 };

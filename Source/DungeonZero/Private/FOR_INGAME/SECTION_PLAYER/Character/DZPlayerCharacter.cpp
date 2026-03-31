@@ -9,6 +9,9 @@
 #include "Camera/CameraComponent.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_INPUT/Comp/DZInputHandleComponent.h"
+#include "FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/HotKey/DZHotKeyEquipVisualComponent.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -67,8 +70,16 @@ ADZPlayerCharacter::ADZPlayerCharacter()
 	}
 	
 	// interact
+	InteractComponent = CreateDefaultSubobject<UDZInteractComponent>(TEXT("InteractComponent"));
+	
+	// input
 	InputHandleComponent = CreateDefaultSubobject<UDZInputHandleComponent>(TEXT("InputHandleComponent"));
 	
+	// 핫키 
+	HotKeyInventoryComponent = CreateDefaultSubobject<UDZHotKeyInventoryComponent>(TEXT("HotKeyInventoryComponent"));
+	
+	// 핫키 비쥬얼
+	HotKeyEquipVisualComponent = CreateDefaultSubobject<UDZHotKeyEquipVisualComponent>(TEXT("HotKeyEquipVisualComponent"));
 }
 
 void ADZPlayerCharacter::BeginPlay()
