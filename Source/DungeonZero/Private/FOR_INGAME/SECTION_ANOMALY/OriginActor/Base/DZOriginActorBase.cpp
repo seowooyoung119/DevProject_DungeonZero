@@ -1,7 +1,7 @@
 // All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_ANOMALY/OriginActor/DZOriginActorBase.h"
+#include "FOR_INGAME/SECTION_ANOMALY/OriginActor/Base/DZOriginActorBase.h"
 
 #include "FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
 
