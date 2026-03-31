@@ -4,6 +4,7 @@
 #include "DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "AbilitySystemComponent.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h"
+#include "Net/UnrealNetwork.h"
 
 
 //======================================================================================================================	
@@ -42,16 +43,30 @@ void ADZAnomalyActorBase::BeginPlay()
 	ActivateAnomaly_internal(AnomalyAbilitySystemComponent);
 }
 
+#pragma endregion
+//======================================================================================================================		
+#pragma region 어노말리
+
+//──────────────
+// 어노말리
+//──────────────	
+
+void ADZAnomalyActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ADZAnomalyActorBase, ReplicatedAnomalyScale);
+}
+
+void ADZAnomalyActorBase::SetAnomalyScale(float InScale)
+{
+	ReplicatedAnomalyScale = InScale;
+	SetActorScale3D(FVector(InScale));
+}
+
 void ADZAnomalyActorBase::InitGAS_internal(UAbilitySystemComponent* InASC)
 {
 	if (!IsValid(InASC) || !IsValid(BaseGAGEData)) return;
-	/* 모든 어빌리티 부여
-	 *for (auto& GA : BaseGAGEData->BaseGameplayAbilities)
-	{
-		if (!IsValid(GA)) continue;
-		FGameplayAbilitySpec AbilitySpec(GA, 1, INDEX_NONE, this);
-		InASC->GiveAbility(AbilitySpec);
-	}*/
+
 	// 랜덤한 하나의 어빌리티만 부여
 	// 유효한 어빌리티로 배열 생성
 	TArray<TSubclassOf<UGameplayAbility>> ValidAbilities;
@@ -72,6 +87,11 @@ void ADZAnomalyActorBase::ActivateAnomaly_internal(UAbilitySystemComponent* InAS
 		return;
 	}
 	InASC->TryActivateAbility(AnomalyAbilitySpecHandle);
+}
+
+void ADZAnomalyActorBase::OnRep_AnomalyScale()
+{
+	SetActorScale3D(FVector(ReplicatedAnomalyScale));
 }
 
 #pragma endregion

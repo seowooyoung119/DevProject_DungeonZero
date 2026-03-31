@@ -3,6 +3,8 @@
 
 #include "FOR_INGAME/SECTION_GAS/GA_Anomaly/DZGA_AnomalyScaleLoop.h"
 
+#include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
+
 //======================================================================================================================	
 #pragma region 라이프_사이클
 
@@ -98,5 +100,8 @@ void UDZGA_AnomalyScaleLoop::UpdateScaleInterp()
 	float Alpha = 0.5f + 0.5f * FMath::Sin(2.0f * PI * ScaleInterpElapsedTime / ScaleInterpolationDuration - PI * 0.5f);
 	float NewScale = FMath::Lerp(MinScale, MaxScale, Alpha);
 	
-	AvatarActor->SetActorScale3D(FVector(NewScale));
+	if (ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(AvatarActor))
+	{
+		AnomalyActor->SetAnomalyScale(NewScale);
+	}
 }

@@ -81,3 +81,6 @@ DerivedDataCache/*
 /Content/Movies/
 /Content/Asset/
 /Content/ThirParty/
+
+# 라이더링크 제외
+Plugins/Developer/RiderLink/

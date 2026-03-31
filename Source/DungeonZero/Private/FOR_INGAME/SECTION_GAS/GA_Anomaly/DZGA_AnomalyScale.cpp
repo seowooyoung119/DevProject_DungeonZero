@@ -3,6 +3,8 @@
 
 #include "FOR_INGAME/SECTION_GAS/GA_Anomaly/DZGA_AnomalyScale.h"
 
+#include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
+
 
 //======================================================================================================================	
 #pragma region 라이프_사이클
@@ -65,7 +67,11 @@ void UDZGA_AnomalyScale::ApplyScale(AActor* TargetActor, float NewScale)
 	{
 		return;
 	}
-	TargetActor->SetActorScale3D(FVector(NewScale));
+
+	if (ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(TargetActor))
+	{
+		AnomalyActor->SetAnomalyScale(NewScale);
+	}
 }
 
 #pragma endregion
