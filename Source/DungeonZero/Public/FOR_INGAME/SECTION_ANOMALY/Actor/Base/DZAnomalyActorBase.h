@@ -6,17 +6,18 @@
 #include "GameFramework/Actor.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
 #include "DZAnomalyActorBase.generated.h"
 
 class UDZGiveGAGEDataAsset;
 class UAbilitySystemComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface
+class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface, public IDZCommonPlayRoleInterface
 {
 	GENERATED_BODY()
 
-	//======================================================================================================================	
+//======================================================================================================================	
 #pragma region 라이프_사이클
 
 	//━━━━━━━━━━━━━━━━━━━━
@@ -28,8 +29,26 @@ public:
 	virtual void BeginPlay() override;
 
 #pragma endregion
-	//======================================================================================================================		
-#pragma region 어노말리
+//======================================================================================================================		
+#pragma region 플레이롤
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 플레이롤
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+public:
+	// IDZCommonPlayRoleInterface ~ 
+	FORCEINLINE virtual EDZPlayRole GetPlayRole_Implementation() override { return PlayRole;}
+	// ~ IDZCommonInteractInterface, IDZCommonPlayRoleInterface
+	
+protected:
+	// 롤 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor")
+	EDZPlayRole PlayRole = EDZPlayRole::Anomaly;
+#pragma endregion
+//======================================================================================================================		
+
+	#pragma region 어노말리
 
 	//━━━━━━━━━━━━━━━━━━━━
 	// 어노말리
@@ -52,10 +71,10 @@ protected:
 	UFUNCTION()
 	void OnRep_AnomalyScale();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor")
 	TObjectPtr<UAbilitySystemComponent> AnomalyAbilitySystemComponent = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ | AnomalyActor")
 	TObjectPtr<UDZGiveGAGEDataAsset> BaseGAGEData = nullptr;
 
 	// 부여된 어빌리티 핸들 저장
@@ -66,5 +85,5 @@ protected:
 	float ReplicatedAnomalyScale = 1.0f;
 
 #pragma endregion
-	//======================================================================================================================		
+//======================================================================================================================		
 };
