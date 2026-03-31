@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/DataTable/FDZItemCalssTable.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZITemStaticData.h"
 #include "DZItemDataSubSystem.generated.h"
@@ -13,6 +14,8 @@
 UCLASS()
 class DUNGEONZERO_API UDZItemDataSubSystem : public UGameInstanceSubsystem
 {
+	friend class UDZHotKeyEquipVisualComponent;
+	
 	GENERATED_BODY()
 	
 //======================================================================================================================	
@@ -72,7 +75,16 @@ protected:
 	
 protected:
 	// 데이터 맵 (조회용 캐싱) -> 패키징 문제로 복사 실시
+	UPROPERTY()
 	TMap<int32, FDZITemStaticData> ItemStaticDataMap;
+	
+	// 메모리 로드용
+	UPROPERTY()
+	TMap<int32, TSubclassOf<AActor>> ItemStaticDataMap_ItemClass;
+	
+	// 메모리 로드용
+	UPROPERTY()
+	TMap<int32, TSubclassOf<UGameplayAbility>> ItemStaticDataMap_GA;
 	
 	bool bWantPrintDeBugLog = false;
 	

@@ -82,7 +82,7 @@ void UDZItemDataSubSystem::InitializeItemStaticData_internal()
 	if (!IsValid(Settings)) return;
 
 	// [캐싱]
-	UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(ItemStaticDataMap);
+	UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(ItemStaticDataMap, ItemStaticDataMap_ItemClass, ItemStaticDataMap_GA);
 	
 	UE_LOG(LogTemp, Warning, TEXT("ItemStaticDataMap Size: %d"), ItemStaticDataMap.Num());
 	

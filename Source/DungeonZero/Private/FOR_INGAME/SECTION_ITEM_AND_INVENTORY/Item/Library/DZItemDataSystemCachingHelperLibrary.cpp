@@ -2,11 +2,9 @@
 
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemDataSystemCachingHelperLibrary.h"
-
-#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/DataAsset/DZItemTablesDataAsset.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Setting/DZItemDataSystemSettings.h"
 
-void UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(TMap<int32, FDZITemStaticData>& InOutMap)
+void UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(TMap<int32, FDZITemStaticData>& Map, TMap<int32, TSubclassOf<AActor>>& ItemStaticDataMap_ItemClass, TMap<int32, TSubclassOf<UGameplayAbility>>& ItemStaticDataMap_GA)
 {
 	// 1. DeveloperSettings에서 세팅 객체 가져오기
 	const UDZItemDataSystemSettings* Settings = GetDefault<UDZItemDataSystemSettings>();
@@ -15,6 +13,9 @@ void UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(TMap<int32, F
 	// 2. 소프트 포인터로 등록된 메인 데이터 에셋 로드하기
 	UDataTable* Table = Settings->ItemInfoTable.LoadSynchronous();
 	if (!IsValid(Table)) return;
+	
+	UDataTable* MemoryLoadTable = Settings->ItemMemoryLoadTable.LoadSynchronous();
+	if (!IsValid(MemoryLoadTable)) return;
 
 	TArray<FDZItemInfoTable*> Rows;
 	Table->GetAllRows<FDZItemInfoTable>(TEXT("ItemInfoLoad"), Rows);
@@ -34,7 +35,7 @@ void UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(TMap<int32, F
 			continue;
 		}
 		// 이미 등록된 ID인지 확인 (중복 방지)
-		if (InOutMap.Contains(Row->ItemID))
+		if (Map.Contains(Row->ItemID))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Row ID is duplicated"));
 			continue;
@@ -58,7 +59,9 @@ void UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(TMap<int32, F
 		
 		NewStaticData.ItemStaticInfo.ItemGA = Row->ItemGA;
 
-		// 임시 맵에 추가
-		InOutMap.Add(Row->ItemID, NewStaticData);
+		// 맵에 추가
+		Map.Add(Row->ItemID, NewStaticData);
+		ItemStaticDataMap_ItemClass.Add(Row->ItemID, Row->ItemClass);
+		ItemStaticDataMap_GA.Add(Row->ItemID, Row->ItemGA);
 	}
 }

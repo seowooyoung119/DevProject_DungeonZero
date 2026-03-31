@@ -19,7 +19,10 @@ public:
 	// 아이템 기본 정보 테이블 모음
 	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
 	TSoftObjectPtr<UDataTable> ItemInfoTable;
-
+	
+	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
+	TSoftObjectPtr<UDataTable> ItemMemoryLoadTable;
+	
 	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
 	bool bWantPrintDeBugLog = false;
 	

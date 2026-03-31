@@ -24,11 +24,11 @@ struct DUNGEONZERO_API FDZItemInfoTable : public FTableRowBase
 	
 	// 아이템 클래스 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " TS | Item")
-	TSubclassOf<ADZItemActorBase> ItemClass = nullptr;
+	TSubclassOf<AActor> ItemClass;
 	
 	// 아이템 아이콘 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TS | Item")
-	TSoftObjectPtr<UTexture2D> ItemIcon = nullptr;
+	TSoftObjectPtr<UTexture2D> ItemIcon;
 	
 	// 아이템 이름 (영어)
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TS | Item")
