@@ -5,6 +5,7 @@
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Invnetory/DZInventoryUpdateMSG.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventoryInternalHelperLibrary.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventorySlotInternalHelperLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemCheckLibrary.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "Net/UnrealNetwork.h"
@@ -97,14 +98,16 @@ bool UDZInventoryMasterComponent::AddItemToInventory_Implementation(FDZItemRunti
 	return false;
 }
 
-bool UDZInventoryMasterComponent::RemoveItemFromInventory_Implementation(FDZItemRuntimeData InItemRuntimeData)
+bool UDZInventoryMasterComponent::RemoveItemFromInventory_Implementation(int32 TargetSlotIndex, int32 DeleteCount)
 {
+	// 슬롯 유효성 체크 
+	if (!InventoryData.InventoryDataArray.IsValidIndex(TargetSlotIndex)) return false;
 	
-	
-	return false;
+	// 차감 실시
+	return UDZInventorySlotInternalHelperLibrary::ReduceItemFromSlot_Lib(InventoryData.InventoryDataArray[TargetSlotIndex], DeleteCount);
 }
 
-bool UDZInventoryMasterComponent::DropItemToFromInventory_Implementation(FDZItemRuntimeData InItemRuntimeData)
+bool UDZInventoryMasterComponent::DropItemToFromInventory_Implementation(int32 TargetSlotIndex, int32 DeleteCount)
 {
 	
 	

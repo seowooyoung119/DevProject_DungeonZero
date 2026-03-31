@@ -4,7 +4,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemDataTableLogLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
 
-void UTSItemDataTableLogLibrary::LogStaticItemData_Lib(FDZITemStaticData* InITemStaticData)
+void UTSItemDataTableLogLibrary::LogStaticItemData_Lib(const FDZITemStaticData* InITemStaticData)
 {
 	if (!InITemStaticData) return;
 	

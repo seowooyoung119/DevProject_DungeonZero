@@ -29,11 +29,11 @@ public:
     
 	// 아이템 제거
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
-	bool RemoveItemFromInventory(FDZItemRuntimeData InItemRuntimeData);
+	bool RemoveItemFromInventory(int32 TargetSlotIndex, int32 DeleteCount);
     
 	// 아이템 드랍
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
-	bool DropItemToFromInventory(FDZItemRuntimeData InItemRuntimeData);
+	bool DropItemToFromInventory(int32 TargetSlotIndex, int32 DeleteCount);
     
 	// 아이템 스왑
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")

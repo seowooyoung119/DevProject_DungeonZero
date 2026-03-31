@@ -16,8 +16,5 @@ class DUNGEONZERO_API UTSItemTablesDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	// 아이템 기본 정보 테이블 모음
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TS | Item")
-	TObjectPtr<UDataTable> ItemInfoTable;
-
+	
 };

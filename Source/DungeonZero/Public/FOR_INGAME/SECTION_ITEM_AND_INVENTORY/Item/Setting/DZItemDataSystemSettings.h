@@ -16,9 +16,10 @@ class DUNGEONZERO_API UDZItemDataSystemSettings : public UDeveloperSettings
 	GENERATED_BODY()
 
 public:
+	// 아이템 기본 정보 테이블 모음
 	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
-	TSoftObjectPtr<UTSItemTablesDataAsset> GlobalItemDataAsset = nullptr;
-	
+	TSoftObjectPtr<UDataTable> ItemInfoTable;
+
 	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
 	bool bWantPrintDeBugLog = false;
 	

@@ -13,6 +13,18 @@ class DUNGEONZERO_API UDZHotKeyInventoryComponent : public UDZInventoryMasterCom
 	GENERATED_BODY()
 	
 //======================================================================================================================	
+#pragma region REP_API
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// REP API
+	//━━━━━━━━━━━━━━━━━━━━
+	
+private:
+	UFUNCTION() 
+	void OnRep_ActiveHotKeyIndex();
+	
+#pragma endregion
+//======================================================================================================================	
 #pragma region 라이프_사이클
 	
 	
@@ -21,6 +33,7 @@ class DUNGEONZERO_API UDZHotKeyInventoryComponent : public UDZInventoryMasterCom
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
 	UDZHotKeyInventoryComponent();
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 #pragma endregion	
 //======================================================================================================================	
@@ -36,7 +49,7 @@ public:
 	FORCEINLINE void SetActiveHotKeyIndex(int32 InActiveHotKeyIndex) { ActiveHotKeyIndex = InActiveHotKeyIndex; }
 
 protected:	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Hotkey")
+	UPROPERTY(ReplicatedUsing = OnRep_ActiveHotKeyIndex, VisibleAnywhere, BlueprintReadOnly, Category = "TS | Hotkey")
 	int32 ActiveHotKeyIndex = -1;
 	
 #pragma endregion 

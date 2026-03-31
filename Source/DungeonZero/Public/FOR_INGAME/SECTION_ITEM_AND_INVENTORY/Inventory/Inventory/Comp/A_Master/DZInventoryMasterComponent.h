@@ -59,8 +59,8 @@ public:
 public:
 	// ITSNewEquipVisualCompActionInterface ~
 	virtual bool AddItemToInventory_Implementation(FDZItemRuntimeData InItemRuntimeData) override;							// 아이템 습득 
-	virtual bool RemoveItemFromInventory_Implementation(FDZItemRuntimeData InItemRuntimeData) override;						// 아이템 제거 
-	virtual bool DropItemToFromInventory_Implementation(FDZItemRuntimeData InItemRuntimeData) override;						// 아이템 드랍
+	virtual bool RemoveItemFromInventory_Implementation(int32 TargetSlotIndex, int32 DeleteCount) override;					// 아이템 제거 
+	virtual bool DropItemToFromInventory_Implementation(int32 TargetSlotIndex, int32 DeleteCount) override;					// 아이템 드랍
 	virtual bool SwapItemFromThisInventoryToAnotherInventory_Implementation(FDZItemRuntimeData InItemRuntimeData) override;	// 아이템 스왑 
 	// ~ ITSNewEquipVisualCompActionInterface
 	

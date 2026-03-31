@@ -3,9 +3,22 @@
 
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
+#include "Net/UnrealNetwork.h"
 
-#include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
 
+//======================================================================================================================	
+#pragma region REP_API
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// REP API
+	//━━━━━━━━━━━━━━━━━━━━
+
+void UDZHotKeyInventoryComponent::OnRep_ActiveHotKeyIndex()
+{
+	
+}
+
+#pragma endregion
 //======================================================================================================================	
 #pragma region 라이프_사이클
 	
@@ -21,6 +34,12 @@ UDZHotKeyInventoryComponent::UDZHotKeyInventoryComponent()
 	
 	// network
 	SetIsReplicatedByDefault(true);
+}
+
+void UDZHotKeyInventoryComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME_CONDITION(UDZHotKeyInventoryComponent, ActiveHotKeyIndex, COND_OwnerOnly);
 }
 
 #pragma endregion

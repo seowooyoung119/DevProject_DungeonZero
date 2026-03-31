@@ -69,6 +69,11 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 	// 있으면 빼버리고 카운트 차감 -> 성공 핸들 처리 
 	if (FindResult == true)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("RunningStage 단계 : 어노말리 찾기 핸들 시스템 : 어노말리인데 현재 UDZAnomalyFindHandleSystem 에서 부숨"));
+		UE_LOG(LogTemp, Warning, TEXT("RunningStage 단계 : 어노말리 찾기 핸들 시스템 : 나중에 이 테스트 코드는 반드시 제거할 것."));
+		if (IsValid(Payload.FindAnomalyActor)) Payload.FindAnomalyActor->Destroy();
+		UE_LOG(LogTemp, Warning, TEXT("RunningStage 단계 : 어노말리 찾기 핸들 시스템 : 나중에 이 테스트 코드는 반드시 제거할 것."));
+		
 		StageControlSystem->AnomalyCount--;
 		StageControlSystem->AnomalyActors.Remove(Payload.FindAnomalyActor);
 		
@@ -77,6 +82,7 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 		{
 			StageControlSystem->DoRunningStage_Internal_HandleIfAllAnomalyFound();
 		}
+		UE_LOG(LogTemp, Warning, TEXT("RunningStage 단계 : 어노말리 찾기 핸들 시스템 : 어노말리임"));
 	}
 	
 	// 없으면 -> 실패 핸들 처리 

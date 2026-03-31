@@ -44,11 +44,9 @@ void UDZItemDataSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 	
 	// 데이터 초기화
-	ItemStaticDataArray.Empty();
 	ItemStaticDataMap.Empty();
 	
 	// 데이터 배열 공간 확보
-	ItemStaticDataArray.Reserve(100);
 	ItemStaticDataMap.Reserve(100);
 	
 	// 정적 데이터 테이블 캐싱 실시 
@@ -66,7 +64,7 @@ void UDZItemDataSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 FDZITemStaticData* UDZItemDataSubSystem::GetItemStaticData(int32 InItemID)
 {
 	if (!ItemStaticDataMap.Contains(InItemID)) return nullptr;
-	return *ItemStaticDataMap.Find(InItemID);
+	return ItemStaticDataMap.Find(InItemID);
 }
 
 #pragma endregion
@@ -83,42 +81,17 @@ void UDZItemDataSubSystem::InitializeItemStaticData_internal()
 	const UDZItemDataSystemSettings* Settings = GetDefault<UDZItemDataSystemSettings>();
 	if (!IsValid(Settings)) return;
 
-	// 2. 소프트 포인터로 등록된 메인 데이터 에셋 로드하기
-	UTSItemTablesDataAsset* MainDataAsset = Settings->GlobalItemDataAsset.LoadSynchronous();
-	if (!IsValid(MainDataAsset)) return;
-
-	// 테이이블 유효성 체크
-	if (!IsValid(MainDataAsset->ItemInfoTable)) return;;
-
-	// 캐싱용 임시 변수
-	TMap<int32, FDZITemStaticData> TempItemStaticDataMap;
-	TempItemStaticDataMap.Reserve(100);
-	
 	// [캐싱]
-	UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(MainDataAsset->ItemInfoTable, TempItemStaticDataMap);
+	UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(ItemStaticDataMap);
 	
-	UE_LOG(LogTemp, Warning, TEXT("TempItemStaticDataMap Size: %d"), TempItemStaticDataMap.Num());
-	
-	// 4. 배열에 데이터 넣기
-	for (const auto& [Key, Value] : TempItemStaticDataMap)
-	{
-		ItemStaticDataArray.Add(Value);
-	}
-	
-	UE_LOG(LogTemp, Warning, TEXT("ItemStaticDataArray Size: %d"), ItemStaticDataArray.Num());
-	
-	// 5. 조회용 맵에 넣기.
-	for (auto& StaticData : ItemStaticDataArray)
-	{
-		ItemStaticDataMap.Add(StaticData.ItemStaticInfo.ItemID, &StaticData);
-	}
+	UE_LOG(LogTemp, Warning, TEXT("ItemStaticDataMap Size: %d"), ItemStaticDataMap.Num());
 	
 	// 로그
 	bWantPrintDeBugLog = Settings->bWantPrintDeBugLog;
 	if (bWantPrintDeBugLog == false) return;
 	for (const auto& [Key, Value] : ItemStaticDataMap)
 	{
-		UTSItemDataTableLogLibrary::LogStaticItemData_Lib(Value);
+		UTSItemDataTableLogLibrary::LogStaticItemData_Lib(&Value);
 	}
 }
 

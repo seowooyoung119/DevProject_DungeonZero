@@ -95,6 +95,7 @@ protected:
 	UPROPERTY(ReplicatedUsing = OnRep_ItemData,EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
 	int32 ItemIDIfLayOnLevel;
 	
+#pragma endregion
 //======================================================================================================================
 #pragma region 피직스_콜리전
 	
@@ -106,6 +107,10 @@ protected:
 	// 피직스 콜리전 토글
 	UPROPERTY(ReplicatedUsing = OnRep_bIsPickUpAble, EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
 	bool bIsNotPickItem = true;
+	
+	// 비긴 플레이에서 피직스 켤거임?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
+	bool bWantOnPhysicsInBeginPlay = true;
 	
 #pragma endregion
 //======================================================================================================================

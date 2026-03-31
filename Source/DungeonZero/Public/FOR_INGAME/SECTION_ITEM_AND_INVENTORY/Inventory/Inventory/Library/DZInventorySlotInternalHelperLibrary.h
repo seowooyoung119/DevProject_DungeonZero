@@ -20,4 +20,10 @@ public:
 	// 이 슬롯이 비었는가?
 	static bool IsSlotEmpty_Lib(FDZInventorySlotData& InInventorySlotData);
 	
+	// 갯수 만큼 차감하기
+	static bool ReduceItemFromSlot_Lib(FDZInventorySlotData& InInventorySlotData, int32 DeleteCount);
+	
+	// 싹 지우기
+	static bool RemoveItemFromSlot_Lib(FDZInventorySlotData& InInventorySlotData);
+	
 };

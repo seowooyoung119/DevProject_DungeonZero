@@ -71,11 +71,8 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━
 	
 protected:
-	// 데이터 맵 (조회용 캐싱)
-	TMap<int32, FDZITemStaticData*> ItemStaticDataMap;
-	
-	// 데이터 배열 (최적화용 캐싱)
-	TArray<FDZITemStaticData> ItemStaticDataArray;
+	// 데이터 맵 (조회용 캐싱) -> 패키징 문제로 복사 실시
+	TMap<int32, FDZITemStaticData> ItemStaticDataMap;
 	
 	bool bWantPrintDeBugLog = false;
 	

@@ -83,6 +83,6 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		{
 			UE_LOG(LogTemp, Warning, TEXT("PickUpItem Ability Failed"));
 		}
-	}	
-	K2_EndAbility();
+		K2_EndAbility();
+	}
 }

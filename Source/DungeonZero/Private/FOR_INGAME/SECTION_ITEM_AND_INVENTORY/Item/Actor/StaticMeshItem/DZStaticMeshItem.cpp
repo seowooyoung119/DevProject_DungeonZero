@@ -44,7 +44,7 @@ void ADZStaticMeshItem::BeginPlay()
 	Super::BeginPlay();
 
 	// 서버에서 피직스 실행
-	if (HasAuthority()) ItemStaticMeshComp->SetSimulatePhysics(true);
+	if (HasAuthority() && bWantOnPhysicsInBeginPlay) ItemStaticMeshComp->SetSimulatePhysics(true);
 	
 	// 데이터 주입 
 	InitItemID_Internal();
@@ -60,7 +60,6 @@ void ADZStaticMeshItem::BeginPlay()
 void ADZStaticMeshItem::SetTogglePhysicsAndCollisions(bool InWantOn)
 {
 	bIsNotPickItem = InWantOn;
-	ItemStaticMeshComp->SetSimulatePhysics(InWantOn);
 	ItemStaticMeshComp->SetCollisionEnabled(InWantOn ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
 	
 }

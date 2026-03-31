@@ -43,7 +43,7 @@ void ADZSkeletalMeshItem::BeginPlay()
 	Super::BeginPlay();
 	
 	// 서버에서 피직스 실행
-	if (HasAuthority()) ItemSkeletalMeshComp->SetSimulatePhysics(true);
+	if (HasAuthority() && bWantOnPhysicsInBeginPlay) ItemSkeletalMeshComp->SetSimulatePhysics(true);
 	
 	// 데이터 주입 
 	InitItemID_Internal();
@@ -60,7 +60,6 @@ void ADZSkeletalMeshItem::BeginPlay()
 void ADZSkeletalMeshItem::SetTogglePhysicsAndCollisions(bool InWantOn)
 {
 	bIsNotPickItem = InWantOn;
-	ItemSkeletalMeshComp->SetSimulatePhysics(InWantOn);
 	ItemSkeletalMeshComp->SetCollisionEnabled(InWantOn ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
 }
 

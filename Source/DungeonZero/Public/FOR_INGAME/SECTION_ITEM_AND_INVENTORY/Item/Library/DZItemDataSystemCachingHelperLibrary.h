@@ -17,5 +17,5 @@ class DUNGEONZERO_API UDZItemDataSystemCachingHelperLibrary : public UBlueprintF
 	
 public:
 	// 아이템 데이터 시스템 캐싱 헬퍼 함수 
-	static void CacheItemDataTable_Lib(TObjectPtr<UDataTable> InTable, TMap<int32, FDZITemStaticData>& InOutMap);
+	static void CacheItemDataTable_Lib(TMap<int32, FDZITemStaticData>& InOutMap);
 };

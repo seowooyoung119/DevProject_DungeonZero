@@ -35,82 +35,93 @@ UDZHotKeyEquipVisualComponent::UDZHotKeyEquipVisualComponent()
 
 void UDZHotKeyEquipVisualComponent::TrySpawnVisual(int32 InTargetHotKeyIndex)
 {
+	// 서버에서만 실시
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
+	
 	// 1. 핫키 인벤토리 컴포넌트 가져오기
 	if (!IsValid(GetOwner()))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Owner Invalid"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : GetOwner() is not valid"));
 		return;
 	}
 	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(GetOwner());
 	if (!IsValid(HotKeyInventoryComponent))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : InventoryComp Invalid"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : HotKeyInventoryComponent is not valid"));
 		return;
 	}
 	
-	// 슬롯 유효 체크
+	// 2. 슬롯 유효 체크
 	FDZInventoryCompData& InventoryCompData = HotKeyInventoryComponent->GetInventoryData();
 	if (!InventoryCompData.InventoryDataArray.IsValidIndex(InTargetHotKeyIndex))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Index Out of Bounds"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : InTargetHotKeyIndex is not valid"));
 		return;
 	}
 	
-	// 정적 데이터 체크
+	// 3. 정적 데이터 체크
 	UDZItemDataSubSystem* ItemDataSubSystem = UDZItemDataSubSystem::Get(GetWorld());
 	if (!IsValid(ItemDataSubSystem))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : SubSystem Invalid"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : ItemDataSubSystem is not valid"));
 		return;
 	}
 	FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(InventoryCompData.InventoryDataArray[InTargetHotKeyIndex].ItemData.StaticDataID);
-	if (!ItemStaticData)
+	if (ItemStaticData == nullptr)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : StaticData Null"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : ItemStaticData is not valid"));
 		return;
 	}
-	// 소환 아이템 체크 
-	if (!IsValid(ItemStaticData->ItemStaticInfo.ItemClass))
+	
+	if (!ItemStaticData->ItemStaticInfo.ItemClass)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : ItemStaticData->ItemStaticInfo.ItemClass is not valid"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : LoadedClassPtr is Invalid!"));
 		return;
 	}
-	// 3. 스폰 옵션 및 오너 설정 
+
+	// 6. 스폰 옵션 및 오너 설정 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Owner = GetOwner();
 	SpawnParams.Instigator = GetOwner()->GetInstigator();
 
-	// 스폰 실시 
+	// 7. 스폰 실시 
 	CurrentVisualActor = GetWorld()->SpawnActor<ADZItemActorBase>(ItemStaticData->ItemStaticInfo.ItemClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 	if (!IsValid(CurrentVisualActor))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Spawn Failed"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : CurrentVisualActor is not valid"));
 		return;
 	}
 	
-	// 피직스, 콜리전 끄기 
+	// 8. 피직스, 콜리전 끄기 
 	CurrentVisualActor->SetTogglePhysicsAndCollisions(false);
 	
-	// 오너의 메쉬 소켓에 붙이기 (예: "Hand_R_Socket")
+	// 9. 오너의 메쉬 소켓에 붙이기 (예: "Hand_R_Socket")
 	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
 	if (!IsValid(OwnerChar))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : OwnerChar Invalid"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : OwnerChar is not valid"));
 		CurrentVisualActor->Destroy();
 		return;
 	}
-	
 	if (!IsValid(OwnerChar->GetMesh()))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Mesh Invalid"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : OwnerChar->GetMesh() is not valid"));
 		CurrentVisualActor->Destroy();
 		return;
 	}
-	
 	bool IsAttachSuccess = CurrentVisualActor->AttachToComponent(OwnerChar->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, ItemStaticData->ItemStaticInfo.HotKeyAttachSocketName);
 	if (!IsAttachSuccess)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("TrySpawnVisual : Attach Failed"));
 		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual : AttachToComponent is not valid"));
 		CurrentVisualActor->Destroy();
 		return;
@@ -123,6 +134,9 @@ void UDZHotKeyEquipVisualComponent::TrySpawnVisual(int32 InTargetHotKeyIndex)
 
 void UDZHotKeyEquipVisualComponent::HideSpawnVisual()
 {
+	// 서버에서만 실시
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
+	
 	if (!IsValid(CurrentVisualActor)) return;
 	CurrentVisualActor->Destroy();
 	CurrentVisualActor = nullptr;
@@ -130,6 +144,9 @@ void UDZHotKeyEquipVisualComponent::HideSpawnVisual()
 
 void UDZHotKeyEquipVisualComponent::SwapSpawnVisual(int32 InTargetHotKeyIndex)
 {
+	// 서버에서만 실시
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
+	
 	// 기존꺼 일단 지우고
 	HideSpawnVisual();
     

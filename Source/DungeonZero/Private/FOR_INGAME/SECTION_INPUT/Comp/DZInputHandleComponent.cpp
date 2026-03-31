@@ -12,6 +12,7 @@
 #include "InputMappingContext.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/interface/DZCommonPlayRoleInterface.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/Interact/DZInteractTag.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/RightClick/DZRightClickTag.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZHotKeyTag.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
@@ -156,6 +157,33 @@ void UDZInputHandleComponent::InteractByLeftClick_internal(const FInputActionVal
 
 void UDZInputHandleComponent::InteractByRightClick_internal(const FInputActionValue& Value)
 {
+	UE_LOG(LogTemp, Warning, TEXT("InteractByRightClick_internal"));
+	
+	if (!IsValid(OwnerCharacter)) return;
+	if (!IsValid(OwnerController)) return;
+	
+	// 핫키 컴포넌트 체크
+	 UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(OwnerCharacter);
+	if (!IsValid(HotKeyInventoryComponent)) return; 
+	
+	// -1 이면 아이템 안 들고 있으므로 패스
+	if (HotKeyInventoryComponent->GetActiveHotKeyIndex() == -1) return;
+	
+	// 인터렉트 컴포넌트 체크
+	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractCompo(OwnerCharacter);
+	if (!IsValid(InteractComponent)) return; 
+	
+	// asc 체크
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
+	if (!IsValid(ASC)) return;
+	
+	// 데이터 생성
+	FGameplayEventData Payload;
+	Payload.Instigator = ASC->GetAvatarActor();
+	Payload.Target = InteractComponent->GetCurrentInteractActor();
+	
+	Payload.EventTag = DZ::RightClick::DZ_RIGHTCLICK_USEITEM;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(ASC->GetAvatarActor(), Payload.EventTag,Payload);
 }
 
 void UDZInputHandleComponent::SpecialInteract_internal(const FInputActionValue& Value)
@@ -179,6 +207,7 @@ void UDZInputHandleComponent::PickUpItem_internal(const FInputActionValue& Value
 	if (!IsValid(InteractComponent->GetCurrentInteractActor())) return;
 	
 	// 공통 인터페이스 확인
+	if (!InteractComponent->GetCurrentInteractActor()->GetClass()->ImplementsInterface(UDZCommonPlayRoleInterface::StaticClass())) return;
 	IDZCommonPlayRoleInterface* CommonPlayRoleInterface = CastChecked<IDZCommonPlayRoleInterface>(InteractComponent->GetCurrentInteractActor());
 	if (!CommonPlayRoleInterface) return;
 	

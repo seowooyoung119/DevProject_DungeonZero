@@ -18,6 +18,6 @@ class DUNGEONZERO_API UTSItemDataTableLogLibrary : public UBlueprintFunctionLibr
 
 public:
 	// 정적 데이터 로그 
-	static void LogStaticItemData_Lib(FDZITemStaticData* InITemStaticData);
+	static void LogStaticItemData_Lib(const FDZITemStaticData* InITemStaticData);
 	
 };

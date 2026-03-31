@@ -14,3 +14,28 @@ bool UDZInventorySlotInternalHelperLibrary::IsSlotEmpty_Lib(FDZInventorySlotData
 	// 모든 체크가 확인 되면 true
 	return (bIsCurrentStackEmpty && bIsStaticDataIDEmpty);
 }
+
+bool UDZInventorySlotInternalHelperLibrary::ReduceItemFromSlot_Lib(FDZInventorySlotData& InInventorySlotData, int32 DeleteCount)
+{
+	// 갯수만큼 차감
+	InInventorySlotData.ItemData.DynamicData.CurrentStack -= DeleteCount;
+
+	// 만약에 0이다? -> 초기화
+	if (InInventorySlotData.ItemData.DynamicData.CurrentStack <= 0)
+	{
+		RemoveItemFromSlot_Lib(InInventorySlotData);
+	}
+	
+	return true;
+}
+
+bool UDZInventorySlotInternalHelperLibrary::RemoveItemFromSlot_Lib(FDZInventorySlotData& InInventorySlotData)
+{
+	// 정적 데이터 초기화
+	InInventorySlotData.ItemData.StaticDataID = -1;
+	
+	// 동적 데이터 초기화 
+	InInventorySlotData.ItemData.DynamicData.CurrentStack = 0;
+	
+	return true;
+}

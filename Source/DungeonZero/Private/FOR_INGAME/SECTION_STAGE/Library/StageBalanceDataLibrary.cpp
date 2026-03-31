@@ -4,6 +4,7 @@
 #include "FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h"
 
 #include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
+#include "FOR_INGAME/SECTION_ANOMALY/OriginActor/Base/DZOriginActorBase.h"
 #include "FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.h"
 
 void UStageBalanceDataLibrary::CacheStageDataToMap(TMap<int32, FDZStageBalanceRow>& OutStageMap)
