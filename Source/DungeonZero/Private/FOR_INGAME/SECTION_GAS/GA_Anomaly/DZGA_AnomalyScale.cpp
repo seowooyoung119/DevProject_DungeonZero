@@ -40,9 +40,32 @@ void UDZGA_AnomalyScale::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 	}
 
 	// 랜덤 스케일 변환
-	float NewScale = FMath::FRandRange(MinScale, MaxScale);
+	// 최소 변화량 보장
+	const bool bCanShrink = MinScale <= 1.f - MinScaleDelta;
+	const bool bCanGrow = MaxScale >= 1.f + MinScaleDelta;
+	float NewScale = 1.f;
+	if (bCanShrink && bCanGrow)
+	{
+		NewScale = FMath::RandBool()
+			           ? FMath::RandRange(MinScale, 1.f - MinScaleDelta)
+			           : FMath::RandRange(1.f + MinScaleDelta, MaxScale);
+	}
+	else if (bCanShrink)
+	{
+		NewScale = FMath::RandRange(MinScale, 1.f - MinScaleDelta);
+	}
+	else if (bCanGrow)
+	{
+		NewScale = FMath::RandRange(1.f + MinScaleDelta, MaxScale);
+	}
+	else
+	{
+		// 크기 변화 범위 오류 로그 출력
+		UE_LOG(LogTemp, Warning, TEXT("UDZGA_AnomalyScale::ActivateAbility() : %s No valid scale range!"),
+		       *AvatarActor->GetName());
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+	}
 	ApplyScale(AvatarActor, NewScale);
-
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
 

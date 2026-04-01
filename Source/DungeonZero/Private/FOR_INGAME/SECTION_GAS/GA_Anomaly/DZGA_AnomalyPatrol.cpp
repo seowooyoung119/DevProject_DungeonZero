@@ -68,7 +68,11 @@ FVector UDZGA_AnomalyPatrol::GetPatrolLocation(AActor* TargetActor)
 
 	const FVector OriginLocation = TargetActor->GetActorLocation();
 	FVector ResultLocation = OriginLocation;
-
+	// 피벗 ~ 바닥 거리 계산 
+	// 바운딩 박스 기준: 피벗이 바닥 중심이 아닌 액터에 대응
+	const FBox   ActorBox      = TargetActor->GetComponentsBoundingBox();
+	const float  PivotToBottom = OriginLocation.Z - ActorBox.Min.Z;
+	
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 	if (!IsValid(NavSystem))
 	{
@@ -94,6 +98,8 @@ FVector UDZGA_AnomalyPatrol::GetPatrolLocation(AActor* TargetActor)
 			break;
 		}
 	}
+	
+	ResultLocation.Z += PivotToBottom;
 	return ResultLocation;
 }
 

@@ -36,11 +36,15 @@ public:
 	// 어노말리
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
-	// 크기 변환 범위
+	// 크기 변환 최소값 (1.0 - MinScaleDelta 이하여야 함)
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Anomaly | Scale")
 	float MinScale = 0.5f;
+	// 크기 변환 최대값 (1.0 + MinScaleDelta 이상이어야 함)
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Anomaly | Scale")
 	float MaxScale = 5.0f;
+	// 크기 최소 변화량
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Anomaly | Scale")
+	float MinScaleDelta = 0.3f;
 
 protected:
 	void ApplyScale(AActor* TargetActor, float NewScale);

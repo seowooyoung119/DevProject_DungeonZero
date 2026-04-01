@@ -74,7 +74,11 @@ void UDZGA_AnomalyRelocate::ApplyRelocate(AActor* TargetActor)
 
 	const FVector OriginLocation = TargetActor->GetActorLocation();
 	FVector ResultLocation = OriginLocation;
-	
+	// 피벗 ~ 바닥 거리 계산 
+	// 바운딩 박스 기준: 피벗이 바닥 중심이 아닌 액터에 대응
+	const FBox   ActorBox      = TargetActor->GetComponentsBoundingBox();
+	const float  PivotToBottom = OriginLocation.Z - ActorBox.Min.Z;
+
 	// 맵 밖으로 나가지 않게 NavMesh 위로 투영
 	FNavLocation ProjectedLocation;
 	for (int32 i = 0; i < 30; i++)
@@ -87,12 +91,21 @@ void UDZGA_AnomalyRelocate::ApplyRelocate(AActor* TargetActor)
 
 		FVector TestLocation = OriginLocation + RandomOffset;
 		FNavLocation NavLocation;
-		if (NavSystem->ProjectPointToNavigation(TestLocation, NavLocation))
+
+		if (!NavSystem->ProjectPointToNavigation(TestLocation, NavLocation))
 		{
-			// NavMesh 위 값 저장
-			ResultLocation = NavLocation.Location;
-			break;
+			continue;
 		}
+		// 투영 후 실제 XY 거리 검증 (NavMesh 스냅으로 원래 위치 근처가 되는 경우 방지)
+		const float ActualDist2D = FVector::Dist2D(OriginLocation, NavLocation.Location);
+		if (ActualDist2D < MinRelocateRadius)
+		{
+			continue;
+		}
+		// 높이 보완
+		ResultLocation = NavLocation.Location;
+		ResultLocation.Z += + PivotToBottom;
+		break;
 	}
 	
 	TargetActor->SetActorLocation(ResultLocation);
