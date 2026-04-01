@@ -18,9 +18,4 @@ struct FDZNiagaraCueData
 	// 소켓 필터링 접두사 (예: "FirePoint", "SmokePoint")
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ|Cue")
 	FName SocketNamePrefix = NAME_None;
-
-	bool IsValid() const
-	{
-		return NiagaraSystem != nullptr && SocketNamePrefix != NAME_None;
-	}
 };
