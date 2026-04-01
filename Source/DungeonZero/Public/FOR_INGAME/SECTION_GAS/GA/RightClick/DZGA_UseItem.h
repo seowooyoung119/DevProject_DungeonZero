@@ -3,19 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "FOR_INGAME/SECTION_GAS/GA/A_Base/DZGA_BaseAbility.h"
 #include "DZGA_UseItem.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API UDZGA_UseItem : public UGameplayAbility
+class DUNGEONZERO_API UDZGA_UseItem : public UDZGA_BaseAbility
 {
 	GENERATED_BODY()
 	
 public:
 	UDZGA_UseItem();
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	
+	
 	
 };

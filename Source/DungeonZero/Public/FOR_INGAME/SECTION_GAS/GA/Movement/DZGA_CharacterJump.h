@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "FOR_INGAME/SECTION_GAS/GA/A_Base/DZGA_BaseAbility.h"
 #include "DZGA_CharacterJump.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API UDZGA_CharacterJump : public UGameplayAbility
+class DUNGEONZERO_API UDZGA_CharacterJump : public UDZGA_BaseAbility
 {
 	GENERATED_BODY()
 	

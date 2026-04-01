@@ -39,7 +39,7 @@ void UDZHotKeyEquipVisualComponent::TrySpawnVisual(int32 InTargetHotKeyIndex)
 	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
 	
 	// 1. 핫키 인벤토리 컴포넌트 가져오기
-	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(GetOwner());
+	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetOwner());
 	if (!IsValid(HotKeyInventoryComponent)) return;
 	
 	// 2. 슬롯 유효 체크
@@ -52,16 +52,14 @@ void UDZHotKeyEquipVisualComponent::TrySpawnVisual(int32 InTargetHotKeyIndex)
 	FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(InventoryCompData.InventoryDataArray[InTargetHotKeyIndex].ItemData.StaticDataID);
 	if (ItemStaticData == nullptr) return;
 	
-	if (!ItemDataSubSystem->ItemStaticDataMap_ItemClass.Contains(ItemStaticData->ItemStaticInfo.ItemID)) return;
-
-	TSubclassOf<AActor>* FoundClassPtr = ItemDataSubSystem->ItemStaticDataMap_ItemClass.Find(ItemStaticData->ItemStaticInfo.ItemID);
+	TSubclassOf<AActor> FoundClassPtr = ItemStaticData->ItemStaticInfo.ItemClass;
 	if (FoundClassPtr == nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Map에 해당 ID가 없음"));
 		return;
 	}
 	
-	UClass* ActualClass = FoundClassPtr->Get(); 
+	UClass* ActualClass = FoundClassPtr.Get(); 
 	if (!ActualClass)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : TSubclassOf 내부 클래스가 None임"));

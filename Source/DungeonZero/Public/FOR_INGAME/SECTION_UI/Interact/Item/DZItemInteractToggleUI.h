@@ -15,7 +15,17 @@ class DUNGEONZERO_API UDZItemInteractToggleUI : public UUserWidget
 {
 	GENERATED_BODY()
 	
+//======================================================================================================================	
+#pragma region ItemUIAPI		
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// Data
+	//━━━━━━━━━━━━━━━━━━━━
+		
 public:
 	// 초기에 아이템 인터렉트 토글 UI 표시 값 설정하는 함수 
 	void InitInteractInfo(const FText& Text, const FText& InteractKeyText);
+	
+#pragma endregion	
+//======================================================================================================================		
 };

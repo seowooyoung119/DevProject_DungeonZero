@@ -22,9 +22,7 @@ class DUNGEONZERO_API UDZInteractComponent : public UActorComponent
 	
 public:
 	UDZInteractComponent();
-	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;	
 	
 #pragma endregion 
 //======================================================================================================================	
@@ -36,19 +34,16 @@ public:
 	
 protected:
 
-	// 인터렉트 tick 함수
+	// 인터렉트 tick 총괄 함수 
 	void TickInteract_internal();
 	
-	// 오너 플레이어 컨트롤러 캐싱 확인 함수 
+	// 선행 1 : 오너 플레이어 컨트롤러 캐싱 확인 함수 
 	bool HasCachingOwnerPlayerController_internal();
 	
-	// 라인 트레이스 실시 함수 
+	// 선행 2: 라인 트레이스 실시 함수 
 	AActor* LineTrace_internal();
 	
-	// 라인 트레이스 디버깅 함수 
-	void DrawInteractionDebugLine_internal(const FVector& Start, const FVector& End, const FHitResult& HitResult, bool bHit);
-	
-	// 후 처리 함수
+	// 선행 3: 후 처리 함수
 	void DoInteractUILogicAfterLineTrace();
 	
 	
@@ -61,8 +56,9 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━	
 	
 public:
-	FORCEINLINE AActor* GetCurrentInteractActor() const { return CurrentInteractActor.IsValid() ? CurrentInteractActor.Get() : nullptr; }
-	FORCEINLINE AActor* GetLastInteractActor() const { return LastInteractActor.IsValid() ? LastInteractActor.Get() : nullptr; }
+	// 현재 액터와 지난 액터 Getter
+	FORCEINLINE AActor* GetCurrentInteractActor() const { return IsValid(CurrentInteractActor) ? CurrentInteractActor : nullptr; }
+	FORCEINLINE AActor* GetLastInteractActor() const { return IsValid(LastInteractActor )? LastInteractActor : nullptr; }
 	
 protected:
 
@@ -72,15 +68,15 @@ protected:
 	
 	// 캐싱한 플레이어 컨트롤러 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
-	TWeakObjectPtr<APlayerController> OwnerPlayerController = nullptr;
+	TObjectPtr<APlayerController> OwnerPlayerController = nullptr;
 	
 	// 현재 보는 액터
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
-	TWeakObjectPtr<AActor> CurrentInteractActor = nullptr;
+	TObjectPtr<AActor> CurrentInteractActor = nullptr;
 
 	// 마지막으로 본 액터
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
-	TWeakObjectPtr<AActor> LastInteractActor = nullptr;
+	TObjectPtr<AActor> LastInteractActor = nullptr;
 
 	// 디버그
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TS | Interact")

@@ -2,8 +2,9 @@
 
 
 #include "DungeonZero/Public/FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
-
 #include "DungeonZero/Public/FOR_LIBRARY/Getter/DZGetControllerLibrary.h"
+#include "FOR_INGAME/SECTION_INTERACT/Library/DZInteractDebugLibrary.h"
+#include "FOR_INGAME/SECTION_INTERACT/Library/DZInteractDebugTraceFunctionLibrary.h"
 
 //======================================================================================================================	
 #pragma region 라이프_사이클
@@ -17,20 +18,10 @@ UDZInteractComponent::UDZInteractComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UDZInteractComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void UDZInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	TickInteract_internal();
-}
-
-void UDZInteractComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
 }
 
 void UDZInteractComponent::TickInteract_internal()
@@ -51,7 +42,7 @@ void UDZInteractComponent::TickInteract_internal()
 bool UDZInteractComponent::HasCachingOwnerPlayerController_internal()
 {
 	// 이미 오너 캐싱햇으면 리턴 
-	if (OwnerPlayerController.IsValid() && IsValid(OwnerPlayerController.Get())) return true;
+	if (IsValid(OwnerPlayerController)) return true;
 	
 	// 플레이어 컨트롤러 가져오기 	
 	APlayerController* PC = UDZGetControllerLibrary::GetPlayerControllerFromComponent(GetOwner());
@@ -61,7 +52,7 @@ bool UDZInteractComponent::HasCachingOwnerPlayerController_internal()
 	OwnerPlayerController = PC;
 	
 	// 후 검증 
-	if (!OwnerPlayerController.IsValid() || !IsValid(OwnerPlayerController.Get())) return false;
+	if (!IsValid(OwnerPlayerController)) return false;
 	return true;
 }
 
@@ -86,36 +77,14 @@ AActor* UDZInteractComponent::LineTrace_internal()
 	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult,TraceStart,TraceEnd,ECC_Visibility,QueryParams);
 	
 	// [추가] 디버그 함수 호출 (결과값과 HitResult를 같이 전달)
-	if (bDebugDrawLine) DrawInteractionDebugLine_internal(TraceStart, TraceEnd, HitResult, bHit);
+	if (bDebugDrawLine) UDZInteractDebugTraceFunctionLibrary::DrawInteractionDebugLine_Lib(GetWorld(), TraceStart, TraceEnd, HitResult, bHit);
+	if (bDebugDrawLine) UDZInteractDebugLibrary::DebugInteractActors(GetOwner(), CurrentInteractActor, LastInteractActor);
 	
 	// 맞은 게 있으면 반환 
 	if (HitResult.bBlockingHit) return HitResult.GetActor();
 	
 	// 없으면 nullptr 반환 
 	return nullptr;
-}
-
-void UDZInteractComponent::DrawInteractionDebugLine_internal(const FVector& Start, const FVector& End, const FHitResult& HitResult, bool bHit)
-{
-	// 1. 색상 결정 (맞으면 녹색, 아니면 적색)
-	FColor DebugColor = bHit ? FColor::Green : FColor::Red;
-
-	// 2. 라인 그리기 (무조건 실행)
-	DrawDebugLine(GetWorld(),Start,End,DebugColor,false, 0.1f, 0, 1.0f);
-
-	// 3. 충돌 시에만 해당 위치에 스피어 그리기
-	if (bHit) DrawDebugSphere(GetWorld(),HitResult.ImpactPoint, 10.0f,12, DebugColor,false, 0.1f);
-	
-	// 이름 디버그 
-	if (CurrentInteractActor.IsValid() && IsValid(CurrentInteractActor.Get()))
-	{
-		UE_LOG(LogTemp, Log, TEXT("Current Interact Actor : %s"), *CurrentInteractActor->GetName())
-	}
-	if (LastInteractActor.IsValid() && IsValid(LastInteractActor.Get()))
-	{
-		UE_LOG(LogTemp, Log, TEXT("Last Interact Actor : %s"), *LastInteractActor->GetName())
-	}
-	
 }
 
 void UDZInteractComponent::DoInteractUILogicAfterLineTrace()

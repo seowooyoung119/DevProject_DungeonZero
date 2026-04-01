@@ -45,7 +45,10 @@ int32 UDZInventoryInternalHelperLibrary::FindStackSlot_Lib(const UObject* InWorl
 		// 같은 아이템인지 체크하기
 		if (!UTSItemCheckLibrary::IsThisSameItem_Lib(SlotData.ItemData, InItemRuntimeData)) continue;
  		
-		// 같은 아이템일 경우 인덱스 반환
+		// 넣을 수 있는지지 체크하기 
+		if (SlotData.ItemData.DynamicData.CurrentStack >= UTSItemCheckLibrary::GetMaxStackSize_Lib(InWorldContextObject, SlotData.ItemData)) continue;
+		
+		// 같은 아이템이고 최대 스택이 아니면 해당 인덱스 반환
 		return Index;
 	}
 	

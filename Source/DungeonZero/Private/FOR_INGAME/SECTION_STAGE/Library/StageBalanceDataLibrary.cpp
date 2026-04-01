@@ -3,6 +3,7 @@
 
 #include "FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h"
 
+#include "FOR_COMMON/SECTION_LOG/Stage/System/DZStageSystemLOG.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "FOR_INGAME/SECTION_ANOMALY/OriginActor/Base/DZOriginActorBase.h"
 #include "FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.h"
@@ -33,8 +34,8 @@ void UStageBalanceDataLibrary::CacheStageDataToMap(TMap<int32, FDZStageBalanceRo
 
 void UStageBalanceDataLibrary::DebugLogStageMap(const TMap<int32, FDZStageBalanceRow>& InStageMap)
 {
-	UE_LOG(LogTemp, Warning, TEXT("----------- [Stage Balance Map Debug Start] -----------"));
-	UE_LOG(LogTemp, Warning, TEXT("Total Stages Cached: %d"), InStageMap.Num());
+	UE_LOG(DZStageDataMgrLog, Warning, TEXT("----------- [Stage Balance Map Debug Start] -----------"));
+	UE_LOG(DZStageDataMgrLog, Warning, TEXT("Total Stages Cached: %d"), InStageMap.Num());
 
 	for (const auto& Pair : InStageMap)
 	{
@@ -42,14 +43,14 @@ void UStageBalanceDataLibrary::DebugLogStageMap(const TMap<int32, FDZStageBalanc
 		const FDZStageBalanceRow& Row = Pair.Value;
 
 		// 한 줄에 모든 정보를 보기 쉽게 출력
-		UE_LOG(LogTemp, Log, TEXT("[Level %d] -> Time: %.1fs | AnomalyCount: %d ~ %d"), 
+		UE_LOG(DZStageDataMgrLog, Log, TEXT("[Level %d] -> Time: %.1fs | AnomalyCount: %d ~ %d"), 
 			LevelKey, 
 			Row.Time, 
 			Row.MinAnomalyCount, 
 			Row.MaxAnomalyCount);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("----------- [Stage Balance Map Debug End] -------------"));
+	UE_LOG(DZStageDataMgrLog, Warning, TEXT("----------- [Stage Balance Map Debug End] -------------"));
 }
 
 void UStageBalanceDataLibrary::CacheAnomalyDataToMap(TMap<FName, FDZAnomalySettingTable>& OutStageMap)
@@ -82,8 +83,8 @@ void UStageBalanceDataLibrary::CacheAnomalyDataToMap(TMap<FName, FDZAnomalySetti
 
 void UStageBalanceDataLibrary::DebugLogAnomalyMap(const TMap<FName, FDZAnomalySettingTable>& InStageMap)
 {
-	UE_LOG(LogTemp, Warning, TEXT("================ [Anomaly Map Debug Start] ================"));
-	UE_LOG(LogTemp, Warning, TEXT("Total Count: %d"), InStageMap.Num());
+	UE_LOG(DZAnomalyDataMgrLog, Warning, TEXT("================ [Anomaly Map Debug Start] ================"));
+	UE_LOG(DZAnomalyDataMgrLog, Warning, TEXT("Total Count: %d"), InStageMap.Num());
 
 	for (const auto& Pair : InStageMap)
 	{
@@ -94,11 +95,11 @@ void UStageBalanceDataLibrary::DebugLogAnomalyMap(const TMap<FName, FDZAnomalySe
 		FString OriginalClassName = Data.AnomalyClass ? Data.AnomalyClass->GetName() : TEXT("NULL");
 		FString AnomalyClassName = Data.AnomalyClass_Anomaly ? Data.AnomalyClass_Anomaly->GetName() : TEXT("NULL");
 
-		UE_LOG(LogTemp, Log, TEXT("[%s] -> Original: %s | Anomaly: %s"), 
+		UE_LOG(DZAnomalyDataMgrLog, Log, TEXT("[%s] -> Original: %s | Anomaly: %s"), 
 			*RowName.ToString(), 
 			*OriginalClassName, 
 			*AnomalyClassName);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("================ [Anomaly Map Debug End] =================="));
+	UE_LOG(DZAnomalyDataMgrLog, Warning, TEXT("================ [Anomaly Map Debug End] =================="));
 }

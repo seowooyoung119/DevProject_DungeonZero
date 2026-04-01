@@ -13,6 +13,7 @@
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "AbilitySystemComponent.h"
+#include "FOR_COMMON/SECTION_LOG/GA/PlayerGALOG.h"
 
 UDZGA_UseItem::UDZGA_UseItem()
 {
@@ -45,22 +46,22 @@ void UDZGA_UseItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	// 실제 상호작용 로직 (서버에서만 실행)
 	if (GetAvatarActorFromActorInfo()->HasAuthority())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UseItem Ability Activated"));
+		UE_LOG(DZPlayerGA_USeItem, Warning, TEXT("UseItem Ability Activated"));
 
 		// NOTE //
 		// 컨트롤러 중시으로 회전하면 서버에서 인터렉트 컴포넌트 디버그 라인으로 테스트 시 로컬에서 플레이어가 보는 것과 같은 액터를 집고 있음 //
 		// 따라서 타겟을 다시 체크할 필요 없고, 서버의 인터렉트 컴포넌트에서 바로 현재 보고 있는 액터를 가져오면 되므로 여기서는 관련된 로직을 실행하지 않음)
 		
 		// 인터렉트 컴포넌트 체크
-		UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractCompo(GetAvatarActorFromActorInfo());
+		UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractComponent(GetAvatarActorFromActorInfo());
 		if (!IsValid(InteractComponent)) { K2_EndAbility(); return;}; 
 		
 		// 현재 활성화 중인 핫키 인벤토리 컴포넌트 가져오기 
-		UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(GetAvatarActorFromActorInfo());
+		UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetAvatarActorFromActorInfo());
 		if (!IsValid(HotKeyInventoryComponent)) { K2_EndAbility(); return; }
 	
 		// 핫키 비쥬얼 컴포넌트 가져오기 
-		UDZHotKeyEquipVisualComponent* HotKeyEquipVisualComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyEquipVisualCompo(GetAvatarActorFromActorInfo());
+		UDZHotKeyEquipVisualComponent* HotKeyEquipVisualComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyEquipVisualComponent(GetAvatarActorFromActorInfo());
 		if (!IsValid(HotKeyEquipVisualComponent)) { K2_EndAbility(); return; }
 		
 		// 현재 활성화 중인 핫키 인덱스 가져오기 
@@ -90,12 +91,12 @@ void UDZGA_UseItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		bool DeleteSuccess = IDZInventoryCompActionInterface::Execute_RemoveItemFromInventory(HotKeyInventoryComponent, CurrentHotKeyIndex, 1);
 		if (DeleteSuccess == false)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UseItem Fail"));
+			UE_LOG(DZPlayerGA_USeItem, Warning, TEXT("UseItem Fail"));
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UseItem Success"));
-			UE_LOG(LogTemp, Warning, TEXT("ItemGA Name %s"), *ItemStaticData->ItemStaticInfo.ItemGA->GetName());
+			UE_LOG(DZPlayerGA_USeItem, Warning, TEXT("UseItem Success"));
+			UE_LOG(DZPlayerGA_USeItem, Warning, TEXT("ItemGA Name %s"), *ItemStaticData->ItemStaticInfo.ItemGA->GetName());
 			
 			// 성공 시 비쥬얼 컴포넌트 체킹 (만약에 슬롯이 비었으면 지우기)
 			if (UDZInventorySlotInternalHelperLibrary::IsSlotEmpty_Lib(InventoryCompData.InventoryDataArray[CurrentHotKeyIndex]))

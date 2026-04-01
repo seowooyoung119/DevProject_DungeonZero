@@ -18,8 +18,10 @@ class DUNGEONZERO_API UDZInventorySlotUI : public UUserWidget
 	GENERATED_BODY()
 	
 //=====================================================================================================================
-	
-	// 위젯 모듈 
+#pragma region 위젯_모듈
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯_모듈
+	//━━━━━━━━━━━━━━━━━━━━
 protected:
 	
 	 // 아이템 아이콘 
@@ -34,14 +36,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UTextBlock> StackSizeText = nullptr;
 
+#pragma endregion
 //=====================================================================================================================
+#pragma region 위젯업데이트API
 	
-	// 위젯 업데이트 API
-	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯업데이트API
+	//━━━━━━━━━━━━━━━━━━━━
 public:
 	/** 슬롯 데이터에 맞게 UI 갱신 */
 	UFUNCTION(BlueprintCallable, Category = "DZ | Inventory")
 	void UpdateSlot(const FDZInventorySlotData& InSlotData);
 
+#pragma endregion
 //=====================================================================================================================
 };

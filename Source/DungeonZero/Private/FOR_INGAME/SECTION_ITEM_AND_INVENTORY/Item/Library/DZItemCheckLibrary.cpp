@@ -2,18 +2,33 @@
 
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemCheckLibrary.h"
+
+#include "FOR_COMMON/SECTION_LOG/Item_And_Inventory/Item/DZItemLOG.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
 
 bool UTSItemCheckLibrary::IsThisItemValid_Lib(const UObject* InWorldContextObject, FDZItemRuntimeData& InItemRuntimeData)
 {
 	// 아이템 데이터 매니저로부터 정적 데이터 포인터 유효한지 체크
 	UDZItemDataSubSystem* NewItemDataSubSystem =  UDZItemDataSubSystem::Get(InWorldContextObject);
-	if (!IsValid(NewItemDataSubSystem)) return false;
+	if (!IsValid(NewItemDataSubSystem))
+	{
+		UE_LOG(DZItemLOG, Warning, TEXT("아이템 데이터 매니저 체크 실패"))
+		return false;
+	}
+	
 	FDZITemStaticData* FouNewITemStaticData = NewItemDataSubSystem->GetItemStaticData(InItemRuntimeData.StaticDataID);
-	if (!FouNewITemStaticData) return false;
+	if (!FouNewITemStaticData)
+	{
+		UE_LOG(DZItemLOG, Warning, TEXT("아이템 데이터 매니저로부터 정적 데이터 포인터 유효한지 체크 실패"))
+		return false;
+	}
 	
 	// 다이나믹 데이터에 스택 수가 0 이하인지 체크 (넣을 게 없다는 소리)
-	if (InItemRuntimeData.DynamicData.CurrentStack <= 0) return false;
+	if (InItemRuntimeData.DynamicData.CurrentStack <= 0)
+	{
+		UE_LOG(DZItemLOG, Warning, TEXT("다이나믹 데이터에 스택 수가 0 이하"))
+		return false;
+	}
 	
 	// 1 이상이면 넣을 수 있음 
 	return true;

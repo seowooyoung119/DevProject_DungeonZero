@@ -36,6 +36,8 @@ ADZSkeletalMeshItem::ADZSkeletalMeshItem()
 	// 위젯 컴포넌트 
 	InteractWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractWidgetComp"));
 	InteractWidgetComp->SetupAttachment(GetRootComponent());
+	InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
 }
 
 void ADZSkeletalMeshItem::BeginPlay()

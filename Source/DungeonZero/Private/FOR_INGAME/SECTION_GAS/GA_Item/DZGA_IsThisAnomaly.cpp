@@ -3,6 +3,7 @@
 
 #include "FOR_INGAME/SECTION_GAS/GA_Item/DZGA_IsThisAnomaly.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZFindAnomalyMSG.h"
+#include "FOR_COMMON/SECTION_LOG/Item_And_Inventory/Item/DZItemLOG.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
 #include "FOR_COMMON/SECTION_TAG/Item/DZItemGATag.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
@@ -27,13 +28,13 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-	UE_LOG(LogTemp, Log, TEXT("이게 어노말리인가? 실행"))
+	UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 실행"))
 	
 	// 인터렉트 컴포넌트 체크
-	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractCompo(GetAvatarActorFromActorInfo());
+	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractComponent(GetAvatarActorFromActorInfo());
 	if (!IsValid(InteractComponent))
 	{
-		UE_LOG(LogTemp, Log, TEXT("이게 어노말리인가? 인터렉트 컴포넌트 못찾음"))
+		UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 인터렉트 컴포넌트 못찾음"))
 		K2_EndAbility(); 
 		return;
 	}; 
@@ -44,7 +45,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	// 1. 없는 경우 
 	if (CurrentInteractActor == nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("이게 어노말리인가? 뭔가 보고 있지 않은 경우 보내기 실행"))
+		UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 뭔가 보고 있지 않은 경우 보내기 실행"))
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = nullptr;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
@@ -57,7 +58,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	// 2. 있는데 인터페이스 없는 경우 
 	if (!CurrentInteractActor->GetClass()->ImplementsInterface(UDZCommonPlayRoleInterface::StaticClass()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 인터페이스도 상속 안한 녀석인 경우 보내기 실행"))
+		UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 인터페이스도 상속 안한 녀석인 경우 보내기 실행"))
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
@@ -71,7 +72,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	EDZPlayRole CurrentInteractActorPlayRole = IDZCommonPlayRoleInterface::Execute_GetPlayRole(CurrentInteractActor);
 	if (CurrentInteractActorPlayRole != EDZPlayRole::Anomaly)
 	{
-		UE_LOG(LogTemp, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 어노말리인 아닌 경우 보내기 실행"))
+		UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 어노말리인 아닌 경우 보내기 실행"))
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
@@ -84,7 +85,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	// 3. 어노말리인 경우 
 	if (CurrentInteractActorPlayRole == EDZPlayRole::Anomaly)
 	{
-		UE_LOG(LogTemp, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 어노말리인 경우 보내기 실행"))
+		UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 어노말리인 경우 보내기 실행"))
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());

@@ -11,6 +11,7 @@
 	//━━━━━━━━━━━━━━━━━━━━
 ADZPlayerController::ADZPlayerController()
 {
+	// tick
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -18,6 +19,7 @@ void ADZPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// 입력 모드 설정
 	FInputModeGameOnly GameOnlyInputMode;
 	SetInputMode(GameOnlyInputMode);
 	bShowMouseCursor = false;

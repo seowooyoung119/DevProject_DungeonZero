@@ -21,9 +21,6 @@ public:
 	TSoftObjectPtr<UDataTable> ItemInfoTable;
 	
 	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
-	TSoftObjectPtr<UDataTable> ItemMemoryLoadTable;
-	
-	UPROPERTY(Config, EditAnywhere, Category = "ItemData")
 	bool bWantPrintDeBugLog = false;
 	
 };

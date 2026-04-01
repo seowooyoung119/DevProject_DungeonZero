@@ -47,6 +47,7 @@ void UDZInputHandleComponent::SetupInput(UEnhancedInputComponent* InEnhancedInpu
 	// 플레이어 캐릭터 캐싱
 	if (!CachingCharacterAndController_internal()) return;
 
+	// 향상된 입력 시스템 가져오기
 	UEnhancedInputLocalPlayerSubsystem* EISubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(OwnerController->GetLocalPlayer());
 	if (!IsValid(EISubsystem)) return;
 	
@@ -85,14 +86,19 @@ void UDZInputHandleComponent::SetupInput(UEnhancedInputComponent* InEnhancedInpu
 
 bool UDZInputHandleComponent::CachingCharacterAndController_internal()
 {
+	// 캐릭터인지 확인 후 캐싱
 	OwnerCharacter = CastChecked<ACharacter>(GetOwner());
 	if (!IsValid(OwnerCharacter)) return false;
 	
+	// 컨트롤러 확인
 	if (!IsValid(OwnerCharacter->GetController())) return false;
+	
+	// 플레이어 컨트롤러 체크
 	APlayerController* PC = CastChecked<APlayerController>(OwnerCharacter->GetController());
 	if (!IsValid(PC)) return false;
-	OwnerController = PC;
 	
+	// 플레이어 컨트롤러 캐싱
+	OwnerController = PC;
 	return true;
 }
 
@@ -157,20 +163,18 @@ void UDZInputHandleComponent::InteractByLeftClick_internal(const FInputActionVal
 
 void UDZInputHandleComponent::InteractByRightClick_internal(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("InteractByRightClick_internal"));
-	
 	if (!IsValid(OwnerCharacter)) return;
 	if (!IsValid(OwnerController)) return;
 	
 	// 핫키 컴포넌트 체크
-	 UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(OwnerCharacter);
+	 UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(OwnerCharacter);
 	if (!IsValid(HotKeyInventoryComponent)) return; 
 	
 	// -1 이면 아이템 안 들고 있으므로 패스
 	if (HotKeyInventoryComponent->GetActiveHotKeyIndex() == -1) return;
 	
 	// 인터렉트 컴포넌트 체크
-	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractCompo(OwnerCharacter);
+	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractComponent(OwnerCharacter);
 	if (!IsValid(InteractComponent)) return; 
 	
 	// asc 체크
@@ -200,7 +204,7 @@ void UDZInputHandleComponent::PickUpItem_internal(const FInputActionValue& Value
 	if (!IsValid(ASC)) return;
 
 	// 인터렉트 컴포넌트 체크
-	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractCompo(OwnerCharacter);
+	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractComponent(OwnerCharacter);
 	if (!IsValid(InteractComponent)) return; 
 	
 	// 현재 보고 있는 액터가 있는지 체크 

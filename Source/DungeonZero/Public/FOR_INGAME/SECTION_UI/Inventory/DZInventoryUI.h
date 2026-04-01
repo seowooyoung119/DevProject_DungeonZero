@@ -18,30 +18,40 @@ class DUNGEONZERO_API UDZInventoryUI : public UUserWidget
 {
 	GENERATED_BODY()
 	
-	
 //======================================================================================================================
+#pragma region 라이프_사이클
 	
-	// 라이프 사이클 
+	//━━━━━━━━━━━━━━━━━━━━
+	// 라이프_사이클
+	//━━━━━━━━━━━━━━━━━━━━
 	
 public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
+#pragma endregion
 //=====================================================================================================================	
+#pragma region 게임플레이메시지
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게임플레이메시지
+	//━━━━━━━━━━━━━━━━━━━━
 	
 protected:
 	
-	// 게임 플레이 메시지 
-	
-	// 메시지를 받았을 때 실행될 함수
+	// 인벤토리 업데이트 요청 메시지를 받았을 때 실행될 함수
 	void OnInventoryUpdateMessageReceived_internal(FGameplayTag Channel, const FDZInventoryUpdateMessage& Message);
 	
 	// 핸들 
 	FGameplayMessageListenerHandle ListenerHandle;
 	
-//======================================================================================================================
+#pragma endregion
+//=====================================================================================================================
+#pragma region 위젯업데이트API
 	
-	// 위젯 업데이트 API
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯업데이트API
+	//━━━━━━━━━━━━━━━━━━━━	
 	
 protected:
 	// 초기화 함수
@@ -52,17 +62,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void RefreshInventory(FDZInventoryCompData& InventoryCompData);
 	
+#pragma endregion
 //======================================================================================================================
-	
-	// 위젯 모듈 
+#pragma region 위젯_모듈
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯_모듈
+	//━━━━━━━━━━━━━━━━━━━━
+
+protected:
 	
 	// 인벤토리 그리드 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UUniformGridPanel> InventoryGrid = nullptr;
 
+#pragma endregion
 //======================================================================================================================
-	
-	// 데이터 
+#pragma region Data		
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// Data
+	//━━━━━━━━━━━━━━━━━━━━
+protected:
 	
 	// 생성된 슬롯들을 보관하는 캐시 배열 
 	UPROPERTY()
@@ -84,4 +104,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	EDZInventoryCompType TargetInventoryComp = EDZInventoryCompType::None;
 	
+#pragma endregion
+//======================================================================================================================	
 };

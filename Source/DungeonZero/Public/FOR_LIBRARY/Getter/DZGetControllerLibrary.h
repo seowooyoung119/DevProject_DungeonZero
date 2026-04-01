@@ -7,7 +7,7 @@
 #include "DZGetControllerLibrary.generated.h"
 
 /**
- * 
+ * 컨트롤러 게터 헬퍼 라이브러리 
  */
 UCLASS()
 class DUNGEONZERO_API UDZGetControllerLibrary : public UBlueprintFunctionLibrary
@@ -16,6 +16,5 @@ class DUNGEONZERO_API UDZGetControllerLibrary : public UBlueprintFunctionLibrary
 
 public:
 	static APlayerController* GetPlayerControllerFromComponent(AActor* InOwner); 
-	
 
 };

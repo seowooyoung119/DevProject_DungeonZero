@@ -6,6 +6,13 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 
+//=====================================================================================================================
+#pragma region 위젯업데이트API
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯업데이트API
+	//━━━━━━━━━━━━━━━━━━━━
+
 void UDZInventorySlotUI::UpdateSlot(const FDZInventorySlotData& InSlotData)
 {
 	// 모듈 체크
@@ -45,3 +52,6 @@ void UDZInventorySlotUI::UpdateSlot(const FDZInventorySlotData& InSlotData)
 	StackSizeText->SetText(FText::AsNumber(InSlotData.ItemData.DynamicData.CurrentStack));
 	StackSizeText->SetVisibility(ESlateVisibility::Visible);
 }
+
+#pragma endregion
+//=====================================================================================================================

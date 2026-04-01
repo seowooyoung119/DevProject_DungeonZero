@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "FOR_INGAME/SECTION_GAS/GA/A_Base/DZGA_BaseAbility.h"
 #include "DZGA_PickUpItem.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API UDZGA_PickUpItem : public UGameplayAbility
+class DUNGEONZERO_API UDZGA_PickUpItem : public UDZGA_BaseAbility
 {
 	GENERATED_BODY()
 	

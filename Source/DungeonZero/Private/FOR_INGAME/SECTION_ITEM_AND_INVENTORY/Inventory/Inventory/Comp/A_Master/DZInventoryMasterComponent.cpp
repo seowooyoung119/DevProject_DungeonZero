@@ -3,6 +3,7 @@
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/A_Master/DZInventoryMasterComponent.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Invnetory/DZInventoryUpdateMSG.h"
+#include "FOR_COMMON/SECTION_LOG/Item_And_Inventory/Inventory/DZInventoryLOG.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventoryInternalHelperLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventorySlotInternalHelperLibrary.h"
@@ -78,13 +79,25 @@ void UDZInventoryMasterComponent::EndPlay(const EEndPlayReason::Type EndPlayReas
 bool UDZInventoryMasterComponent::AddItemToInventory_Implementation(FDZItemRuntimeData InItemRuntimeData)
 {
 	// 오너 검증 및 서버에서 진행 중인지 판단 
-	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return false;
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority())
+	{
+		UE_LOG(DZHotKeyinventoryLOG, Warning, TEXT("오너 실패 또는 서버에서 진행 안됨"))
+		return false;
+	}
 	
 	// 유효한 아이템인지 판단 
-	if (UTSItemCheckLibrary::IsThisItemValid_Lib(this, InItemRuntimeData) == false) return false;
+	if (UTSItemCheckLibrary::IsThisItemValid_Lib(this, InItemRuntimeData) == false)
+	{
+		UE_LOG(DZHotKeyinventoryLOG, Warning, TEXT("유효한 아이템인지 판단 실패"))
+		return false;
+	}
 	
 	// 이 인벤토리에 들어올 수 있는지 판단 
-	if (UTSItemCheckLibrary::IsThisItemCanPlaceInThisInventory_Lib(this, InItemRuntimeData, InventoryData) == false) return false;
+	if (UTSItemCheckLibrary::IsThisItemCanPlaceInThisInventory_Lib(this, InItemRuntimeData, InventoryData) == false)
+	{
+		UE_LOG(DZHotKeyinventoryLOG, Warning, TEXT("이 인벤토리에 들어올 수 있는지 판단 실패"))
+		return false;
+	}
 	
 	// 스택아이템인지 아닌지 판단 
 	bool bIsStackItem = UTSItemCheckLibrary::IsThisITemCanStack_Lib(this,InItemRuntimeData);

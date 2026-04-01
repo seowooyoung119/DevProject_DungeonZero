@@ -27,12 +27,12 @@ class DUNGEONZERO_API IPlayerCompGetterInterface
 public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | PlayerCompGetter")
-	UDZInteractComponent* GetDZInteractCompo();
+	UDZInteractComponent* GetDZInteractComponent();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | PlayerCompGetter")
-	UDZHotKeyInventoryComponent* GetDZHotKeyInventoryCompo();
+	UDZHotKeyInventoryComponent* GetDZHotKeyInventoryComponent();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | PlayerCompGetter")
-	UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualCompo();
+	UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualComponent();
 	
 };

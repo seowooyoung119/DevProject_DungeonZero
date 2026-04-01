@@ -3,6 +3,7 @@
 
 #include "FOR_INGAME/SECTION_GAS/GA/Interact/DZGA_PickUpItem.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Invnetory/DZInventoryUpdateMSG.h"
+#include "FOR_COMMON/SECTION_LOG/GA/PlayerGALOG.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/Interact/DZInteractTag.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
@@ -43,8 +44,8 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 	// 실제 상호작용 로직 (서버에서만 실행)
 	if (GetAvatarActorFromActorInfo()->HasAuthority() && IsValid(TriggerEventData->Target))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PickUpItem Ability Activated"));
-		UE_LOG(LogTemp, Warning, TEXT("PickUpItem Ability Target : %s"), *TriggerEventData->Target->GetName());
+		UE_LOG(DZPlayerGA_PickUpItem, Warning, TEXT("PickUpItem Ability Activated"));
+		UE_LOG(DZPlayerGA_PickUpItem, Warning, TEXT("PickUpItem Ability Target : %s"), *TriggerEventData->Target->GetName());
 		
 		// 캐스팅 후 const 제거
 		const ADZItemActorBase* ConstTargetItem = CastChecked<ADZItemActorBase>(TriggerEventData->Target);
@@ -61,14 +62,14 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		
 		// 플레이어 인벤토리 가져오기
 		if (!IsValid(GetAvatarActorFromActorInfo())) { K2_EndAbility(); return; } 
-		UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(GetAvatarActorFromActorInfo());
+		UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetAvatarActorFromActorInfo());
 		if (!IsValid(HotKeyInventoryComponent)){ K2_EndAbility(); return; } 
 
 		// 아이템 넣기 시도 
 		bool IsSuccess = IDZInventoryCompActionInterface::Execute_AddItemToInventory(HotKeyInventoryComponent, ItemRuntimeData);
 		if (IsSuccess)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("PickUpItem Ability Success"));
+			UE_LOG(DZPlayerGA_PickUpItem, Warning, TEXT("PickUpItem Ability Success"));
 			// 성공시 타겟 파괴
 			TargetItem->Destroy();
 			
@@ -81,7 +82,7 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("PickUpItem Ability Failed"));
+			UE_LOG(DZPlayerGA_PickUpItem, Warning, TEXT("PickUpItem Ability Failed"));
 		}
 		K2_EndAbility();
 	}

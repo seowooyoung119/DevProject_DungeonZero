@@ -4,12 +4,19 @@
 #include "FOR_INGAME/SECTION_UI/Inventory/DZInventoryUI.h"
 #include "Components/UniformGridPanel.h"
 #include "Components/UniformGridSlot.h"
+#include "FOR_COMMON/SECTION_LOG/UI/Inventory/DZInventoryUILOG.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/A_Master/DZInventoryMasterComponent.h"
 #include "FOR_INGAME/SECTION_UI/Inventory/DZInventorySlotUI.h"
+#include "FOR_LIBRARY/Getter/DZGetControllerLibrary.h"
 
 //======================================================================================================================
+#pragma region 라이프_사이클
 	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 라이프_사이클
+	//━━━━━━━━━━━━━━━━━━━━
+
 void UDZInventoryUI::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -26,6 +33,7 @@ void UDZInventoryUI::NativeConstruct()
 
 void UDZInventoryUI::NativeDestruct()
 {
+	// 타이머 및 게임 플레이 메시지 해제
 	if (IsValid(GetWorld()))
 	{
 		GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
@@ -39,34 +47,40 @@ void UDZInventoryUI::NativeDestruct()
 	Super::NativeDestruct();
 }
 
+#pragma endregion
 //======================================================================================================================
+#pragma region 게임플레이메시지
 	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게임플레이메시지
+	//━━━━━━━━━━━━━━━━━━━━
+
 void UDZInventoryUI::OnInventoryUpdateMessageReceived_internal(FGameplayTag Channel, const FDZInventoryUpdateMessage& Message)
 {
 	// 타겟 인벤토리 확인
-	if (Message.ChangeInventoryType == TargetInventoryComp)
-	{
-		// 업데이트 실시 
-		if (!IsValid(Message.InventoryComp)) return;
-		RefreshInventory(Message.InventoryComp->GetInventoryData());
-	}
+	if (Message.ChangeInventoryType != TargetInventoryComp) return;
+		
+	// 오너의 인벤토리인지 확인
+	if (!IsValid(GetOwningPlayer())) return;
+	if (GetOwningPlayer() != UDZGetControllerLibrary::GetPlayerControllerFromComponent(Message.InventoryComp->GetOwner())) return;
+  		
+	// 업데이트 실시 
+	if (!IsValid(Message.InventoryComp)) return;
+	RefreshInventory(Message.InventoryComp->GetInventoryData());
 }
+
+#pragma endregion
+//=====================================================================================================================
+#pragma region 위젯업데이트API
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯업데이트API
+	//━━━━━━━━━━━━━━━━━━━━	
 
 void UDZInventoryUI::InitializeFixedSlots_internal()
 {
-	UE_LOG(LogTemp, Log, TEXT("InitializeFixedSlots_internal"));
-	
 	// 위젯 체크
-	if (!IsValid(InventoryGrid))
-	{
-		UE_LOG(LogTemp, Error, TEXT("InventoryGrid is invalid"));
-		return;
-	}
-	if (!IsValid(SlotWidgetClass))
-	{
-		UE_LOG(LogTemp, Error, TEXT("SlotWidgetClass is invalid"));
-		return;
-	}
+	if (!IsValid(InventoryGrid) || !IsValid(SlotWidgetClass)) return;
 	
 	// 기존 자식이 있다면 제거 (재입입 시 안전장치)
 	InventoryGrid->ClearChildren();
@@ -79,14 +93,15 @@ void UDZInventoryUI::InitializeFixedSlots_internal()
 		UUserWidget* NewSlot = CreateWidget<UUserWidget>(GetOwningPlayer(), SlotWidgetClass);
 		if (!IsValid(NewSlot))
 		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to create slot widget at index %d"), i);
+			UE_LOG(DZInventoryUILog, Error, TEXT("Failed to create slot widget at index %d"), i);
 			continue;
 		}
+		
 		// 그리드 배치
 		UUniformGridSlot* GridSlot = InventoryGrid->AddChildToUniformGrid(NewSlot);
 		if (!IsValid(GridSlot))
 		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to add slot widget to grid at index %d"), i);
+			UE_LOG(DZInventoryUILog, Error, TEXT("Failed to add slot widget to grid at index %d"), i);
 			continue;
 		}
 		
@@ -95,7 +110,7 @@ void UDZInventoryUI::InitializeFixedSlots_internal()
 		
 		// 캐시 배열에 저장
 		CachedSlotWidgets.Add(NewSlot);
-		UE_LOG(LogTemp, Log, TEXT("Fixed Slot Added: %d"), i);
+		UE_LOG(DZInventoryUILog, Log, TEXT("Fixed Slot Added: %d"), i);
 	}
 }
 
@@ -114,7 +129,7 @@ void UDZInventoryUI::RefreshInventory(FDZInventoryCompData& InventoryCompData)
 		UDZInventorySlotUI* SlotUI = Cast<UDZInventorySlotUI>(CachedSlotWidgets[i]);
 		if (!IsValid(SlotUI))
 		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to cast slot widget at index %d"), i);
+			UE_LOG(DZInventoryUILog, Error, TEXT("Failed to cast slot widget at index %d"), i);
 			continue;
 		}
 		
@@ -122,3 +137,6 @@ void UDZInventoryUI::RefreshInventory(FDZInventoryCompData& InventoryCompData)
 		if (DataArray.IsValidIndex(i)) SlotUI->UpdateSlot(DataArray[i]);
 	}
 }
+
+#pragma endregion
+//======================================================================================================================

@@ -28,9 +28,9 @@ class DUNGEONZERO_API ADZPlayerCharacter : public ACharacter, public IAbilitySys
 	//━━━━━━━━━━━━━━━━━━━━
 	
 public:
-	virtual UDZHotKeyInventoryComponent* GetDZHotKeyInventoryCompo_Implementation() override { return HotKeyInventoryComponent; };
-	virtual UDZInteractComponent* GetDZInteractCompo_Implementation() override { return InteractComponent; };
-	virtual UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualCompo_Implementation() override { return HotKeyEquipVisualComponent; } 
+	virtual UDZHotKeyInventoryComponent* GetDZHotKeyInventoryComponent_Implementation() override { return HotKeyInventoryComponent; };
+	virtual UDZInteractComponent* GetDZInteractComponent_Implementation() override { return InteractComponent; };
+	virtual UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualComponent_Implementation() override { return HotKeyEquipVisualComponent; } 
 	
 #pragma endregion
 //======================================================================================================================	
@@ -55,13 +55,9 @@ public:
 	
 public:
 	ADZPlayerCharacter();
-	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
-	virtual void Tick(float DeltaTime) override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 #pragma endregion
 //======================================================================================================================	

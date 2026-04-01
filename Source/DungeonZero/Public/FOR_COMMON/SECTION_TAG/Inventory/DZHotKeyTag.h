@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "NativeGameplayTags.h"
 
+// 핫키 태그
+
 namespace DZ
 {
 	namespace Inventory

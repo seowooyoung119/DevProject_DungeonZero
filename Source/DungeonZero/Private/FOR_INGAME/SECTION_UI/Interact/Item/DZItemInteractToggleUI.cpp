@@ -5,5 +5,5 @@
 
 void UDZItemInteractToggleUI::InitInteractInfo(const FText& Text, const FText& InteractKeyText)
 {
-	
+	// 미정
 }

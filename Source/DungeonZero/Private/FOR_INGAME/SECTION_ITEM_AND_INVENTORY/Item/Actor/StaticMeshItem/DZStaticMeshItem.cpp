@@ -37,6 +37,7 @@ ADZStaticMeshItem::ADZStaticMeshItem()
 	// 위젯 컴포넌트 
 	InteractWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractWidgetComp"));
 	InteractWidgetComp->SetupAttachment(GetRootComponent(), FName("InteractUISocket"));
+	InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ADZStaticMeshItem::BeginPlay()

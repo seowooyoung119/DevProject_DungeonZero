@@ -2,7 +2,8 @@
 
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
-#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/DataAsset/DZItemTablesDataAsset.h"
+
+#include "FOR_COMMON/SECTION_LOG/Item_And_Inventory/System/DZItemAndInventorySystemLOG.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemDataSystemCachingHelperLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemDataTableLogLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Setting/DZItemDataSystemSettings.h"
@@ -82,9 +83,9 @@ void UDZItemDataSubSystem::InitializeItemStaticData_internal()
 	if (!IsValid(Settings)) return;
 
 	// [캐싱]
-	UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(ItemStaticDataMap, ItemStaticDataMap_ItemClass, ItemStaticDataMap_GA);
+	UDZItemDataSystemCachingHelperLibrary::CacheItemDataTable_Lib(ItemStaticDataMap);
 	
-	UE_LOG(LogTemp, Warning, TEXT("ItemStaticDataMap Size: %d"), ItemStaticDataMap.Num());
+	UE_LOG(DZItemDataMgrLog, Warning, TEXT("ItemStaticDataMap Size: %d"), ItemStaticDataMap.Num());
 	
 	// 로그
 	bWantPrintDeBugLog = Settings->bWantPrintDeBugLog;

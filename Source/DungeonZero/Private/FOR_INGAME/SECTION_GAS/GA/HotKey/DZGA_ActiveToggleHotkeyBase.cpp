@@ -2,6 +2,8 @@
 
 
 #include "FOR_INGAME/SECTION_GAS/GA/HotKey/DZGA_ActiveToggleHotkeyBase.h"
+
+#include "FOR_COMMON/SECTION_LOG/GA/PlayerGALOG.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/HotKey/DZHotKeyEquipVisualComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
 #include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
@@ -22,20 +24,20 @@ void UDZGA_ActiveToggleHotkeyBase::ActivateAbility(const FGameplayAbilitySpecHan
 	if (!IsValid(GetAvatarActorFromActorInfo())) { K2_EndAbility(); return;}
 	if (TargetHotKeyIndex == -1 ) { K2_EndAbility(); return;}
 	
-	UE_LOG(LogTemp, Warning, TEXT("TargetHotKeyIndex : %d"), TargetHotKeyIndex);
+	UE_LOG(DZPlayerGA_ActiveToggleHotKey, Warning, TEXT("TargetHotKeyIndex : %d"), TargetHotKeyIndex);
 	
 	// 현재 활성화 중인 핫키 인덱스 가져오기 
-	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryCompo(GetAvatarActorFromActorInfo());
+	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetAvatarActorFromActorInfo());
 	if (!IsValid(HotKeyInventoryComponent)) { K2_EndAbility(); return; }
 	int32 CurrentHotKeyIndex = HotKeyInventoryComponent->GetActiveHotKeyIndex();
 	
-	UE_LOG(LogTemp, Warning, TEXT("CurrentHotKeyIndex : %d"), CurrentHotKeyIndex);
+	UE_LOG(DZPlayerGA_ActiveToggleHotKey, Warning, TEXT("CurrentHotKeyIndex : %d"), CurrentHotKeyIndex);
 	
 	// 핫키 비쥬얼 컴포넌트 가져오기 
-	UDZHotKeyEquipVisualComponent* HotKeyEquipVisualComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyEquipVisualCompo(GetAvatarActorFromActorInfo());
+	UDZHotKeyEquipVisualComponent* HotKeyEquipVisualComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyEquipVisualComponent(GetAvatarActorFromActorInfo());
 	if (!IsValid(HotKeyEquipVisualComponent)) { K2_EndAbility(); return; }
 	
-	UE_LOG(LogTemp, Warning, TEXT("HotKeyEquipVisualComponent : %s"), *HotKeyEquipVisualComponent->GetName());
+	UE_LOG(DZPlayerGA_ActiveToggleHotKey, Warning, TEXT("HotKeyEquipVisualComponent : %s"), *HotKeyEquipVisualComponent->GetName());
 	
 	// 핫키 인덱스가 -1인지 체크 : 만약에 -1인 경우 그냥 꺼내기 실행
 	if (CurrentHotKeyIndex == -1)

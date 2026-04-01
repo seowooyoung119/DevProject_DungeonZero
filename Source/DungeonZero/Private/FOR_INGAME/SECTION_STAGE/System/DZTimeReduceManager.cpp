@@ -3,12 +3,18 @@
 
 #include "FOR_INGAME/SECTION_STAGE/System/DZTimeReduceManager.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.h"
+#include "FOR_COMMON/SECTION_LOG/Stage/System/DZStageSystemLOG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 
 //======================================================================================================================	
-#pragma region Getter
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
+
 UDZTimeReduceManager* UDZTimeReduceManager::Get(const UObject* WorldContextObject)
 {
 	if (!IsValid(WorldContextObject)) return nullptr;
@@ -23,7 +29,11 @@ UDZTimeReduceManager* UDZTimeReduceManager::Get(const UObject* WorldContextObjec
 }
 #pragma endregion
 //======================================================================================================================	
-#pragma region LifeCycle
+#pragma region 라이프_사이클
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 라이프_사이클
+	//━━━━━━━━━━━━━━━━━━━━
 
 void UDZTimeReduceManager::Deinitialize()
 {
@@ -34,14 +44,20 @@ void UDZTimeReduceManager::Deinitialize()
 //======================================================================================================================	
 #pragma region TimeReduceAPI
 
+	//━━━━━━━━━━━━━━━━━━━━
+	// TimeReduceAPI
+	//━━━━━━━━━━━━━━━━━━━━
+
 void UDZTimeReduceManager::StartTime()
 {
 	// 클라이언트 패스
 	if (!IsValid(GetWorld())) return;
 	if (GetWorld()->GetNetMode() == NM_Client) return;
 	
+	// 타이머 핸들 초기화
 	if (TimerHandle.IsValid()) TimerHandle.Invalidate();
 	
+	// 시작 
 	if (IsValid(GetWorld()))
 	{
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UDZTimeReduceManager::TimeReduceHandle, 1.0f, true);
@@ -50,6 +66,7 @@ void UDZTimeReduceManager::StartTime()
 
 void UDZTimeReduceManager::StopTime()
 {
+	// 타이머 제거 
 	if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	TimerHandle.Invalidate();
 }
@@ -60,6 +77,7 @@ void UDZTimeReduceManager::TimeReduceHandle()
 	if (!IsValid(GetWorld())) return;
 	if (GetWorld()->GetNetMode() == NM_Client) return;
 	
+	// 스테이지 컨트롤 시스템 (데이터 가져오기 위함)
 	UDZStageControlSystem* StageControlSystem = UDZStageControlSystem::Get(this);
 	if (!IsValid(StageControlSystem)) return;
 	
@@ -74,7 +92,7 @@ void UDZTimeReduceManager::TimeReduceHandle()
 		FDZTimeMSG Payload;
 		Payload.RemainTime = StageControlSystem->RemainingTime;
 		MessageSubsystem.BroadcastMessage(DZ::Time::DZ_TIME_REDUCE, Payload);
-		UE_LOG(LogTemp, Warning, TEXT("RunningStage 단계 : 타임 감소 매니저 타임 감소 진행 : %.1f"), StageControlSystem->RemainingTime);
+		UE_LOG(DZTimerReduceMgrLog, Warning, TEXT("RunningStage 단계 : 타임 감소 매니저 타임 감소 진행 : %.1f"), StageControlSystem->RemainingTime);
 	}
 	// 타임 오버인 경우 
 	else
@@ -83,7 +101,7 @@ void UDZTimeReduceManager::TimeReduceHandle()
 		FDZTimeMSG Payload;
 		Payload.RemainTime = 0.0f;
 		MessageSubsystem.BroadcastMessage(DZ::Time::DZ_TIME_TIMEOVER, Payload);
-		UE_LOG(LogTemp, Error, TEXT("RunningStage 단계 : 타임 감소 매니저 타임 오버!"));
+		UE_LOG(DZTimerReduceMgrLog, Error, TEXT("RunningStage 단계 : 타임 감소 매니저 타임 오버!"));
 		if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	}
 }

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/DataTable/FDZItemCalssTable.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZITemStaticData.h"
 #include "DZItemDataSubSystem.generated.h"
@@ -78,14 +77,7 @@ protected:
 	UPROPERTY()
 	TMap<int32, FDZITemStaticData> ItemStaticDataMap;
 	
-	// 메모리 로드용
-	UPROPERTY()
-	TMap<int32, TSubclassOf<AActor>> ItemStaticDataMap_ItemClass;
-	
-	// 메모리 로드용
-	UPROPERTY()
-	TMap<int32, TSubclassOf<UGameplayAbility>> ItemStaticDataMap_GA;
-	
+	// 디버그 
 	bool bWantPrintDeBugLog = false;
 	
 #pragma endregion

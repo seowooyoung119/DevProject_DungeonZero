@@ -16,17 +16,33 @@ class DUNGEONZERO_API UDZTimeReduceManager : public UWorldSubsystem
 	
 	GENERATED_BODY()
 //======================================================================================================================	
-#pragma region Getter
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
 public:
+	
 	static UDZTimeReduceManager* Get(const UObject* WorldContextObject);
+	
 #pragma endregion
 //======================================================================================================================	
-#pragma region LifeCycle
+#pragma region 라이프_사이클
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 라이프_사이클
+	//━━━━━━━━━━━━━━━━━━━━
 public:
 	virtual void Deinitialize() override;
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region TimeReduceAPI
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// TimeReduceAPI
+	//━━━━━━━━━━━━━━━━━━━━
+	
 protected:
 	// 타이머 시작
 	void StartTime();
@@ -37,9 +53,14 @@ protected:
 	// 타이머 째각째각
 	UFUNCTION()
 	void TimeReduceHandle();
+	
 #pragma endregion
 //======================================================================================================================
 #pragma region Data
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// Data
+	//━━━━━━━━━━━━━━━━━━━━
 protected:
 	
 	// 관리 타이머
