@@ -39,11 +39,11 @@ public:
 public:
 	// IDZCommonPlayRoleInterface ~ 
 	FORCEINLINE virtual EDZPlayRole GetPlayRole_Implementation() override { return PlayRole;}
-	// ~ IDZCommonInteractInterface, IDZCommonPlayRoleInterface
+	// ~ IDZCommonInteractInterface
 	
 protected:
 	// 롤 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor | PlayRole")
 	EDZPlayRole PlayRole = EDZPlayRole::Anomaly;
 #pragma endregion
 //======================================================================================================================		
