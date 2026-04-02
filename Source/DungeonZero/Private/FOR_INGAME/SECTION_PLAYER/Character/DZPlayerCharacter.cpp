@@ -10,7 +10,9 @@
 #include "DungeonZero/Public/FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_INPUT/Comp/DZInputHandleComponent.h"
 #include "FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/BodyEquip/DZBodyEquipVisualComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/HotKey/DZHotKeyEquipVisualComponent.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/BodyEquip/DZBodyEquipInventoryComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
 #include "FOR_INGAME/SECTION_SOUND/Comp/DZFootstepSoundComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -80,6 +82,12 @@ ADZPlayerCharacter::ADZPlayerCharacter()
 	
 	// 핫키 비쥬얼
 	HotKeyEquipVisualComponent = CreateDefaultSubobject<UDZHotKeyEquipVisualComponent>(TEXT("HotKeyEquipVisualComponent"));
+	
+	// 장비
+	BodyEquipInventoryComponent = CreateDefaultSubobject<UDZBodyEquipInventoryComponent>(TEXT("BodyEquipInventoryComponent"));
+	
+	// 장비 비쥬얼 
+	BodyEquipVisualComponent = CreateDefaultSubobject<UDZBodyEquipVisualComponent>(TEXT("BodyEquipVisualComponent"));
 	
 	// 기본 밝기 시야 
 	BaseViewLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("BaseViewLightComponent"));

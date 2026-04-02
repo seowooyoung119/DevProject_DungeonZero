@@ -13,4 +13,9 @@ enum class EDZInventorySlotType : uint8
 {
 	None			UMETA(DisplayName = "None"),
 	Common			UMETA(DisplayName = "Common"),
+	
+	// 핫키 빼고 드는 오른손 (핫키는 왼손. 인덱스로 접근하여 HotKey 소켓에 붙이고 있음.) 
+	RightHand		UMETA(DisplayName = "LeftHand"),
+	
+	
 };

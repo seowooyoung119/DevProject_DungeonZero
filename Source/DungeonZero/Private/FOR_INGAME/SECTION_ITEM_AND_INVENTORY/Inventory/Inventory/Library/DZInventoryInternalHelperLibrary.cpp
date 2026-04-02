@@ -4,6 +4,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventoryInternalHelperLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventorySlotInternalHelperLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemCheckLibrary.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
 
 int32 UDZInventoryInternalHelperLibrary::FindEmptySlot_Lib(const UObject* InWorldContextObject, FDZInventoryCompData& InInventoryCompData, FDZItemRuntimeData& InItemRuntimeData)
 {
@@ -19,6 +20,9 @@ int32 UDZInventoryInternalHelperLibrary::FindEmptySlot_Lib(const UObject* InWorl
 		
 		// 이미 아이템이 있으면 건너뛰기
 		if (UDZInventorySlotInternalHelperLibrary::IsSlotEmpty_Lib(SlotData) == false) continue;
+		
+		// 슬롯 타입 체크
+		if (!UDZInventorySlotInternalHelperLibrary::IsSlotCanAcceptItem_Lib(InWorldContextObject, SlotData, InItemRuntimeData)) continue;
 		
 		// 비었으면 인덱스 반환
 		return Index;
@@ -41,6 +45,9 @@ int32 UDZInventoryInternalHelperLibrary::FindStackSlot_Lib(const UObject* InWorl
 		
 		// 비었으면 건너뛰기 
 		if (UDZInventorySlotInternalHelperLibrary::IsSlotEmpty_Lib(SlotData) == true) continue;
+		
+		// 슬롯 타입 체크
+		if (!UDZInventorySlotInternalHelperLibrary::IsSlotCanAcceptItem_Lib(InWorldContextObject, SlotData, InItemRuntimeData)) continue;
 		
 		// 같은 아이템인지 체크하기
 		if (!UTSItemCheckLibrary::IsThisSameItem_Lib(SlotData.ItemData, InItemRuntimeData)) continue;
@@ -97,4 +104,69 @@ bool UDZInventoryInternalHelperLibrary::AddItemToStackSlot_Lib(const UObject* In
 	}
 	
 	return true;
+}
+
+bool UDZInventoryInternalHelperLibrary::AddItemToMatchSlotType_Lib(const UObject* InWorldContextObject, FDZInventoryCompData& InInventoryCompData, EDZInventorySlotType& InTargetSlotType, FDZItemRuntimeData& InItemRuntimeData)
+{
+	// 인벤토리 배열 체크 
+	if (InInventoryCompData.InventoryDataArray.IsEmpty()) return false;
+	
+	// 인벤토리 데이터 배열 돌면서 체크
+	for (int32 Index = 0; Index < InInventoryCompData.InventoryDataArray.Num(); ++Index)
+	{
+		// 인덱스 유효성 체크
+		if (!InInventoryCompData.InventoryDataArray.IsValidIndex(Index)) continue;
+		FDZInventorySlotData& SlotData = InInventoryCompData.InventoryDataArray[Index];
+
+		// 같은 슬롯 타입인지 체크
+		if (SlotData.InventorySlotType != InTargetSlotType) continue;
+		
+		// 비어있지 않으면 건너뛰기  [TODO : 나중에 갈아끼우는 로직을 만들어야할듯]
+		if (!UDZInventorySlotInternalHelperLibrary::IsSlotEmpty_Lib(SlotData) == true) continue;
+		
+		// 넣을 수 있는지 체크하기 
+		if (SlotData.ItemData.DynamicData.CurrentStack >= UTSItemCheckLibrary::GetMaxStackSize_Lib(InWorldContextObject, SlotData.ItemData)) continue;
+		
+		// 아이템 넣기
+		// 슬롯의 데이터 통째로 복사
+		SlotData.ItemData = InItemRuntimeData;
+	
+		// 들어온 데이터 레퍼런스로 접근해서 정적 데이터와 스택 수 없애기
+		InItemRuntimeData.DynamicData.CurrentStack = -1;
+		InItemRuntimeData.StaticDataID = -1;
+		
+		return true;
+	}
+	
+	return false;
+}
+
+FDZInventorySlotData* UDZInventoryInternalHelperLibrary::GetSlotDatabyType_Lib(FDZInventoryCompData& InInventoryCompData, EDZInventorySlotType& InTargetSlotType)
+{
+	// 인벤토리 배열 체크 
+	if (InInventoryCompData.InventoryDataArray.IsEmpty())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("장인벤토리 배열 체크 실패"))
+		return nullptr;
+	}
+	// 인벤토리 데이터 배열 돌면서 체크
+	for (int32 Index = 0; Index < InInventoryCompData.InventoryDataArray.Num(); ++Index)
+	{
+		// 인덱스 유효성 체크
+		if (!InInventoryCompData.InventoryDataArray.IsValidIndex(Index)) continue;
+		FDZInventorySlotData& SlotData = InInventoryCompData.InventoryDataArray[Index];
+
+		UE_LOG(LogTemp, Warning, TEXT("장인벤토리 배열 체크 들어가려는 슬롯의 타입: %s"), *UEnum::GetValueAsString(SlotData.InventorySlotType));
+		UE_LOG(LogTemp, Warning, TEXT("장인벤토리 배열 체크 아이템이 들어갈 수 있는 슬롯의 타입: %s"), *UEnum::GetValueAsString(InTargetSlotType));
+		
+		// 같은 슬롯 타입인지 체크
+		if (SlotData.InventorySlotType != InTargetSlotType) continue;
+		
+		// 반환
+		return &SlotData;
+	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("장인벤토리 배열 체크 실패 하나도 못 찾음"))
+	return nullptr;
+	
 }

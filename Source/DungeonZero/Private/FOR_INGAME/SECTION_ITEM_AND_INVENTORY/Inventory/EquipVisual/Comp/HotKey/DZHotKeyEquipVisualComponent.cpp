@@ -36,92 +36,68 @@ UDZHotKeyEquipVisualComponent::UDZHotKeyEquipVisualComponent()
 void UDZHotKeyEquipVisualComponent::TrySpawnVisual(int32 InTargetHotKeyIndex)
 {
 	// 서버에서만 실시
-	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("서버 아님"));
+		return;
+	}
 	
 	// 1. 핫키 인벤토리 컴포넌트 가져오기
 	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetOwner());
-	if (!IsValid(HotKeyInventoryComponent)) return;
+	if (!IsValid(HotKeyInventoryComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("핫키 가져오기 실패"));
+		return;
+	}
 	
 	// 2. 슬롯 유효 체크
 	FDZInventoryCompData& InventoryCompData = HotKeyInventoryComponent->GetInventoryData();
-	if (!InventoryCompData.InventoryDataArray.IsValidIndex(InTargetHotKeyIndex)) return;
+	if (!InventoryCompData.InventoryDataArray.IsValidIndex(InTargetHotKeyIndex))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("핫키 슬롯 유효 체크 실패"));
+		return;
+	}
 	
 	// 3. 정적 데이터 체크
 	UDZItemDataSubSystem* ItemDataSubSystem = UDZItemDataSubSystem::Get(GetWorld());
-	if (!IsValid(ItemDataSubSystem)) return;
+	if (!IsValid(ItemDataSubSystem))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("정적 데이터 시스템 체크 실패"));
+		return;
+	}
 	FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(InventoryCompData.InventoryDataArray[InTargetHotKeyIndex].ItemData.StaticDataID);
-	if (ItemStaticData == nullptr) return;
-	
-	TSubclassOf<AActor> FoundClassPtr = ItemStaticData->ItemStaticInfo.ItemClass;
-	if (FoundClassPtr == nullptr)
+	if (ItemStaticData == nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Map에 해당 ID가 없음"));
+		UE_LOG(LogTemp, Warning, TEXT("정적 데이터 가져오기 실패 "));
 		return;
 	}
 	
-	UClass* ActualClass = FoundClassPtr.Get(); 
-	if (!ActualClass)
+	CurrentVisualActor = SpawnLogic(*ItemStaticData);
+	if (!IsValid(CurrentVisualActor))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : TSubclassOf 내부 클래스가 None임"));
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual: CurrentVisualActor == nullptr"));
 	}
-	
-	// 6. 스폰 옵션 및 오너 설정 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Owner = GetOwner();
-	SpawnParams.Instigator = GetOwner()->GetInstigator();
-
-	// 7. 스폰 실시 
-	AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(ActualClass, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation(), SpawnParams);
-	if (!IsValid(SpawnActor))
+	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Spawn Failed"));
-		return;
-	}
-	
-	ADZItemActorBase* CaseItem = Cast<ADZItemActorBase>(SpawnActor);
-	if (!IsValid(CaseItem))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : CaseItem Invalid"));
-		if (IsValid(CurrentVisualActor)) CurrentVisualActor->Destroy();
-		return;
-	}
-	
-	CurrentVisualActor = CaseItem;
-	
-	// 8. 피직스, 콜리전 끄기 
-	CurrentVisualActor->SetTogglePhysicsAndCollisions(false);
-	
-	// 9. 오너의 메쉬 소켓에 붙이기 (예: "Hand_R_Socket")
-	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
-	if (!IsValid(OwnerChar))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : OwnerChar Invalid"));
-		CurrentVisualActor->Destroy();
-		return;
-	}
-	if (!IsValid(OwnerChar->GetMesh()))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TrySpawnVisual : Mesh Invalid"));
-		CurrentVisualActor->Destroy();
-		return;
-	}
-	bool IsAttachSuccess = CurrentVisualActor->AttachToComponent(OwnerChar->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, ItemStaticData->ItemStaticInfo.HotKeyAttachSocketName);
-	if (!IsAttachSuccess)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("TrySpawnVisual : Attach Failed"));
-		CurrentVisualActor->Destroy();
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("TrySpawnVisual: CurrentVisualActor 성공"));
 	}
 }
 
 void UDZHotKeyEquipVisualComponent::HideSpawnVisual()
 {
 	// 서버에서만 실시
-	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HideSpawnVisual: 핫키 가져오기 실패"));
+		return;
+	}
 	
-	if (!IsValid(CurrentVisualActor)) return;
+	if (!IsValid(CurrentVisualActor))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HideSpawnVisual: 유효하지 않음"));
+		return;
+	}
+	
 	CurrentVisualActor->Destroy();
 	CurrentVisualActor = nullptr;
 }
@@ -129,7 +105,11 @@ void UDZHotKeyEquipVisualComponent::HideSpawnVisual()
 void UDZHotKeyEquipVisualComponent::SwapSpawnVisual(int32 InTargetHotKeyIndex)
 {
 	// 서버에서만 실시
-	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return;
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HideSpawnVisual: 핫키 가져오기 실패"));
+		return;
+	}
 	
 	// 기존꺼 일단 지우고
 	HideSpawnVisual();

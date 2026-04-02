@@ -15,4 +15,5 @@ enum class EDZInventoryCompType : uint8
 	
 	// 플레이어
 	PlayerHotKey	UMETA(DisplayName = "HotKey"),
+	PlayerBody		UMETA(DisplayName = "Body"),
 };

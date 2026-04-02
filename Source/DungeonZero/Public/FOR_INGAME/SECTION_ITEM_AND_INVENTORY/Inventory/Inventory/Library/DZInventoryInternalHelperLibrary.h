@@ -29,5 +29,11 @@ public:
 	
 	// 스택 슬롯에 넣기 
 	static bool AddItemToStackSlot_Lib(const UObject* InWorldContextObject, FDZInventorySlotData& InTargetSlot, FDZItemRuntimeData& InItemRuntimeData);
+
+	// 타입에 맞는 슬롯에 넣기
+	static bool AddItemToMatchSlotType_Lib(const UObject* InWorldContextObject, FDZInventoryCompData& InInventoryCompData, EDZInventorySlotType& InTargetSlotType, FDZItemRuntimeData& InItemRuntimeData);
+	
+	// 타입에 맞는 슬롯 가져오기
+	static FDZInventorySlotData* GetSlotDatabyType_Lib(FDZInventoryCompData& InInventoryCompData, EDZInventorySlotType& InTargetSlotType);
 	
 };

@@ -1,18 +1,14 @@
-﻿// All CopyRight From YulRyongGameStudio //
+﻿// All CopyRight by BooZaGameStudio // 
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
-#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
-#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZITemStaticData.h"
-#include "DZEquipVisualMasterComponent.generated.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/A_Master/DZInventoryMasterComponent.h"
+#include "DZBodyEquipInventoryComponent.generated.h"
 
-/*
- *
- */
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class DUNGEONZERO_API UDZEquipVisualMasterComponent : public UActorComponent
+class DUNGEONZERO_API UDZBodyEquipInventoryComponent : public UDZInventoryMasterComponent
 {
 	GENERATED_BODY()
 	
@@ -23,11 +19,8 @@ class DUNGEONZERO_API UDZEquipVisualMasterComponent : public UActorComponent
 	// 라이프 사이클
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
-	UDZEquipVisualMasterComponent();
+	UDZBodyEquipInventoryComponent();
 
-#pragma endregion	
+#pragma endregion
 //======================================================================================================================	
-	
-protected:
-	ADZItemActorBase* SpawnLogic(FDZITemStaticData& InItemStaticData);
 };

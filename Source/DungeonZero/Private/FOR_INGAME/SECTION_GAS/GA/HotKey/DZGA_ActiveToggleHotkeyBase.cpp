@@ -44,6 +44,7 @@ void UDZGA_ActiveToggleHotkeyBase::ActivateAbility(const FGameplayAbilitySpecHan
 	{
 		HotKeyEquipVisualComponent->TrySpawnVisual(TargetHotKeyIndex);
 		HotKeyInventoryComponent->SetActiveHotKeyIndex(TargetHotKeyIndex);
+		UE_LOG(DZPlayerGA_ActiveToggleHotKey, Warning, TEXT("핫키 인덱스가 -1인지 체크  CurrentHotKeyIndex : %d"),  HotKeyInventoryComponent->GetActiveHotKeyIndex());
 		K2_EndAbility(); 
 		return;
 	}
@@ -53,6 +54,7 @@ void UDZGA_ActiveToggleHotkeyBase::ActivateAbility(const FGameplayAbilitySpecHan
 	{
 		HotKeyEquipVisualComponent->HideSpawnVisual();
 		HotKeyInventoryComponent->SetActiveHotKeyIndex(-1);
+		UE_LOG(DZPlayerGA_ActiveToggleHotKey, Warning, TEXT("핫키 인덱스가 같은지 체크  CurrentHotKeyIndex : %d"),  HotKeyInventoryComponent->GetActiveHotKeyIndex());
 		K2_EndAbility(); 
 		return;
 	}
@@ -62,6 +64,7 @@ void UDZGA_ActiveToggleHotkeyBase::ActivateAbility(const FGameplayAbilitySpecHan
 	{
 		HotKeyEquipVisualComponent->SwapSpawnVisual(TargetHotKeyIndex);
 		HotKeyInventoryComponent->SetActiveHotKeyIndex(TargetHotKeyIndex);
+		UE_LOG(DZPlayerGA_ActiveToggleHotKey, Warning, TEXT("다른 핫키 인덱스인지 체크 CurrentHotKeyIndex : %d"),  HotKeyInventoryComponent->GetActiveHotKeyIndex());
 		K2_EndAbility(); return;
 	}
 	

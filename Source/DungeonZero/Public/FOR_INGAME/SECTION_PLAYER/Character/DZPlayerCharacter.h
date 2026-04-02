@@ -31,8 +31,6 @@ class DUNGEONZERO_API ADZPlayerCharacter : public ACharacter, public IAbilitySys
 	
 public:
 	virtual UDZHotKeyInventoryComponent* GetDZHotKeyInventoryComponent_Implementation() override { return HotKeyInventoryComponent; };
-	virtual UDZInteractComponent* GetDZInteractComponent_Implementation() override { return InteractComponent; };
-	virtual UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualComponent_Implementation() override { return HotKeyEquipVisualComponent; } 
 	
 #pragma endregion
 //======================================================================================================================	
@@ -86,7 +84,12 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━
 	// 인터렉트_섹션
 	//━━━━━━━━━━━━━━━━━━━━
-		
+	
+public:
+	// IPlayerCompGetterInterface ~
+	virtual UDZInteractComponent* GetDZInteractComponent_Implementation() override { return InteractComponent; };
+	// ~ IPlayerCompGetterInterface
+	
 protected:
 	// 컴포넌트
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
@@ -132,11 +135,15 @@ protected:
 public:
 	// IDZInventoryOwnerActionInterface~ 
 	virtual UDZHotKeyInventoryComponent* GetHotKeyComponent_Implementation() override { return HotKeyInventoryComponent; };
+	virtual UDZBodyEquipInventoryComponent* GetBodyEquipInventoryComponent_Implementation() override { return BodyEquipInventoryComponent;}
 	// ~ IDZInventoryOwnerActionInterface
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	TObjectPtr<UDZHotKeyInventoryComponent> HotKeyInventoryComponent = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<UDZBodyEquipInventoryComponent> BodyEquipInventoryComponent = nullptr;
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region 인벤토리_비쥬얼
@@ -144,10 +151,18 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━
 	// 인벤토리_비쥬얼
 	//━━━━━━━━━━━━━━━━━━━━	
+public:
+	// IPlayerCompGetterInterface ~ 
+	virtual UDZHotKeyEquipVisualComponent* GetDZHotKeyEquipVisualComponent_Implementation() override { return HotKeyEquipVisualComponent; } 
+	virtual UDZBodyEquipVisualComponent* GetBodyEquipVisualComponent_Implementation() override { return BodyEquipVisualComponent;}
+	// ~ IPlayerCompGetterInterface
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	TObjectPtr<UDZHotKeyEquipVisualComponent> HotKeyEquipVisualComponent = nullptr;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<UDZBodyEquipVisualComponent> BodyEquipVisualComponent = nullptr;
 
 #pragma endregion
 //======================================================================================================================	

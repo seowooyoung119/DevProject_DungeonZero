@@ -133,10 +133,15 @@ bool UDZInventoryMasterComponent::DropItemToFromInventory_Implementation(int32 T
 	// 스폰 요청
 	UDZItemSpawnSubSystem* ItemSpawnSubSystem = UDZItemSpawnSubSystem::Get(this);
 	if (!IsValid(ItemSpawnSubSystem)) return false;
-	 ADZItemActorBase* SpawnItem = ItemSpawnSubSystem->DropItemFromSomeWhere(InventoryData.InventoryDataArray[TargetSlotIndex].ItemData, DeleteCount, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
+	ADZItemActorBase* SpawnItem = ItemSpawnSubSystem->DropItemFromSomeWhere(InventoryData.InventoryDataArray[TargetSlotIndex].ItemData, DeleteCount, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
 	
 	// 스폰 성공 체크
-	if (!IsValid(SpawnItem)) return false;
+	if (!IsValid(SpawnItem))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("dDropItemToFromInventory_Implementation :  스폰 성공 체크 실패"));
+		UE_LOG(LogTemp, Warning, TEXT("dDropItemToFromInventory_Implementation :  네브 메쉬 깔린지 확인할 것"));
+		return false;
+	}
 	
 	// 차감 실시 
 	return UDZInventorySlotInternalHelperLibrary::ReduceItemFromSlot_Lib(InventoryData.InventoryDataArray[TargetSlotIndex], DeleteCount);

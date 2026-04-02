@@ -3,6 +3,8 @@
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventorySlotInternalHelperLibrary.h"
 
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
+
 bool UDZInventorySlotInternalHelperLibrary::IsSlotEmpty_Lib(FDZInventorySlotData& InInventorySlotData)
 {
 	// 동적 데이터 스택 체크
@@ -39,3 +41,18 @@ bool UDZInventorySlotInternalHelperLibrary::RemoveItemFromSlot_Lib(FDZInventoryS
 	
 	return true;
 }
+
+bool UDZInventorySlotInternalHelperLibrary::IsSlotCanAcceptItem_Lib(const UObject* InWorldContextObject, FDZInventorySlotData& InInventorySlotData, FDZItemRuntimeData& InItemRuntimeData)
+{
+	// 정적 데이터 가져오기
+	UDZItemDataSubSystem* ItemDataSubSystem = UDZItemDataSubSystem::Get(InWorldContextObject);
+	if (!IsValid(ItemDataSubSystem)) return false;
+	FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(InItemRuntimeData.StaticDataID);
+	if (!ItemStaticData) return false;
+	
+	// 들어올 수 있는 타입 확인
+	if (!ItemStaticData->ItemStaticInfo.MatchInventorySlotType.Contains(InInventorySlotData.InventorySlotType)) return false;
+	
+	return true;
+}
+

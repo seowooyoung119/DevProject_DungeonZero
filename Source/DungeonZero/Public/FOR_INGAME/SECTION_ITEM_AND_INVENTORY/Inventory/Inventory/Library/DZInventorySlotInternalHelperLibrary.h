@@ -26,4 +26,7 @@ public:
 	// 싹 지우기
 	static bool RemoveItemFromSlot_Lib(FDZInventorySlotData& InInventorySlotData);
 
+	// 이 슬롯에 들어올 수 있는가?
+	static bool IsSlotCanAcceptItem_Lib(const UObject* InWorldContextObject, FDZInventorySlotData& InInventorySlotData, FDZItemRuntimeData& InItemRuntimeData);
+	
 };
