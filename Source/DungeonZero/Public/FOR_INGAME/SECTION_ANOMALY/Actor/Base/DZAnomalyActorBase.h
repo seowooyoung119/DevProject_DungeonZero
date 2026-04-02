@@ -27,6 +27,7 @@ class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystem
 public:
 	ADZAnomalyActorBase();
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 #pragma endregion
 //======================================================================================================================		

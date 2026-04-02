@@ -43,6 +43,16 @@ void ADZAnomalyActorBase::BeginPlay()
 	ActivateAnomaly_internal(AnomalyAbilitySystemComponent);
 }
 
+void ADZAnomalyActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	// 활성화된 어빌리티 정리
+	if (AnomalyAbilitySystemComponent)
+	{
+		AnomalyAbilitySystemComponent->CancelAllAbilities();
+	}
+	Super::EndPlay(EndPlayReason);
+}
+
 #pragma endregion
 //======================================================================================================================		
 #pragma region 어노말리
