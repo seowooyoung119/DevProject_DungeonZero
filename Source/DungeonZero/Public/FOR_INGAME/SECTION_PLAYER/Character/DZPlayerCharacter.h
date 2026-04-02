@@ -164,4 +164,5 @@ protected:
 	TObjectPtr<USpotLightComponent> BaseViewLightComponent = nullptr;
 	
 #pragma endregion	
+//======================================================================================================================	
 };

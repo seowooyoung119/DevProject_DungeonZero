@@ -162,7 +162,7 @@ void ADZClockActor::CheckAndPlayChime(float NewTime)
 
 void ADZClockActor::PlayChimeSound(int32 Count)
 {
-	if (!ChimeSound || Count <= 0) return;
+	if (!IsValid(ChimeSound) || Count <= 0) return;
 
 	// 1. 재생해야 할 총 횟수 설정
 	RemainingChimesToPlay = Count;
@@ -189,7 +189,7 @@ void ADZClockActor::PlaySingleChime()
 	}
 
 	// 소리 재생
-	UGameplayStatics::PlaySoundAtLocation(this, ChimeSound, GetActorLocation());
+	if (IsValid(ChimeSound)) UGameplayStatics::PlaySoundAtLocation(this, ChimeSound, GetActorLocation());
 
 	// 로그
 	if (bWantPrintDebug)
