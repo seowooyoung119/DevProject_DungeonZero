@@ -9,6 +9,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Interface/ForOwner/DZInventoryOwnerActionInterface.h"
 #include "DZPlayerCharacter.generated.h"
 
+class USpotLightComponent;
 class UDZGiveGAGEDataAsset;
 class UDZInteractComponent;
 class UCameraComponent;
@@ -149,4 +150,18 @@ protected:
 
 #pragma endregion
 //======================================================================================================================	
+#pragma region 기본 시야 밝기
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 인벤토리_비쥬얼
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+protected:
+	// 로컬 플레이어 체크해서 기본 밝기 세팅하는 함수 
+	void InitializeBaseViewLightComponent_internal();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<USpotLightComponent> BaseViewLightComponent = nullptr;
+	
+#pragma endregion	
 };

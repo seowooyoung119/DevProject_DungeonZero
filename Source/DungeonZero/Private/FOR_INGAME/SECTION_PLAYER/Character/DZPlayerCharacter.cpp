@@ -2,11 +2,12 @@
 
 
 #include "DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/PointLightComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_INPUT/Comp/DZInputHandleComponent.h"
 #include "FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
@@ -15,7 +16,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Net/UnrealNetwork.h"
 
 //======================================================================================================================	
 #pragma region OnRep
@@ -80,6 +80,10 @@ ADZPlayerCharacter::ADZPlayerCharacter()
 	
 	// 핫키 비쥬얼
 	HotKeyEquipVisualComponent = CreateDefaultSubobject<UDZHotKeyEquipVisualComponent>(TEXT("HotKeyEquipVisualComponent"));
+	
+	// 기본 밝기 시야 
+	BaseViewLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("BaseViewLightComponent"));
+	BaseViewLightComponent->SetupAttachment(CameraComponent);
 }
 
 void ADZPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -108,6 +112,9 @@ void ADZPlayerCharacter::PossessedBy(AController* NewController)
 	ASC->InitAbilityActorInfo(GetPlayerState(), this);
 	// GA 부여
 	InitGAS_internal(ASC);
+	
+	// 기본 밝기 시야 초기화
+	InitializeBaseViewLightComponent_internal();
 }
 
 void ADZPlayerCharacter::OnRep_PlayerState()
@@ -119,6 +126,9 @@ void ADZPlayerCharacter::OnRep_PlayerState()
 	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPlayerState());
 	if (!IsValid(ASC)) return;
 	ASC->InitAbilityActorInfo(GetPlayerState(), this);
+	
+	// 기본 밝기 시야 초기화
+	InitializeBaseViewLightComponent_internal();
 }
 
 #pragma endregion
@@ -146,6 +156,28 @@ UAbilitySystemComponent* ADZPlayerCharacter::GetAbilitySystemComponent() const
 	if (!IsValid(ASC)) return nullptr;
 	return ASC;
 }
+
+#pragma endregion
+//======================================================================================================================
+#pragma region 기본 시야 밝기
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 인벤토리_비쥬얼
+	//━━━━━━━━━━━━━━━━━━━━	
+
+void ADZPlayerCharacter::InitializeBaseViewLightComponent_internal()
+{
+	// 로컬 플레이어 체크
+	if (IsLocallyControlled())
+	{
+		BaseViewLightComponent->SetHiddenInGame(false);
+	}
+	else
+	{
+		BaseViewLightComponent->SetHiddenInGame(true);
+	}
+}
+
 
 #pragma endregion
 //======================================================================================================================	

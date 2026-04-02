@@ -25,5 +25,5 @@ public:
 	
 	// 싹 지우기
 	static bool RemoveItemFromSlot_Lib(FDZInventorySlotData& InInventorySlotData);
-	
+
 };

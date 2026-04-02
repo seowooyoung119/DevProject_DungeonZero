@@ -62,7 +62,7 @@ void ADZStaticMeshItem::SetTogglePhysicsAndCollisions(bool InWantOn)
 {
 	bIsNotPickItem = InWantOn;
 	ItemStaticMeshComp->SetCollisionEnabled(InWantOn ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
-	
+	if (HasAuthority()) ItemStaticMeshComp->SetSimulatePhysics(InWantOn);
 }
 
 #pragma endregion

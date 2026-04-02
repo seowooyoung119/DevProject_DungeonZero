@@ -4,6 +4,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemSpawnSubSystem.h"
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemSpawnUtilsLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
 
 //======================================================================================================================	
@@ -61,7 +62,7 @@ ADZItemActorBase* UDZItemSpawnSubSystem::SpawnNewItem(int32 InSpawnItemID, int32
 	return SpawnedItemActor;
 }
 
-ADZItemActorBase* UDZItemSpawnSubSystem::DropItemFromSomeWhere(FDZItemRuntimeData& InItemRuntimeData, FVector& InDropLocation, FRotator& InDropRotation)
+ADZItemActorBase* UDZItemSpawnSubSystem::DropItemFromSomeWhere(FDZItemRuntimeData& InItemRuntimeData, const int32& DropCount, const FVector& InDropLocation, const FRotator& InDropRotation)
 {
 	// 정적 데이터 가져오기
 	UDZItemDataSubSystem* ItemDataSubSystem = UDZItemDataSubSystem::Get(this);
@@ -73,12 +74,34 @@ ADZItemActorBase* UDZItemSpawnSubSystem::DropItemFromSomeWhere(FDZItemRuntimeDat
 	if (!IsValid(GetWorld())) return nullptr;
 	if (!IsValid(ItemStaticData->ItemStaticInfo.ItemClass)) return nullptr;
 	
+	// 스폰 가능한 안전한 위치 가져오기  
+	float SafeDropMinRadius = 100.f;
+	float SafeDropMaxRadius = 150.f;
+	int32 MaxTryCount = 5;
+	FVector SafeDropLocation;
+	bool FoundSpawnLocation = UDZItemSpawnUtilsLibrary::GetSafeLocationOnNavMeshInRing(this, InDropLocation, SafeDropLocation, SafeDropMinRadius, SafeDropMaxRadius, MaxTryCount);
+	
+	// 스폰 위치 체크
+	if (FoundSpawnLocation == false) return nullptr;
+	
+	// 기울기 더하기 (1자 서기 방지)
+	FRotator TiltOffset = FRotator(FMath::RandRange(15.f, 45.f), 0.f, FMath::RandRange(15.f, 45.f));
+	FQuat CombinedQuat = FQuat(InDropRotation) * FQuat(TiltOffset);
+	FRotator FinalRotation = CombinedQuat.Rotator();
+	
 	// 스폰 실시 
-	ADZItemActorBase* SpawnedItemActor = GetWorld()->SpawnActor<ADZItemActorBase>(ItemStaticData->ItemStaticInfo.ItemClass, InDropLocation, InDropRotation);
+	ADZItemActorBase* SpawnedItemActor = GetWorld()->SpawnActor<ADZItemActorBase>(ItemStaticData->ItemStaticInfo.ItemClass, SafeDropLocation, FinalRotation);
 	if (!IsValid(SpawnedItemActor)) return nullptr;
 	
-	// 기존 데이터 주입 
-	SpawnedItemActor->SetItemRuntimeData(InItemRuntimeData);
+	// 기존 데이터 주입 (스택 수 조절해서)
+	FDZItemRuntimeData HandledDropItemRuntimeData = InItemRuntimeData;
+	HandledDropItemRuntimeData.DynamicData.CurrentStack = DropCount;
+	SpawnedItemActor->SetItemRuntimeData(HandledDropItemRuntimeData);
+	
+	// 피직스 켜기
+	SpawnedItemActor->SetTogglePhysicsAndCollisions(true);
+	
+	// 아이템 액터 포인터 반환
 	return SpawnedItemActor;
 }
 

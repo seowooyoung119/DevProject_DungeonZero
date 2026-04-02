@@ -244,6 +244,21 @@ void UDZInputHandleComponent::PickUpItem_internal(const FInputActionValue& Value
 
 void UDZInputHandleComponent::DropItem_internal(const FInputActionValue& Value)
 {
+	if (!IsValid(OwnerCharacter)) return;
+	if (!IsValid(OwnerController)) return;
+	
+	// 현재 활성화 중인 핫키 인벤토리 컴포넌트 가져오기 
+	UDZHotKeyInventoryComponent* HotKeyInventoryComponent =	IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(OwnerCharacter);
+	if (!IsValid(HotKeyInventoryComponent))return;
+	
+	// 현재 활성화 중인 핫키 인덱스 가져오기 
+	int32 CurrentHotKeyIndex = HotKeyInventoryComponent->GetActiveHotKeyIndex();
+	
+	// 유효한 핫키 인덱스인지 확인 
+	if (CurrentHotKeyIndex == -1) return;
+	
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
+	if (IsValid(ASC)) ASC->TryActivateAbilitiesByTag(DZ::Inventory::DZ_INVNETORY_DROP_ITEM.GetTag().GetSingleTagContainer());
 }
 
 #pragma endregion

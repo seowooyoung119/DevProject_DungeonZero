@@ -16,5 +16,6 @@ class DUNGEONZERO_API UDZGetControllerLibrary : public UBlueprintFunctionLibrary
 
 public:
 	static APlayerController* GetPlayerControllerFromComponent(AActor* InOwner); 
+	static APlayerController* GetPlayerControllerFromActor(AActor* InOwner);
 
 };

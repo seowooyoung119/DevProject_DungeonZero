@@ -100,6 +100,7 @@ protected:
 #pragma region 피직스_콜리전
 	
 public:
+	// 자식들이 상속해서 코드 채울 것 
 	virtual void SetTogglePhysicsAndCollisions(bool InWantOn);
 	
 protected:

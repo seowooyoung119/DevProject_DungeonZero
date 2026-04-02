@@ -63,6 +63,7 @@ void ADZSkeletalMeshItem::SetTogglePhysicsAndCollisions(bool InWantOn)
 {
 	bIsNotPickItem = InWantOn;
 	ItemSkeletalMeshComp->SetCollisionEnabled(InWantOn ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
+	if (HasAuthority()) ItemSkeletalMeshComp->SetSimulatePhysics(InWantOn);
 }
 
 #pragma endregion

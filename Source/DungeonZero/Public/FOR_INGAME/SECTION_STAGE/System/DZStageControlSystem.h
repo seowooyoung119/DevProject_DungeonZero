@@ -91,6 +91,10 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━
 	// Data
 	//━━━━━━━━━━━━━━━━━━━━
+	
+public:
+	FDZStageBalanceRow* GetStageBalanceRow(const int32 StageLevel) { return StageDataMap.Find(StageLevel);};
+	
 protected:
 	// 현재 스테이지 레벨 (기본 0)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")

@@ -7,7 +7,9 @@
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZInventoryChannel.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventoryInternalHelperLibrary.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventorySlotInternalHelperLibrary.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemCheckLibrary.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemSpawnSubSystem.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "Net/UnrealNetwork.h"
 
@@ -122,10 +124,22 @@ bool UDZInventoryMasterComponent::RemoveItemFromInventory_Implementation(int32 T
 
 bool UDZInventoryMasterComponent::DropItemToFromInventory_Implementation(int32 TargetSlotIndex, int32 DeleteCount)
 {
+	// 오너 체크, 서버 체크 
+	if (!IsValid(GetOwner()) || !GetOwner()->HasAuthority()) return false;
 	
+	// 슬롯 유효성 체크 
+	if (!InventoryData.InventoryDataArray.IsValidIndex(TargetSlotIndex)) return false;
 	
+	// 스폰 요청
+	UDZItemSpawnSubSystem* ItemSpawnSubSystem = UDZItemSpawnSubSystem::Get(this);
+	if (!IsValid(ItemSpawnSubSystem)) return false;
+	 ADZItemActorBase* SpawnItem = ItemSpawnSubSystem->DropItemFromSomeWhere(InventoryData.InventoryDataArray[TargetSlotIndex].ItemData, DeleteCount, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
 	
-	return false;
+	// 스폰 성공 체크
+	if (!IsValid(SpawnItem)) return false;
+	
+	// 차감 실시 
+	return UDZInventorySlotInternalHelperLibrary::ReduceItemFromSlot_Lib(InventoryData.InventoryDataArray[TargetSlotIndex], DeleteCount);
 }
 
 bool UDZInventoryMasterComponent::SwapItemFromThisInventoryToAnotherInventory_Implementation(FDZItemRuntimeData InItemRuntimeData)

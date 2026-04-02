@@ -38,7 +38,7 @@ public:
 	// 새로운 아이템 생성할 때 호출 
 	ADZItemActorBase* SpawnNewItem(int32 InSpawnItemID, int32 InWantStackSize, FVector& InSpawnLocation, FRotator& InSpawnRotation);	
 	// 기존 아이템 드랍할 때 호출
-	ADZItemActorBase* DropItemFromSomeWhere(FDZItemRuntimeData& InItemRuntimeData, FVector& InDropLocation, FRotator& InDropRotation);
+	ADZItemActorBase* DropItemFromSomeWhere(FDZItemRuntimeData& InItemRuntimeData, const int32& DropCount, const FVector& InDropLocation, const FRotator& InDropRotation);
 	
 #pragma endregion
 //======================================================================================================================		
