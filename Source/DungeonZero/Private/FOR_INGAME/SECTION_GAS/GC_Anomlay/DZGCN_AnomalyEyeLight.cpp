@@ -16,6 +16,8 @@
 
 ADZGCN_AnomalyEyeLight::ADZGCN_AnomalyEyeLight()
 {
+	bReplicates = true;
+	
 	bAutoDestroyOnRemove = true; 
 
 	EyeLightRoot = CreateDefaultSubobject<USceneComponent>(TEXT("EyeLightRoot"));
@@ -45,17 +47,24 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 	if (!IsValid(EyeSoundComponent))  return false;
 	
 	// 타겟 및 설정 체크
-	if (!IsValid(MyTarget)) return false;
 	UStaticMeshComponent* TargetMesh = UDZAttachUtilLibrary::GetStaticMeshComponentByMeshTag(MyTarget, EyeLightTargetMeshTag);
-	if (!IsValid(TargetMesh)) return false;
-	
+	if (!IsValid(TargetMesh))
+	{
+		if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트: 타겟 및 설정 체크"))
+		else UE_LOG(LogTemp, Warning, TEXT("클라이언트: 타겟 및 설정 체크"));
+		return false;
+	}
 	// 부착 
-	bool bAttachIsSuccess = this->AttachToComponent(TargetMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachSocketName);
-    if (!bAttachIsSuccess) return false;
-	
+	bool bAttachIsSuccess = AttachToComponent(TargetMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachSocketName);
+    if (!bAttachIsSuccess)
+    {
+    	if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트 : 부착"))
+    	else UE_LOG(LogTemp, Warning, TEXT("클라이언트 : 부착"));
+	    return false;
+    }
 	// 후 보정
-	this->SetActorRelativeLocation(FVector::ZeroVector);
-	this->SetActorRelativeRotation(FRotator::ZeroRotator);
+	SetActorRelativeLocation(FVector::ZeroVector);
+	SetActorRelativeRotation(FRotator::ZeroRotator);
 	
 	// 연출 시작
 	EyeLightVFXEffect->Activate();
@@ -63,6 +72,11 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 	EyeSoundComponent->Activate();
 	EyeSoundComponent->Play();
 
+	
+	if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트"))
+	else UE_LOG(LogTemp, Warning, TEXT("클라이언트"));
+	
+	
 	return true;	
 }
 
