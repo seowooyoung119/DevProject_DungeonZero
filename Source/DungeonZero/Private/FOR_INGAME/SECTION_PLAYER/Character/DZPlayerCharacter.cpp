@@ -12,6 +12,7 @@
 #include "FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/HotKey/DZHotKeyEquipVisualComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
+#include "FOR_INGAME/SECTION_SOUND/Comp/DZFootstepSoundComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -83,6 +84,9 @@ ADZPlayerCharacter::ADZPlayerCharacter()
 	// 기본 밝기 시야 
 	BaseViewLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("BaseViewLightComponent"));
 	BaseViewLightComponent->SetupAttachment(CameraComponent);
+	
+	// Footstep
+	FootstepSoundComponent = CreateDefaultSubobject<UDZFootstepSoundComponent>(TEXT("FootstepSoundComponent"));
 }
 
 void ADZPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
