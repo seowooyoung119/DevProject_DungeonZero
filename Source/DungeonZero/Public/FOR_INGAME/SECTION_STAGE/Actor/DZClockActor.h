@@ -106,7 +106,7 @@ protected:
 	FTimerHandle ChimeTimerHandle;
 	
 	// 종소리 간격 (에디터에서 조절 가능하게)
-	UPROPERTY(EditAnywhere, Category = "DZ|Settings")
+	UPROPERTY(EditAnywhere, Category = "DZ")
 	float ChimeInterval = 1.0f;
 	
 	// 남은 종소리 횟수 카운터

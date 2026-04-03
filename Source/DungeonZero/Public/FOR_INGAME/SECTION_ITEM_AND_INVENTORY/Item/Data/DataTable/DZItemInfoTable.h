@@ -18,6 +18,13 @@ struct DUNGEONZERO_API FDZItemInfoTable : public FTableRowBase
 {
 	GENERATED_BODY()
 	
+//======================================================================================================================	
+#pragma region 기본_정보
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 기본_정보
+	//━━━━━━━━━━━━━━━━━━━━	
+	
 	// 아이템 ID 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " TS | Item")
 	int32 ItemID = -1;
@@ -26,6 +33,14 @@ struct DUNGEONZERO_API FDZItemInfoTable : public FTableRowBase
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " TS | Item")
 	TSubclassOf<AActor> ItemClass;
 	
+#pragma endregion
+//======================================================================================================================	
+#pragma region UI정보
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// UI정보
+	//━━━━━━━━━━━━━━━━━━━━
+		
 	// 아이템 아이콘 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TS | Item")
 	TSoftObjectPtr<UTexture2D> ItemIcon;
@@ -41,6 +56,14 @@ struct DUNGEONZERO_API FDZItemInfoTable : public FTableRowBase
 	// 아이템 상호작용 키  (영어)
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TS | Item")
 	FText ItemInteractKeyType = FText::FromString(TEXT("No Key Type Edit"));
+	
+#pragma endregion
+//======================================================================================================================	
+#pragma region 인벤토리_정보
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 인벤토리_정보
+	//━━━━━━━━━━━━━━━━━━━━	
 	
 	// 들어갈 수 있는 인벤토리 타입 (기본값 : 플레이어 핫키, 가방 / AI 가방 / 보관함 / 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " TS | Item")
@@ -58,7 +81,17 @@ struct DUNGEONZERO_API FDZItemInfoTable : public FTableRowBase
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " TS | Item")
 	FName HotKeyAttachSocketName =  NAME_None;
 	
+#pragma endregion
+//======================================================================================================================	
+#pragma region 아이템_어빌리티
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 아이템_어빌리티
+	//━━━━━━━━━━━━━━━━━━━━	
 	// 아이템 사용 시 발동 어빌리티 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " TS | Item")
 	TSubclassOf<UGameplayAbility> ItemGA = nullptr; 
+	
+#pragma endregion
+//======================================================================================================================	
 };
