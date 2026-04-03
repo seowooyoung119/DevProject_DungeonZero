@@ -1,0 +1,17 @@
+﻿// All CopyRight by BooZaGameStudio // 
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "NativeGameplayTags.h"
+
+namespace DZ
+{
+	namespace GA
+	{	
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_GA_ANOMALY_BLOODDECAL);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_GA_ANOMALY_BLOODFILL);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_GA_ANOMALY_FIRE);
+		
+	}
+}

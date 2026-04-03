@@ -4,23 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "DZGA_AnomalyBloodDecal.generated.h"
+#include "DZGA_AnomalyBloodFill.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API UDZGA_AnomalyBloodDecal : public UGameplayAbility
+class DUNGEONZERO_API UDZGA_AnomalyBloodFill : public UGameplayAbility
 {
 	GENERATED_BODY()
-	//======================================================================================================================	
+//======================================================================================================================	
 #pragma region 라이프_사이클
 
 	//━━━━━━━━━━━━━━━━━━━━
 	// 라이프 사이클
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
-	UDZGA_AnomalyBloodDecal();
+	UDZGA_AnomalyBloodFill();
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 								 const FGameplayAbilityActivationInfo ActivationInfo,
 								 const FGameplayEventData* TriggerEventData) override;
@@ -29,5 +29,5 @@ public:
 							bool bWasCancelled) override;
 
 #pragma endregion
-	//======================================================================================================================	
+//======================================================================================================================	
 };

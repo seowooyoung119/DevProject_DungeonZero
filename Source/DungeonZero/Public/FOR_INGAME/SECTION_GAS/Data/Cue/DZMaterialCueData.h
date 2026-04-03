@@ -20,17 +20,27 @@ struct FDZMaterialSlotOverride
 	TObjectPtr<UMaterialInterface> OverrideMaterial = nullptr;
 };
 
-// GameplayCueTag에 매핑할 머티리얼 오버라이드 데이터
+// 타겟 메시 머티리얼 오버라이드 데이터
 USTRUCT(BlueprintType)
 struct FDZMaterialCueData
 {
 	GENERATED_BODY()
 
-	// 오버라이드 대상 메시 컴포넌트 이름
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ|Cue")
-	FName MeshCompName = NAME_None;
-
+	// 타겟 메시 컴포넌트 태그
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Material")
+	FName TargetMeshTag = "MainMesh";
+	
 	// 머티리얼 슬롯 오버라이드 데이터
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ|Cue")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Material")
 	TArray<FDZMaterialSlotOverride> SlotOverrides;
+};
+
+// 머티리얼 오버라이드 데이터 배열 구조체
+USTRUCT(BlueprintType)
+struct FDZMaterialCueDataArray
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Material")
+	TArray<FDZMaterialCueData> MaterialCueDataArray;
 };

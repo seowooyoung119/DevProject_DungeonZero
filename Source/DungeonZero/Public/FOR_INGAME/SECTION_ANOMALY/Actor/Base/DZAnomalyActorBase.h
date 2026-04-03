@@ -6,14 +6,16 @@
 #include "GameFramework/Actor.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "GameplayTagContainer.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
+#include "FOR_INGAME/SECTION_GAS/Interface/DZCueVIsualInterface.h"
 #include "DZAnomalyActorBase.generated.h"
 
 class UDZGiveGAGEDataAsset;
 class UAbilitySystemComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface, public IDZCommonPlayRoleInterface
+class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface, public IDZCommonPlayRoleInterface, public IDZCueVIsualInterface
 {
 	GENERATED_BODY()
 
@@ -49,7 +51,7 @@ protected:
 #pragma endregion
 //======================================================================================================================		
 
-	#pragma region 어노말리
+#pragma region 어노말리
 
 	//━━━━━━━━━━━━━━━━━━━━
 	// 어노말리
@@ -86,5 +88,34 @@ protected:
 	float ReplicatedAnomalyScale = 1.0f;
 
 #pragma endregion
-//======================================================================================================================		
+//======================================================================================================================	
+#pragma region Cue Visual Interface
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// Cue Visual Interface
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+public:
+	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
+	virtual bool GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData) override;
+	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
+	virtual bool GetDecalCueData(const FGameplayTag& GATag, TArray<FDZDecalCueData>& OutData) override;
+	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
+	virtual bool GetMaterialCueData(const FGameplayTag& GATag, TArray<FDZMaterialCueData>& OutData) override;
+
+protected:
+	// 소켓별 나이아가라 이펙트 리스트
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
+	TMap<FGameplayTag, FDZNiagaraCueDataArray> NiagaraMap;
+	
+	// 소켓별 데칼 리스트
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
+	TMap<FGameplayTag, FDZDecalCueDataArray> DecalMap;
+	
+	// 메시 머티리얼 오버라이드 리스트
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
+	TMap<FGameplayTag, FDZMaterialCueDataArray> MaterialMap;
+	
+#pragma endregion
+//======================================================================================================================	
 };

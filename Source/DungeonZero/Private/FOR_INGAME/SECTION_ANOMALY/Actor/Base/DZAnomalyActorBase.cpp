@@ -103,6 +103,42 @@ void ADZAnomalyActorBase::OnRep_AnomalyScale()
 {
 	SetActorScale3D(FVector(ReplicatedAnomalyScale));
 }
+#pragma endregion
+//======================================================================================================================		
+#pragma region Cue Visual Interface
+
+//──────────────
+// Cue Visual Interface
+//──────────────	
+bool ADZAnomalyActorBase::GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData)
+{
+	if (NiagaraMap.Find(GATag))
+	{
+		OutData = NiagaraMap[GATag].NiagaraCueDataArray;
+		return true;
+	}
+	return false;
+}
+
+bool ADZAnomalyActorBase::GetDecalCueData(const FGameplayTag& GATag, TArray<FDZDecalCueData>& OutData)
+{
+	if (DecalMap.Find(GATag))
+	{
+		OutData = DecalMap[GATag].DecalCueDataArray;
+		return true;
+	}
+	return false;
+}
+
+bool ADZAnomalyActorBase::GetMaterialCueData(const FGameplayTag& GATag, TArray<FDZMaterialCueData>& OutData)
+{
+	if (MaterialMap.Find(GATag))
+	{
+		OutData = MaterialMap[GATag].MaterialCueDataArray;
+		return true;
+	}
+	return false;
+}
 
 #pragma endregion
 //======================================================================================================================		

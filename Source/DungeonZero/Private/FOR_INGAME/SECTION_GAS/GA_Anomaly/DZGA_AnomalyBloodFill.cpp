@@ -1,21 +1,23 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_GAS/GA_Anomaly/DZGA_AnomalyBloodDecal.h"
+#include "FOR_INGAME/SECTION_GAS/GA_Anomaly/DZGA_AnomalyBloodFill.h"
+
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/GA/DZGATag.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/GameplayCue/DZGameplayCueTag.h"
 
-UDZGA_AnomalyBloodDecal::UDZGA_AnomalyBloodDecal()
+UDZGA_AnomalyBloodFill::UDZGA_AnomalyBloodFill()
 {
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
-	// 태그 설정
-	AbilityTags.AddTag(DZ::GA::DZ_GA_ANOMALY_BLOODDECAL);
+	
+	// 태그 등록
+	AbilityTags.AddTag(DZ::GA::DZ_GA_ANOMALY_BLOODFILL);
 }
 
-void UDZGA_AnomalyBloodDecal::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+void UDZGA_AnomalyBloodFill::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	const FGameplayEventData* TriggerEventData)
 {
@@ -38,7 +40,7 @@ void UDZGA_AnomalyBloodDecal::ActivateAbility(const FGameplayAbilitySpecHandle H
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL, CueParams);
 }
 
-void UDZGA_AnomalyBloodDecal::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UDZGA_AnomalyBloodFill::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	if (HasAuthority(&ActivationInfo))
@@ -52,4 +54,3 @@ void UDZGA_AnomalyBloodDecal::EndAbility(const FGameplayAbilitySpecHandle Handle
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
-
