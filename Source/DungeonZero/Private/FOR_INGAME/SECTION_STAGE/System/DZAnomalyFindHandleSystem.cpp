@@ -1,7 +1,7 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZAnomalyFindHandleSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZAnomalyFindHandleSystem.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h"
 

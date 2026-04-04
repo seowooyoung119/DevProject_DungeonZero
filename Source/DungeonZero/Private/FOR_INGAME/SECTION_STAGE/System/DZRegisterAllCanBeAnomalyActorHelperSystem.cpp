@@ -1,7 +1,7 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 

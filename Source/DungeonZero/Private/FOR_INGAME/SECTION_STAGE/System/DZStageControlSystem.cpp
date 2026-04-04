@@ -6,10 +6,10 @@
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
 #include "FOR_COMMON/SECTION_LOG/Stage/System/DZStageSystemLOG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.h"
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZChooseBecomeAnomalyActorHelperSystem.h"
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZChangeToAnomalyActorHelperSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZChooseBecomeAnomalyActorHelperSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/System/DZTimeReduceManager.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 

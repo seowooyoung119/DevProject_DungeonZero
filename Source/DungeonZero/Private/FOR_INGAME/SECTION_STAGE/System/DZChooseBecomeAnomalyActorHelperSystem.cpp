@@ -1,7 +1,7 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZChooseBecomeAnomalyActorHelperSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZChooseBecomeAnomalyActorHelperSystem.h"
 
 //======================================================================================================================	
 #pragma region Getter

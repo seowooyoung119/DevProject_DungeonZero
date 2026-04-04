@@ -1,7 +1,7 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_ANOMALY/System/DZChangeToAnomalyActorHelperSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/DZChangeToAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h"
 
