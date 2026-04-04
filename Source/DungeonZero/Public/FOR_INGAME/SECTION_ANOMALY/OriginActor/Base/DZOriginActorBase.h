@@ -24,7 +24,18 @@ class DUNGEONZERO_API ADZOriginActorBase : public AActor, public IDZCommonPlayRo
 	
 public:
 	UFUNCTION()
-	FORCEINLINE void OnRepIsVisible() { SetActorHiddenInGame(IsVisible); }
+	FORCEINLINE void OnRepIsVisible()
+	{
+		if (IsVisible) SetActorHiddenInGame(false);
+		else SetActorHiddenInGame(true);
+	}
+	
+	UFUNCTION()
+	FORCEINLINE void OnRepbCanCollisionAble()
+	{
+		if (bCanCollisionAble) SetActorEnableCollision(true);
+		else SetActorEnableCollision(false);
+	}
 	
 #pragma endregion
 //======================================================================================================================	
@@ -51,7 +62,17 @@ public:
 public:
 	// IDZCommonPlayRoleInterface ~ 
 	FORCEINLINE virtual EDZPlayRole GetPlayRole_Implementation() override { return PlayRole;}
-	FORCEINLINE virtual void ToggleHiddenInGame_Implementation(bool hiddenInGame) override { SetActorHiddenInGame(hiddenInGame); IsVisible = hiddenInGame; }
+	FORCEINLINE virtual void ToggleHiddenInGame_Implementation(bool InIsVisible, bool InbCanCollisionAble) override
+	{
+		if (InIsVisible) SetActorHiddenInGame(false);
+		else SetActorHiddenInGame(true);
+	
+		if (InbCanCollisionAble) SetActorEnableCollision(true);
+		else SetActorEnableCollision(false);
+
+		IsVisible = InIsVisible;
+		bCanCollisionAble = InbCanCollisionAble;
+	}
 	// ~ IDZCommonInteractInterface, IDZCommonPlayRoleInterface
 	
 protected:
@@ -77,6 +98,10 @@ public:
 	// 보이기 숨기기 
 	UPROPERTY(ReplicatedUsing = OnRepIsVisible, EditAnywhere, BlueprintReadWrite, Category = "DZ | OriginActor")
 	bool IsVisible = true;
+	
+	// 보이기 숨기기 
+	UPROPERTY(ReplicatedUsing = OnRepbCanCollisionAble, EditAnywhere, BlueprintReadWrite, Category = "DZ | OriginActor")
+	bool bCanCollisionAble = true;
 	
 #pragma endregion
 //======================================================================================================================	

@@ -28,5 +28,5 @@ public:
 	EDZPlayRole GetPlayRole();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Common | PlayRole")
-	void ToggleHiddenInGame(bool hiddenInGame);
+	void ToggleHiddenInGame(bool InIsVisible, bool InbCanCollisionAble);
 };

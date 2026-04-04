@@ -73,7 +73,7 @@ protected:
 	
 	// 변환된 어노말리 갯수  
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
-	int32 AnomalyCount = 0;
+	int32 AnomalyCount = 999;
 	
 	// 변환 어노말리들
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")

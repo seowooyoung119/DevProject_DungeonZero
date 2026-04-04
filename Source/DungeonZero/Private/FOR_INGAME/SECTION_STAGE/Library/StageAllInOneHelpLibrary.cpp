@@ -2,7 +2,6 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/Library/StageAllInOneHelpLibrary.h"
-
 #include "FOR_COMMON/SECTION_LOG/Stage/System/DZStageSystemLOG.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "FOR_INGAME/SECTION_ANOMALY/OriginActor/Base/DZOriginActorBase.h"
@@ -123,7 +122,7 @@ FDZAnomalySettingTable* UStageAllInOneHelpLibrary::IsAnyAnomalyTagIsMatch(const 
 	}
 	
 	// 2. 액터의 태그를 순회하며 캐싱된 맵(AnomalyDataMap)에 키값이 있는지 확인
-	for (const FName& ActorTag : InTargetActor->Tags)
+	for (const FName ActorTag : InTargetActor->Tags)
 	{
 		FDZAnomalySettingTable* Table = DataSystem->GetTable(ActorTag);
 		if (!Table)

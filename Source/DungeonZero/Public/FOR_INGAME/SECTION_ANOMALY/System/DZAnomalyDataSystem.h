@@ -41,7 +41,7 @@ public:
 #pragma region Data
 	
 public:
-	FORCEINLINE	FDZAnomalySettingTable* GetTable(const FName& InAnomalyTag) { return AnomalyDataMap.Find(InAnomalyTag); };
+	FORCEINLINE	FDZAnomalySettingTable* GetTable(const FName InAnomalyTag) { return AnomalyDataMap.Find(InAnomalyTag); };
 	
 protected:
 	

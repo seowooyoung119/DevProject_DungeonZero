@@ -3,6 +3,8 @@
 
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZChooseBecomeAnomalyActorHelperSystem.h"
 
+#include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
+
 //======================================================================================================================	
 #pragma region 게터
 	
@@ -67,7 +69,7 @@ TArray<AActor*> UDZChooseBecomeAnomalyActorHelperSystem::ChooseRandomAnomalyActo
 	{
 		SelectedActors.Add(ShuffledActors[i]);
 	}
-
+	
 	return SelectedActors;
 }
 #pragma endregion	

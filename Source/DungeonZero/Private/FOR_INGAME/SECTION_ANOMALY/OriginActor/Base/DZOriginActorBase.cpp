@@ -63,16 +63,7 @@ void ADZOriginActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ADZOriginActorBase::OnOriginVisibleReceived(FGameplayTag Channel, const FDZOriginMSG& Payload)
 {
-	if (Payload.bIsVisible == true)
-	{
-		SetActorHiddenInGame(true);
-		IsVisible = true;
-	}
-	else
-	{
-		SetActorHiddenInGame(false);
-		IsVisible = false;
-	}
+	Execute_ToggleHiddenInGame(this, Payload.bIsVisible, Payload.bIsVisible);
 }
 
 #pragma endregion

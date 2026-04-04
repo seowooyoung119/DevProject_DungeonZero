@@ -41,7 +41,7 @@ TArray<AActor*> UDZChangeToAnomalyActorHelperSystem::ReplaceWithAnomalyActors_in
 		
 	// 임시 데이터 생성 및 체크
 	TArray<AActor*> SpawnedAnomalies;
-
+	
 	// 1. 루프 시작: 랜덤으로 선택된 후보 액터들을 순회
 	for (AActor* OriginalActor : SelectedActors)
 	{
@@ -52,11 +52,20 @@ TArray<AActor*> UDZChangeToAnomalyActorHelperSystem::ReplaceWithAnomalyActors_in
 			continue;
 		}
 		
+		// 1. 기존 원본 액터 숨김 [3]
+		if (!OriginalActor->GetClass()->ImplementsInterface(UDZCommonPlayRoleInterface::StaticClass()))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("기존 원본 액터 숨김 실패"))
+			continue;
+		}
+		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(OriginalActor, false, false);
+		
 		// 2. 액터의 태그를 순회하며 캐싱된 맵(AnomalyDataMap)에 키값이 있는지 확인
 		FDZAnomalySettingTable* TargetSetting = UStageAllInOneHelpLibrary::IsAnyAnomalyTagIsMatch(this, OriginalActor);
 		if (!TargetSetting)
 		{
 			UE_LOG(LogTemp, Warning, TEXT(" 액터의 태그를 순회하며 캐싱된 맵(AnomalyDataMap)에 키값이 있는지 확인 실패"))
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *OriginalActor->GetName())
 			continue;
 		}
 		
@@ -75,7 +84,7 @@ TArray<AActor*> UDZChangeToAnomalyActorHelperSystem::ReplaceWithAnomalyActors_in
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParams.Owner = OriginalActor->GetOwner();
 
-		// 어노말리 액터 스폰
+		// 4. 어노말리 액터 스폰
 		AActor* NewAnomaly = GetWorld()->SpawnActor<AActor>(TargetSetting->AnomalyClass_Anomaly, SpawnTransform, SpawnParams);
 		if (!IsValid(NewAnomaly))
 		{
@@ -85,15 +94,6 @@ TArray<AActor*> UDZChangeToAnomalyActorHelperSystem::ReplaceWithAnomalyActors_in
 		
 		// 어노말리 스폰 배열게 추가 
 		SpawnedAnomalies.Add(NewAnomaly);
-			
-		// 4. 기존 원본 액터 숨김
-		if (!OriginalActor->GetClass()->ImplementsInterface(UDZCommonPlayRoleInterface::StaticClass()))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("기존 원본 액터 숨김 실패"))
-			continue;
-		}
-		
-		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(OriginalActor, false);
 	}
 
 	return SpawnedAnomalies;
