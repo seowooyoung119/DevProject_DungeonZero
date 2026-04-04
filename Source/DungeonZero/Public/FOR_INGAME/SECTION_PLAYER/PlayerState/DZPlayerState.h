@@ -8,6 +8,8 @@
 #include "DZPlayerState.generated.h"
 
 class UAbilitySystemComponent;
+class UDZAttributeSet;
+
 /**
  * 
  */
@@ -42,6 +44,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ")
+	TObjectPtr<UDZAttributeSet> AttributeSet = nullptr;
 	
 #pragma endregion
 //======================================================================================================================	

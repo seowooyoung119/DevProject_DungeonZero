@@ -16,10 +16,7 @@ UDZGA_AnomalyPatrol::UDZGA_AnomalyPatrol()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-void UDZGA_AnomalyPatrol::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                          const FGameplayAbilityActorInfo* ActorInfo,
-                                          const FGameplayAbilityActivationInfo ActivationInfo,
-                                          const FGameplayEventData* TriggerEventData)
+void UDZGA_AnomalyPatrol::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -39,10 +36,7 @@ void UDZGA_AnomalyPatrol::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	StartIdlePhase(AvatarActor);
 }
 
-void UDZGA_AnomalyPatrol::EndAbility(const FGameplayAbilitySpecHandle Handle,
-                                     const FGameplayAbilityActorInfo* ActorInfo,
-                                     const FGameplayAbilityActivationInfo ActivationInfo,
-                                     bool bReplicateEndAbility, bool bWasCancelled)
+void UDZGA_AnomalyPatrol::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	if (IsValid(GetWorld()))
 	{
@@ -59,6 +53,7 @@ void UDZGA_AnomalyPatrol::EndAbility(const FGameplayAbilitySpecHandle Handle,
 //──────────────
 // 어노말리 
 //──────────────
+
 FVector UDZGA_AnomalyPatrol::GetPatrolLocation(AActor* TargetActor)
 {
 	if (!IsValid(TargetActor))
@@ -156,5 +151,6 @@ void UDZGA_AnomalyPatrol::PatrolMoveTick(AActor* TargetActor)
 	float Alpha = FMath::Clamp(ElapsedTime / PatrolMoveDuration, 0.f, 1.f);
 	TargetActor->SetActorLocation(FMath::Lerp(PatrolStartLocation, PatrolDestination, Alpha));
 }
+
 #pragma endregion
 //======================================================================================================================	

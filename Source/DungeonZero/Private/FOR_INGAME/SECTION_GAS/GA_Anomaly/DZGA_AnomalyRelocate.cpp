@@ -18,10 +18,7 @@ UDZGA_AnomalyRelocate::UDZGA_AnomalyRelocate()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-void UDZGA_AnomalyRelocate::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                            const FGameplayAbilityActorInfo* ActorInfo,
-                                            const FGameplayAbilityActivationInfo ActivationInfo,
-                                            const FGameplayEventData* TriggerEventData)
+void UDZGA_AnomalyRelocate::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -43,10 +40,7 @@ void UDZGA_AnomalyRelocate::ActivateAbility(const FGameplayAbilitySpecHandle Han
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
 
-void UDZGA_AnomalyRelocate::EndAbility(const FGameplayAbilitySpecHandle Handle,
-                                       const FGameplayAbilityActorInfo* ActorInfo,
-                                       const FGameplayAbilityActivationInfo ActivationInfo,
-                                       bool bReplicateEndAbility, bool bWasCancelled)
+void UDZGA_AnomalyRelocate::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
@@ -110,3 +104,6 @@ void UDZGA_AnomalyRelocate::ApplyRelocate(AActor* TargetActor)
 	
 	TargetActor->SetActorLocation(ResultLocation);
 }
+
+#pragma endregion
+//======================================================================================================================	

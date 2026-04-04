@@ -18,9 +18,7 @@ UDZGA_AnomalyScaleLoop::UDZGA_AnomalyScaleLoop()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-void UDZGA_AnomalyScaleLoop::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	const FGameplayEventData* TriggerEventData)
+void UDZGA_AnomalyScaleLoop::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -63,9 +61,7 @@ void UDZGA_AnomalyScaleLoop::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	}
 }
 
-void UDZGA_AnomalyScaleLoop::EndAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	bool bReplicateEndAbility, bool bWasCancelled)
+void UDZGA_AnomalyScaleLoop::EndAbility(const FGameplayAbilitySpecHandle Handle,const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	if (IsValid(GetWorld()) && ScaleInterpTimerHandle.IsValid())
 	{
@@ -105,3 +101,6 @@ void UDZGA_AnomalyScaleLoop::UpdateScaleInterp()
 		AnomalyActor->SetAnomalyScale(NewScale);
 	}
 }
+
+#pragma endregion
+//======================================================================================================================	

@@ -19,10 +19,7 @@ UDZGA_AnomalyScale::UDZGA_AnomalyScale()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-void UDZGA_AnomalyScale::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                         const FGameplayAbilityActorInfo* ActorInfo,
-                                         const FGameplayAbilityActivationInfo ActivationInfo,
-                                         const FGameplayEventData* TriggerEventData)
+void UDZGA_AnomalyScale::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -61,17 +58,14 @@ void UDZGA_AnomalyScale::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 	else
 	{
 		// 크기 변화 범위 오류 로그 출력
-		UE_LOG(LogTemp, Warning, TEXT("UDZGA_AnomalyScale::ActivateAbility() : %s No valid scale range!"),
-		       *AvatarActor->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("UDZGA_AnomalyScale::ActivateAbility() : %s No valid scale range!"), *AvatarActor->GetName());
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 	}
 	ApplyScale(AvatarActor, NewScale);
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
 
-void UDZGA_AnomalyScale::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-                                    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
-                                    bool bWasCancelled)
+void UDZGA_AnomalyScale::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

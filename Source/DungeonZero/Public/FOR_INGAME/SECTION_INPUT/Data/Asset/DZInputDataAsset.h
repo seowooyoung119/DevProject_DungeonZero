@@ -37,6 +37,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TS | Input")
 	TObjectPtr<UInputAction> IA_Jump = nullptr;
 	
+	// 달리기
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TS | Input")
+	TObjectPtr<UInputAction> IA_Run = nullptr;
+	
 #pragma endregion
 //======================================================================================================================
 #pragma region 상호작용_관련

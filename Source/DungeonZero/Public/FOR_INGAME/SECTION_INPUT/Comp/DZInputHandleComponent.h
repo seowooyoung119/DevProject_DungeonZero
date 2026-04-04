@@ -54,7 +54,8 @@ protected:
 	void Move_internal(const FInputActionValue& Value); // WASD 움직임
 	void Look_internal(const FInputActionValue& Value);	// 시야 회전
 	void Jump_internal(const FInputActionValue& Value); // 점프 
-	
+	void RunStart_internal(const FInputActionValue& Value);  // 달리기 시작
+	void RunEnd_internal(const FInputActionValue& Value);	 // 달리기 끝
 #pragma endregion
 //======================================================================================================================	
 #pragma region 상호작용_관련

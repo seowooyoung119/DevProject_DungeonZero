@@ -8,6 +8,7 @@ namespace DZ
 	namespace Movement
 	{
 		UE_DEFINE_GAMEPLAY_TAG(DZ_MOVEMENT_JUMP, "DZ.Movement.Jump");
-		
+		UE_DEFINE_GAMEPLAY_TAG(DZ_MOVEMENT_RUN, "DZ.Movement.Run");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_MOVEMENT_EXHAUSTIONWALK, "DZ.Movement.ExhaustionWalk");
 	}
 }

@@ -57,6 +57,9 @@ void UDZInputHandleComponent::SetupInput(UEnhancedInputComponent* InEnhancedInpu
 		if (IsValid(InputData->IA_Move)) InEnhancedInputComponent->BindAction(InputData->IA_Move, ETriggerEvent::Triggered, this, &UDZInputHandleComponent::Move_internal);
 		if (IsValid(InputData->IA_Look)) InEnhancedInputComponent->BindAction(InputData->IA_Look, ETriggerEvent::Triggered, this, &UDZInputHandleComponent::Look_internal);
 		if (IsValid(InputData->IA_Jump)) InEnhancedInputComponent->BindAction(InputData->IA_Jump, ETriggerEvent::Started, this, &UDZInputHandleComponent::Jump_internal);
+		if (IsValid(InputData->IA_Run)) InEnhancedInputComponent->BindAction(InputData->IA_Run, ETriggerEvent::Started, this, &UDZInputHandleComponent::RunStart_internal);
+		if (IsValid(InputData->IA_Run)) InEnhancedInputComponent->BindAction(InputData->IA_Run, ETriggerEvent::Canceled, this, &UDZInputHandleComponent::RunEnd_internal);
+		if (IsValid(InputData->IA_Run)) InEnhancedInputComponent->BindAction(InputData->IA_Run, ETriggerEvent::Completed, this, &UDZInputHandleComponent::RunEnd_internal);
 	}
 		
 	// interact
@@ -147,6 +150,25 @@ void UDZInputHandleComponent::Jump_internal(const FInputActionValue& Value)
 	
 	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
 	if (IsValid(ASC)) ASC->TryActivateAbilitiesByTag(DZ::Movement::DZ_MOVEMENT_JUMP.GetTag().GetSingleTagContainer());
+}
+
+void UDZInputHandleComponent::RunStart_internal(const FInputActionValue& Value)
+{
+	if (!IsValid(OwnerCharacter)) return;
+	if (!IsValid(OwnerController)) return;
+	
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
+	if (IsValid(ASC)) ASC->TryActivateAbilitiesByTag(DZ::Movement::DZ_MOVEMENT_RUN.GetTag().GetSingleTagContainer());
+}
+
+void UDZInputHandleComponent::RunEnd_internal(const FInputActionValue& Value)
+{
+	if (!IsValid(OwnerCharacter)) return;
+	if (!IsValid(OwnerController)) return;
+	
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
+	FGameplayTagContainer TargetTags = DZ::Movement::DZ_MOVEMENT_RUN.GetTag().GetSingleTagContainer();
+	ASC->CancelAbilities(&TargetTags);
 }
 
 #pragma endregion

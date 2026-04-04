@@ -21,12 +21,9 @@ class DUNGEONZERO_API UDZGA_AnomalyPatrol : public UGameplayAbility
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
 	UDZGA_AnomalyPatrol();
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-								 const FGameplayAbilityActivationInfo ActivationInfo,
-								 const FGameplayEventData* TriggerEventData) override;
-	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-							const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
-							bool bWasCancelled) override;
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region 어노말리
@@ -63,6 +60,7 @@ private:
 	void StartIdlePhase(AActor* TargetActor);
 	void StartMovePhase(AActor* TargetActor);
 	void PatrolMoveTick(AActor* TargetActor);
+	
 #pragma endregion
 //======================================================================================================================	
 };

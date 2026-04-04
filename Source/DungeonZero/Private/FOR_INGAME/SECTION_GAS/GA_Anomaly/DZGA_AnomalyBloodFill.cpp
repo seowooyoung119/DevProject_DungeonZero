@@ -13,8 +13,10 @@ UDZGA_AnomalyBloodFill::UDZGA_AnomalyBloodFill()
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	
-	// 태그 등록
-	AbilityTags.AddTag(DZ::GA::DZ_GA_ANOMALY_BLOODFILL);
+	// 에셋 태그
+	FGameplayTagContainer AssetTags;
+	AssetTags.AddTag(DZ::GA::DZ_GA_ANOMALY_BLOODFILL);
+	SetAssetTags(AssetTags);
 }
 
 void UDZGA_AnomalyBloodFill::ActivateAbility(const FGameplayAbilitySpecHandle Handle,

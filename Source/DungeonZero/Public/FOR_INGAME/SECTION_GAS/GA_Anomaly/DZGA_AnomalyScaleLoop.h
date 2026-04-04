@@ -13,7 +13,8 @@ UCLASS()
 class DUNGEONZERO_API UDZGA_AnomalyScaleLoop : public UGameplayAbility
 {
 	GENERATED_BODY()
-	//======================================================================================================================	
+	
+//======================================================================================================================	
 #pragma region 라이프_사이클
 
 	//━━━━━━━━━━━━━━━━━━━━
@@ -21,15 +22,11 @@ class DUNGEONZERO_API UDZGA_AnomalyScaleLoop : public UGameplayAbility
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
 	UDZGA_AnomalyScaleLoop();
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-								 const FGameplayAbilityActivationInfo ActivationInfo,
-								 const FGameplayEventData* TriggerEventData) override;
-	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-							const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
-							bool bWasCancelled) override;
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
 #pragma endregion
-	//======================================================================================================================	
+//======================================================================================================================	
 #pragma region 어노말리
 
 	//━━━━━━━━━━━━━━━━━━━━
@@ -57,6 +54,6 @@ protected:
 	static constexpr float ScaleInterpInterval = 0.03f;
 	
 #pragma endregion
-	//======================================================================================================================	
+//======================================================================================================================	
 
 };

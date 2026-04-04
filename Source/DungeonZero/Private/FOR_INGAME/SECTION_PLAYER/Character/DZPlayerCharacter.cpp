@@ -9,6 +9,7 @@
 #include "Components/SpotLightComponent.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_GAS/Data/Asset/DZGiveGAGEDataAsset.h"
 #include "DungeonZero/Public/FOR_INGAME/SECTION_INPUT/Comp/DZInputHandleComponent.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/Init/DZInitTag.h"
 #include "FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/BodyEquip/DZBodyEquipVisualComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/HotKey/DZHotKeyEquipVisualComponent.h"
@@ -156,7 +157,11 @@ void ADZPlayerCharacter::InitGAS_internal(UAbilitySystemComponent* InASC)
 	{
 		if (!IsValid(GA)) continue;
 		FGameplayAbilitySpec AbilitySpec(GA, 1, INDEX_NONE, this);
-		InASC->GiveAbility(AbilitySpec);
+		auto Handle = InASC->GiveAbility(AbilitySpec);
+		
+		UGameplayAbility* AbilityCDO = GA.GetDefaultObject();
+		if (!IsValid(AbilityCDO)) continue;
+		if (AbilityCDO->AbilityTags.HasTag(DZ::GA::DZ_GA_INIT)) InASC->TryActivateAbility(Handle);
 	}
 }
 
