@@ -107,29 +107,17 @@ void UStageAllInOneHelpLibrary::DebugLogAnomalyMap(const TMap<FName, FDZAnomalyS
 FDZAnomalySettingTable* UStageAllInOneHelpLibrary::IsAnyAnomalyTagIsMatch(const UObject* InWorldContextObject, AActor* InTargetActor)
 {
 	// 타겟 체크
-	if (!IsValid(InTargetActor))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("IsAnyAnomalyTagIsMatch : !IsValid(InTargetActor) 실패"))
-		return nullptr;
-	}
+	if (!IsValid(InTargetActor)) return nullptr;
 	
 	// 어노말리 데이터 테이블 시스템 가져오기
 	UDZAnomalyDataSystem* DataSystem = UDZAnomalyDataSystem::Get(InWorldContextObject);
-	if (!IsValid(DataSystem))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("IsAnyAnomalyTagIsMatch : 어노말리 데이터 테이블 시스템 가져오기 실패"))
-		return nullptr;
-	}
+	if (!IsValid(DataSystem)) return nullptr;
 	
 	// 2. 액터의 태그를 순회하며 캐싱된 맵(AnomalyDataMap)에 키값이 있는지 확인
 	for (const FName ActorTag : InTargetActor->Tags)
 	{
 		FDZAnomalySettingTable* Table = DataSystem->GetTable(ActorTag);
-		if (!Table)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("IsAnyAnomalyTagIsMatch :Table 실패"))
-			continue;
-		}
+		if (!Table) continue;
 		
 		// 매칭되는 첫 번째 태그 발견 해당 테이블 열 넘겨줌
 		return Table;

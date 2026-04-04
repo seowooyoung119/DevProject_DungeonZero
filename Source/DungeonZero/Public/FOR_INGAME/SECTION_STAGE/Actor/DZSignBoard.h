@@ -69,7 +69,7 @@ protected:
 	void UpdateUIbyCurrentLevel();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
-	TObjectPtr<USceneComponent> SignBoardRoot = nullptr;
+	TObjectPtr<UStaticMeshComponent> SignBoardRoot = nullptr;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	TObjectPtr<UWidgetComponent> SignBoardWidgetComponent = nullptr;

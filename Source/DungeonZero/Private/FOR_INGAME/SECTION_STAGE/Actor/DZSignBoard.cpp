@@ -37,7 +37,7 @@ ADZSignBoard::ADZSignBoard()
 	bReplicates = true;
 	
 	// 컴포넌트 구성
-	SignBoardRoot = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
+	SignBoardRoot = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootScene"));
 	SetRootComponent(SignBoardRoot);
 	
 	SignBoardWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("SignBoardWidgetComponent"));

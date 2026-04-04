@@ -61,13 +61,12 @@ void UDZAnomalyFindHandleSystem::Deinitialize()
 
 void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Channel, const FDZFindAnomalyMSG& Payload)
 {
+	UE_LOG(LogTemp, Warning, TEXT("111 FindAnomalyActor %s"), *Payload.FindAnomalyActor->GetName())
+	
 	// 클라이언트 패스
 	if (!IsValid(GetWorld())) return;
 	if (GetWorld()->GetNetMode() == NM_Client) return;
 
-	// 데이터 체크
-	if (!IsValid(Payload.FindAnomalyActor)) return;
-	
 	// 데이터 모듈 체크 
 	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
 	if (!IsValid(StageRuntimePlayDataModule)) return;
@@ -78,6 +77,8 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 	// 성공 핸들 처리 
 	if (FindResult == true)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("sss FindAnomalyActor %s"), *Payload.FindAnomalyActor->GetName())
+		
 		StageRuntimePlayDataModule->HandleOnFoundAnomaly(Payload.FindAnomalyActor);
 		
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
@@ -89,6 +90,9 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 	// 실패 핸들 처리 
 	else
 	{
+		
+		UE_LOG(LogTemp, Warning, TEXT("fff FindAnomalyActor %s"), *Payload.FindAnomalyActor->GetName())
+		
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 		FDZFindResultAnomalyMSG FindResultPayload;
 		FindResultPayload.bIsFindAnomaly = false;

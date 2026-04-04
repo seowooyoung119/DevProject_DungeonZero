@@ -5,14 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
+#include "FOR_INGAME/SECTION_INTERACT/Interface/DZCommonInteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "DZDoorActor.generated.h"
 
+class UWidgetComponent;
 class UTimelineComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZDoorActor : public AActor
+class DUNGEONZERO_API ADZDoorActor : public AActor, public IDZCommonInteractInterface
 {
 	GENERATED_BODY()
 //======================================================================================================================
@@ -55,16 +57,11 @@ public:
 
 protected:
 	
-	// 메시지 수신 함수 (리셋용)
-	void OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload);
-
-	// 구독 핸들
-	FGameplayMessageListenerHandle TimeResetListenerHandle;
-	
 	// 타임라인 업데이트 함수
 	UFUNCTION() 
 	void UpdateDoorRotation(float Value);
 
+	
 #pragma endregion
 //======================================================================================================================
 #pragma region component
@@ -109,5 +106,40 @@ protected:
 	bool bIsOpened = false;
 	
 #pragma endregion
-//======================================================================================================================		
+//======================================================================================================================
+#pragma region 게임플레이_메시지
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게임플레이_메시지
+	//━━━━━━━━━━━━━━━━━━━━
+protected:
+	
+	// 메시지 수신 함수 (리셋용)
+	void OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload);
+
+	// 구독 핸들
+	FGameplayMessageListenerHandle TimeResetListenerHandle;
+	
+#pragma endregion
+//======================================================================================================================
+#pragma region 인터렉트_섹션
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 인터렉트_섹션
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+public:
+	// IDZCommonInteractInterface ~ 
+	virtual void ToggleInteractWidget_Implementation(bool InWantOn) override;
+	virtual void DoStandAloneInteractLogic_Implementation() override;
+	// ~ IDZCommonInteractInterface
+	
+protected:
+	
+	// 위젯 컴포넌트 선언
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<UWidgetComponent> InteractWidgetComp = nullptr;
+
+#pragma endregion
+//======================================================================================================================	
 };

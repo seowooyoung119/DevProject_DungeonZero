@@ -24,4 +24,9 @@ public:
 	// 토글 위젯 켜기 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Interact")
 	void ToggleInteractWidget(bool InWantOn);
+	
+	// 문, 레버 같은 어떤 액터가 하는 로직 (반환값이 필요 없는 기능을 의미)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Interact")
+	void DoStandAloneInteractLogic();
+	
 };

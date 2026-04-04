@@ -214,6 +214,28 @@ void UDZInputHandleComponent::InteractByRightClick_internal(const FInputActionVa
 
 void UDZInputHandleComponent::SpecialInteract_internal(const FInputActionValue& Value)
 {
+	if (!IsValid(OwnerCharacter)) return;
+	if (!IsValid(OwnerController)) return;
+
+	// asc 체크
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
+	if (!IsValid(ASC)) return;
+
+	// 인터렉트 컴포넌트 체크
+	UDZInteractComponent* InteractComponent = IPlayerCompGetterInterface::Execute_GetDZInteractComponent(OwnerCharacter);
+	if (!IsValid(InteractComponent)) return; 
+	
+	// 현재 보고 있는 액터가 있는지 체크 
+	if (!IsValid(InteractComponent->GetCurrentInteractActor())) return;
+	
+	// 데이터 생성
+	FGameplayEventData Payload;
+	Payload.Instigator = ASC->GetAvatarActor();
+	Payload.Target = InteractComponent->GetCurrentInteractActor();
+	Payload.EventTag = DZ::Interact::DZ_INTERACT_SPECIALINTERACT;
+	
+	// 데이터 보내기
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(ASC->GetAvatarActor(), Payload.EventTag,Payload);
 }
 
 void UDZInputHandleComponent::PickUpItem_internal(const FInputActionValue& Value)
@@ -242,6 +264,7 @@ void UDZInputHandleComponent::PickUpItem_internal(const FInputActionValue& Value
 	Payload.Instigator = ASC->GetAvatarActor();
 	Payload.Target = InteractComponent->GetCurrentInteractActor();
 		
+	// 역할에 따라 추가 태그 설정 후 보내기 
 	switch (CommonPlayRoleInterface->Execute_GetPlayRole(InteractComponent->GetCurrentInteractActor()))
 	{
 		

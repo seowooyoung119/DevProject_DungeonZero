@@ -13,6 +13,10 @@
 #include "FOR_INGAME/SECTION_STAGE/System/Data/DZStageBalanceDataModule.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Time/DZTimeReduceManager.h"
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerStart.h"
+#include "GameFramework/PlayerState.h"
+#include "Kismet/GameplayStatics.h"
 
 //======================================================================================================================	
 #pragma region 게터
@@ -45,8 +49,6 @@ UDZStageControlSystem* UDZStageControlSystem::Get(const UObject* WorldContextObj
 
 void UDZStageControlSystem::PlayerEnterTheResultWay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("1"))
-	
 	// 1. 모든 어노말리를 다 찾았는가?
 	if (IsAllFound_internal() == false) ReStratLevel_internal();
 	else StratNextLevel_internal();
@@ -83,7 +85,6 @@ bool UDZStageControlSystem::IsAllFound_internal()
 	if (!IsValid(StageRuntimePlayDataModule)) return false;
 	
 	// 다 찾았는지 체크 
-	UE_LOG(LogTemp, Warning, TEXT("2"))
 	return  StageRuntimePlayDataModule->IsAllAnomalyHasBeenFound();
 }
 
@@ -93,7 +94,6 @@ void UDZStageControlSystem::ReStratLevel_internal()
 	if (!IsValid(StageRuntimePlayDataModule)) return;
 	
 	// 0으로 초기화
-	UE_LOG(LogTemp, Warning, TEXT("3-a"))
 	StageRuntimePlayDataModule->SetCurrentLevel(0);
 }
 
@@ -108,8 +108,6 @@ void UDZStageControlSystem::StratNextLevel_internal()
 	
 	// 스테이지 증가 적용
 	StageRuntimePlayDataModule->SetCurrentLevel(CurrentStageLevel);
-	
-	UE_LOG(LogTemp, Warning, TEXT("3-b"))
 }
 
 void UDZStageControlSystem::StopTimer_internal()
@@ -124,7 +122,6 @@ void UDZStageControlSystem::StopTimer_internal()
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	FDZTimeMSG Payload;
 	MessageSubsystem.BroadcastMessage(DZ::TimeMSG::DZ_TIME_TIMERESET, Payload);
-	UE_LOG(LogTemp, Warning, TEXT("4"))
 }
 
 void UDZStageControlSystem::ResetDoor_internal()
@@ -133,7 +130,6 @@ void UDZStageControlSystem::ResetDoor_internal()
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	FDZDoorMSG Payload;
 	MessageSubsystem.BroadcastMessage(DZ::DoorMSG::DZ_DOOR_DOORRESET, Payload);
-	UE_LOG(LogTemp, Warning, TEXT("5"))
 }
 
 void UDZStageControlSystem::HandlePlayers_internal()
@@ -144,9 +140,30 @@ void UDZStageControlSystem::HandlePlayers_internal()
 	Payload.CanMoveAndSee = false;
 	MessageSubsystem.BroadcastMessage(DZ::PlayerMSG::DZ_PLAYER_CANMOVEANDSEE, Payload);
 	
-	// TODO : 위치 이동 
+	// 위치 이동 :: 플레이어 스타트 인덱스 매칭하며 플레이어를 차례로 이동시킴 
+	{
+		TArray<AActor*> PlayerStarts;
+		if (!IsValid(GetWorld())) return;
+		UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), PlayerStarts);
 	
-	UE_LOG(LogTemp, Warning, TEXT("6"))
+		AGameStateBase* GameStateBase = UGameplayStatics::GetGameState(this);
+		if (!IsValid(GameStateBase)) return;
+
+		for (int32 Index = 0; Index < GameStateBase->PlayerArray.Num(); ++Index)
+		{
+			if (!GameStateBase->PlayerArray.IsValidIndex(Index)) continue;
+		
+			APlayerState* PlayerState = GameStateBase->PlayerArray[Index];
+			if (!IsValid(PlayerState)) continue;
+		
+			APawn* PlayerPawn = PlayerState->GetPawn();
+			if (!IsValid(PlayerPawn)) continue;
+		
+			FVector MoveLocation = PlayerStarts.IsValidIndex(Index) ? PlayerStarts[Index]->GetActorLocation() : PlayerStarts[0]->GetActorLocation();
+			PlayerPawn->SetActorLocation(MoveLocation);
+		}
+	}
+	
 }
 
 void UDZStageControlSystem::HandleAnomalies_internal()
@@ -162,7 +179,6 @@ void UDZStageControlSystem::HandleAnomalies_internal()
 		Anomaly->Destroy();
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("7"))
 }
 
 void UDZStageControlSystem::HandleOriginActors_internal()
@@ -173,65 +189,38 @@ void UDZStageControlSystem::HandleOriginActors_internal()
 	Payload.bIsVisible = true;
 	MessageSubsystem.BroadcastMessage(DZ::OriginMSG::DZ_ORIGIN_VISIBILE_NOTICE, Payload);
 	
-	UE_LOG(LogTemp, Warning, TEXT("8"))
 }
 
 void UDZStageControlSystem::RefreshAnomalyActors_internal()
 {
 	// 원본 액터들 가져오기
 	UDZRegisterAllCanBeAnomalyActorHelperSystem* RegisterAllCanBeAnomalyActorHelperSystem = UDZRegisterAllCanBeAnomalyActorHelperSystem::Get(this);
-	if (!IsValid(RegisterAllCanBeAnomalyActorHelperSystem))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("RegisterAllCanBeAnomalyActorHelperSystem 게터 문제"))
-		return;
-	}
+	if (!IsValid(RegisterAllCanBeAnomalyActorHelperSystem)) return;
 	TArray<AActor*>& Origins = RegisterAllCanBeAnomalyActorHelperSystem->GetPossibleActors();
 	
 	UE_LOG(LogTemp, Warning, TEXT("Origins %d"), Origins.Num())
 	
 	// 현재 레벨 가져오기
 	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
-	if (!IsValid(StageRuntimePlayDataModule))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("StageRuntimePlayDataModule 게터 문제"))
-		return;
-	}
+	if (!IsValid(StageRuntimePlayDataModule)) return;
 	int32 CurrentStageLevel = StageRuntimePlayDataModule->GetCurrentLevel();
 	
 	// 레벨에 따른 최소 최대 겟수
 	UDZStageBalanceDataModule* StageBalanceDataModule = UDZStageBalanceDataModule::Get(this);
-	if (!IsValid(StageBalanceDataModule))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("StageBalanceDataModule 게터 문제"))
-		return;
-	}
+	if (!IsValid(StageBalanceDataModule)) return;
 	FDZStageBalanceRow* BalanceRow = StageBalanceDataModule->GetStageBalanceRow(CurrentStageLevel);
-	if (!BalanceRow)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("BalanceRow 게터 문제"))
-		return;
-	}
+	if (!BalanceRow) return;
 	int32 MinCount = BalanceRow->MinAnomalyCount;
 	int32 MaxCount = BalanceRow->MaxAnomalyCount;
 	
 	// 랜덤 고르기 실시 
 	UDZChooseBecomeAnomalyActorHelperSystem* ChooseBecomeAnomalyActorHelperSystem = UDZChooseBecomeAnomalyActorHelperSystem::Get(this);
-	if (!IsValid(ChooseBecomeAnomalyActorHelperSystem))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ChooseBecomeAnomalyActorHelperSystem 게터 문제"))
-		return;
-	}
+	if (!IsValid(ChooseBecomeAnomalyActorHelperSystem)) return;
 	TArray<AActor*> SelectedActors = ChooseBecomeAnomalyActorHelperSystem->ChooseRandomAnomalyActors_internal(Origins, MinCount, MaxCount);
-	
-	UE_LOG(LogTemp, Warning, TEXT("SelectedActors %d"), SelectedActors.Num())
 	
 	// 변환 실시
 	UDZChangeToAnomalyActorHelperSystem* ChangeToAnomalyActorHelperSystem = UDZChangeToAnomalyActorHelperSystem::Get(this);
-	if (!IsValid(ChangeToAnomalyActorHelperSystem))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ChangeToAnomalyActorHelperSystem 게터 문제"))
-		return;
-	}
+	if (!IsValid(ChangeToAnomalyActorHelperSystem)) return;
 	TArray<AActor*> NewAnomalies = ChangeToAnomalyActorHelperSystem->ReplaceWithAnomalyActors_internal(SelectedActors);
 	
 	UE_LOG(LogTemp, Warning, TEXT("NewAnomalies %d"), NewAnomalies.Num())
@@ -240,7 +229,6 @@ void UDZStageControlSystem::RefreshAnomalyActors_internal()
 	StageRuntimePlayDataModule->SetAnomalyActors(NewAnomalies);
 	StageRuntimePlayDataModule->SetAnomalyCount(NewAnomalies.Num());
 	
-	UE_LOG(LogTemp, Warning, TEXT("9"))
 }
 
 void UDZStageControlSystem::HandleRemainingTime_internal()
@@ -258,7 +246,6 @@ void UDZStageControlSystem::HandleRemainingTime_internal()
 	float NewTime = BalanceRow->Time;
 	
 	StageRuntimePlayDataModule->SetRemainingTime(NewTime);
-	UE_LOG(LogTemp, Warning, TEXT("10"))
 }
 
 void UDZStageControlSystem::NoticeCurrentLevel_internal()
@@ -273,8 +260,6 @@ void UDZStageControlSystem::NoticeCurrentLevel_internal()
 	FDZStageMSG Payload;
 	Payload.LoadStage = CurrentStageLevel;
 	MessageSubsystem.BroadcastMessage(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, Payload);
-	
-	UE_LOG(LogTemp, Warning, TEXT("11"))
 }
 
 void UDZStageControlSystem::AllowPlayerSeeAndMove_internal()
@@ -284,8 +269,6 @@ void UDZStageControlSystem::AllowPlayerSeeAndMove_internal()
 	FDZAllowPlayerControlMSG Payload;
 	Payload.CanMoveAndSee = true;
 	MessageSubsystem.BroadcastMessage(DZ::PlayerMSG::DZ_PLAYER_CANMOVEANDSEE, Payload);
-	
-	UE_LOG(LogTemp, Warning, TEXT("12"))
 }
 
 void UDZStageControlSystem::AllowStartTimeTick_internal()
@@ -295,8 +278,6 @@ void UDZStageControlSystem::AllowStartTimeTick_internal()
 	
 	// 타이머 시작
 	TimeReduceManager->StartTime();
-	
-	UE_LOG(LogTemp, Warning, TEXT("13"))
 }
 
 
