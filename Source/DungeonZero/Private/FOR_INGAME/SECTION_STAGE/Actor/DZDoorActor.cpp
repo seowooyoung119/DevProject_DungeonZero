@@ -5,6 +5,7 @@
 #include "Components/TimelineComponent.h"
 #include "FOR_COMMON/SECTION_LOG/Stage/Door/DZDoorLOG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
 #include "Net/UnrealNetwork.h"
 
 //======================================================================================================================
@@ -47,6 +48,17 @@ void ADZDoorActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(ADZDoorActor, bIsOpened);
 }
 
+void ADZDoorActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	// 메시지 구독 해제
+	if (UGameplayMessageSubsystem::HasInstance(this))
+	{
+		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+		MessageSubsystem.UnregisterListener(TimeResetListenerHandle);
+	}
+	Super::EndPlay(EndPlayReason);
+}
+
 void ADZDoorActor::BeginPlay()
 {
 	Super::BeginPlay();
@@ -59,21 +71,18 @@ void ADZDoorActor::BeginPlay()
 	UpdateDelegate.BindUFunction(this, FName("UpdateDoorRotation"));
 	DoorTimeline->AddInterpFloat(DoorCurve, UpdateDelegate);
 	
-	// 문 열고 닫기 메시지 구독
+	// [추가] 초기 상태 동기화: 이미 열려 있는 상태로 스폰되었다면 끝 위치로 점프
+	if (bIsOpened)
+	{
+		DoorTimeline->SetPlaybackPosition(DoorTimeline->GetTimelineLength(), false);
+		UpdateDoorRotation(1.0f); // 문을 열린 상태로 즉시 회전
+	}
+	
+	// 리셋 메시지 구독
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	DoorToggleMessageHandle = MessageSubsystem.RegisterListener<FDZDoorMSG>(DZ::Stage::DZ_STAGE_OPENDOOR, this, &ADZDoorActor::OnDoorToggleMessageReceived);
+	TimeResetListenerHandle = MessageSubsystem.RegisterListener<FDZDoorMSG>(DZ::DoorMSG::DZ_DOOR_DOORRESET, this, &ADZDoorActor::OnDoorResetReceived);
 }
 
-void ADZDoorActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	// 메시지 시스템 구독 해제
-	if (UGameplayMessageSubsystem::HasInstance(this))
-	{
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		MessageSubsystem.UnregisterListener(DoorToggleMessageHandle);
-	}
-	Super::EndPlay(EndPlayReason);
-}
 #pragma endregion
 //======================================================================================================================	
 #pragma region DoorAPI	
@@ -84,6 +93,11 @@ void ADZDoorActor::ToggleDoor(bool WantOpen)
 	if (HasAuthority()) OnRep_IsOpened();
 }
 
+void ADZDoorActor::OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload)
+{
+	ToggleDoor(false);
+}
+
 void ADZDoorActor::UpdateDoorRotation(float Value)
 {
 	FRotator NewRotation = FMath::Lerp(ClosedRotation, OpenedRotation, Value);
@@ -92,21 +106,3 @@ void ADZDoorActor::UpdateDoorRotation(float Value)
 
 #pragma endregion
 //======================================================================================================================
-#pragma region 게임플레이_메시지	
-	
-	//━━━━━━━━━━━━━━━━━━━━
-	// 게임플레이_메시지
-	//━━━━━━━━━━━━━━━━━━━━
-
-void ADZDoorActor::OnDoorToggleMessageReceived(FGameplayTag Channel, const FDZDoorMSG& Payload)
-{
-	// 자신이 속한 레벨과 메시지의 로드 레벨이 같을 때만 동작
-	if (DoorLevel != Payload.StageLevel) return;
-	
-	// bIsOpened가 메시지의 원하는 상태(bShouldOpen)와 다를 때만 토글
-	if (bIsOpened != Payload.bIsDoorOpen) ToggleDoor(Payload.bIsDoorOpen);
-	if (bWantPrintDebug) UE_LOG(DZDoorLog, Log, TEXT("%s: 내 레벨과 일치하여 문을 %s."), *GetName(), Payload.bIsDoorOpen ? TEXT("엽니다") : TEXT("닫습니다"));
-}
-
-#pragma endregion
-//======================================================================================================================	

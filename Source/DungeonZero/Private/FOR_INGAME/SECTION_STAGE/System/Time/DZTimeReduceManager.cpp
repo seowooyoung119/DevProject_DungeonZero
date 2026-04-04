@@ -1,11 +1,11 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_STAGE/System/DZTimeReduceManager.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Time/DZTimeReduceManager.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.h"
 #include "FOR_COMMON/SECTION_LOG/Stage/System/DZStageSystemLOG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
-#include "FOR_INGAME/SECTION_STAGE/System/DZStageControlSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 
 //======================================================================================================================	
@@ -27,6 +27,7 @@ UDZTimeReduceManager* UDZTimeReduceManager::Get(const UObject* WorldContextObjec
 	
 	return TimeReduceManager;
 }
+
 #pragma endregion
 //======================================================================================================================	
 #pragma region 라이프_사이클
@@ -77,31 +78,33 @@ void UDZTimeReduceManager::TimeReduceHandle()
 	if (!IsValid(GetWorld())) return;
 	if (GetWorld()->GetNetMode() == NM_Client) return;
 	
-	// 스테이지 컨트롤 시스템 (데이터 가져오기 위함)
-	UDZStageControlSystem* StageControlSystem = UDZStageControlSystem::Get(this);
-	if (!IsValid(StageControlSystem)) return;
+	// 데이터 모듈 가져오기 
+	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
+	if (!IsValid(StageRuntimePlayDataModule)) return;
 	
 	// 시간이 남은 경우
-	if (StageControlSystem->RemainingTime > 0.0f)
+	if (StageRuntimePlayDataModule->GetRemainingTime() > 0.0f)
 	{
 		// 줄이기 로직 실행 
-		StageControlSystem->RemainingTime -= 1.0f;
+		StageRuntimePlayDataModule->ReduceRemainingTime(1.0f);
 		
 		// 메시지 보내기
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 		FDZTimeMSG Payload;
-		Payload.RemainTime = StageControlSystem->RemainingTime;
-		MessageSubsystem.BroadcastMessage(DZ::Time::DZ_TIME_REDUCE, Payload);
-		UE_LOG(DZTimerReduceMgrLog, Warning, TEXT("RunningStage 단계 : 타임 감소 매니저 타임 감소 진행 : %.1f"), StageControlSystem->RemainingTime);
+		Payload.RemainTime = StageRuntimePlayDataModule->GetRemainingTime();
+		MessageSubsystem.BroadcastMessage(DZ::TimeMSG::DZ_TIME_REDUCE, Payload);
 	}
+	
 	// 타임 오버인 경우 
 	else
 	{
+		// 메시지 보내기
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 		FDZTimeMSG Payload;
 		Payload.RemainTime = 0.0f;
-		MessageSubsystem.BroadcastMessage(DZ::Time::DZ_TIME_TIMEOVER, Payload);
-		UE_LOG(DZTimerReduceMgrLog, Error, TEXT("RunningStage 단계 : 타임 감소 매니저 타임 오버!"));
+		MessageSubsystem.BroadcastMessage(DZ::TimeMSG::DZ_TIME_TIMEOVER, Payload);
+		
+		// 타이머 종료 
 		if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	}
 }

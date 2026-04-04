@@ -69,6 +69,7 @@ protected:
 protected:
 	
 	// 메시지 수신 함수
+	void OnTimeResetReceived(FGameplayTag Channel, const FDZTimeMSG& Payload);
 	void OnTimeReduceReceived(FGameplayTag Channel, const FDZTimeMSG& Payload);
 	void OnTimeOverReceived(FGameplayTag Channel, const FDZTimeMSG& Payload);
 	
@@ -86,6 +87,7 @@ protected:
 protected:
 
 	// 구독 핸들
+	FGameplayMessageListenerHandle TimeResetListenerHandle;
 	FGameplayMessageListenerHandle TimeReduceListenerHandle;
 	FGameplayMessageListenerHandle TimeOverListenerHandle;
 	

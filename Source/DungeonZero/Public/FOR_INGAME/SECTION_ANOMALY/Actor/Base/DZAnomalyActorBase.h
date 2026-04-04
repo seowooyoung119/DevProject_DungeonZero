@@ -50,7 +50,6 @@ protected:
 	EDZPlayRole PlayRole = EDZPlayRole::Anomaly;
 #pragma endregion
 //======================================================================================================================		
-
 #pragma region 어노말리
 
 	//━━━━━━━━━━━━━━━━━━━━

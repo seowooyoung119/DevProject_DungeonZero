@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DZStageMSG.generated.h"
+#include "DZOriginMSG.generated.h"
 
-// 스테이지 준비 시 호출
 USTRUCT(BlueprintType)
-struct FDZStageMSG
+struct FDZOriginMSG
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 LoadStage = 0;
+	bool bIsVisible = true;
+	
 };

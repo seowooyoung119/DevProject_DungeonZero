@@ -15,6 +15,7 @@ class DUNGEONZERO_API UDZTimeReduceManager : public UWorldSubsystem
 	friend class UDZStageControlSystem;
 	
 	GENERATED_BODY()
+	
 //======================================================================================================================	
 #pragma region 게터
 	

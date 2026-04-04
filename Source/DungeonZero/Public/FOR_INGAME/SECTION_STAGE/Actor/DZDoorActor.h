@@ -55,29 +55,24 @@ public:
 
 protected:
 	
+	// 메시지 수신 함수 (리셋용)
+	void OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload);
+
+	// 구독 핸들
+	FGameplayMessageListenerHandle TimeResetListenerHandle;
+	
 	// 타임라인 업데이트 함수
 	UFUNCTION() 
 	void UpdateDoorRotation(float Value);
 
 #pragma endregion
 //======================================================================================================================
-#pragma region 게임플레이_메시지	
-	
-	//━━━━━━━━━━━━━━━━━━━━
-	// 게임플레이_메시지
-	//━━━━━━━━━━━━━━━━━━━━
-	
-protected:
-	// 메시지 수신 시 실행될 함수 (문 열고 닫기)
-	void OnDoorToggleMessageReceived(FGameplayTag Channel, const FDZDoorMSG& Payload);
-
-	// 구독 핸들을 보관 (나중에 해제하기 위함)
-	FGameplayMessageListenerHandle DoorToggleMessageHandle;
-
-#pragma endregion
-//======================================================================================================================	
 #pragma region component
 protected:
+		
+	//━━━━━━━━━━━━━━━━━━━━
+	// component
+	//━━━━━━━━━━━━━━━━━━━━
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> DoorMesh = nullptr;
@@ -104,27 +99,14 @@ protected:
 	TObjectPtr<UCurveFloat> DoorCurve = nullptr;
 
 	// 문이 열리고 닫히는 회전각도
+	UPROPERTY(EditAnywhere, Category = "DZ|Door")
 	FRotator ClosedRotation = FRotator::ZeroRotator;
-	FRotator OpenedRotation = FRotator::ZeroRotator;;
+	UPROPERTY(EditAnywhere, Category = "DZ|Door")
+	FRotator OpenedRotation = FRotator::ZeroRotator;
 	
 	// 리플리케이션 변수: ReplicatedUsing을 통해 값이 변하면 OnRep 함수가 실행됨
 	UPROPERTY(ReplicatedUsing = OnRep_IsOpened)
 	bool bIsOpened = false;
-	
-	//---------------------
-	// 레벨 관련
-	//---------------------
-	
-	// 이 문이 소속된 레벨 (에디터에서 설정하거나 자동으로 할당)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 DoorLevel = -1;
-	
-	//---------------------
-	// 디버그
-	//---------------------
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bWantPrintDebug = false;
 	
 #pragma endregion
 //======================================================================================================================		

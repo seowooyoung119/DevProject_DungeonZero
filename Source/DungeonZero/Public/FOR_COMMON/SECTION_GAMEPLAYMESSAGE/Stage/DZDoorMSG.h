@@ -11,8 +11,5 @@ struct FDZDoorMSG
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 StageLevel = 0;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsDoorOpen = false;
 };

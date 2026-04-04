@@ -26,4 +26,7 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Common | PlayRole")
 	EDZPlayRole GetPlayRole();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Common | PlayRole")
+	void ToggleHiddenInGame(bool hiddenInGame);
 };

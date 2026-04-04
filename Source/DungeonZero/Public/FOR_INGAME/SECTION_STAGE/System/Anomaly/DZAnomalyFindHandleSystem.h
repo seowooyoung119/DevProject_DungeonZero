@@ -17,29 +17,44 @@ class DUNGEONZERO_API UDZAnomalyFindHandleSystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 //======================================================================================================================	
-#pragma region Getter
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
 public:
 	static UDZAnomalyFindHandleSystem* Get(const UObject* WorldContextObject);
 	
 #pragma endregion
 //======================================================================================================================
-#pragma region LifeCycle
+#pragma region 라이프_사이클
 	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 라이프_사이클
+	//━━━━━━━━━━━━━━━━━━━━
 public:
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region FindAnomalyPI
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// FindAnomalyPI
+	//━━━━━━━━━━━━━━━━━━━━
 protected:
 	// 메시지 수신 함수
 	void OnFindAnomalyMessageReceived(FGameplayTag Channel, const FDZFindAnomalyMSG& Payload);
+	
 #pragma endregion	
 //======================================================================================================================	
 #pragma region Data		
+	
 private:
 	// 구독 핸들
 	FGameplayMessageListenerHandle FindAnomalyListenerHandle;	
+	
 #pragma endregion
 //======================================================================================================================		
 };

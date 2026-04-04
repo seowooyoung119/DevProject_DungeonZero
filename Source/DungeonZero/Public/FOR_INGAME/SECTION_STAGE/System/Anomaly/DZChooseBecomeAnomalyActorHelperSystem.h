@@ -17,12 +17,22 @@ class DUNGEONZERO_API UDZChooseBecomeAnomalyActorHelperSystem : public UWorldSub
 	GENERATED_BODY()
 	
 //======================================================================================================================	
-#pragma region Getter
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
+	
 public:
 	static UDZChooseBecomeAnomalyActorHelperSystem* Get(const UObject* WorldContextObject);
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region StageAPI
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// StageAPI
+	//━━━━━━━━━━━━━━━━━━━━
 protected:
 	/**
 	 * @param InPossibleActors 후보 액터들
@@ -30,7 +40,6 @@ protected:
 	 * @param MaxCount 최대 선택 개수
 	 * @return 랜덤하게 선택된 액터들의 배열
 	 */
-	UFUNCTION(BlueprintCallable, Category = "DZ|Stage")
 	TArray<AActor*> ChooseRandomAnomalyActors_internal(const TArray<AActor*>& InPossibleActors, int32 MinCount, int32 MaxCount);
 	
 #pragma endregion	

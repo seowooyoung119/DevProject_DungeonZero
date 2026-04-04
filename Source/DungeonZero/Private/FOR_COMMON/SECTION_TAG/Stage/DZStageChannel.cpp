@@ -5,25 +5,37 @@
 
 namespace DZ
 {
-	namespace Stage
+	namespace PlayerMSG
 	{
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_PREPARE, "DZ.Stage.Prepare");
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_READYNEWSTAGE, "DZ.Stage.ReadyNewStage");
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_OPENDOOR, "DZ.Stage.OpenDoor");
-		
-		
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_STAGECLAER, "DZ.Stage.StageClear");			
+		UE_DEFINE_GAMEPLAY_TAG(DZ_PLAYER_CANMOVEANDSEE,"DZ.MSG.Player.CanMoveAndSee");				
 	}
 	
-	namespace Time
+	namespace OriginMSG
 	{
-		UE_DEFINE_GAMEPLAY_TAG(DZ_TIME_REDUCE, "DZ.Time.Reduce");				
-		UE_DEFINE_GAMEPLAY_TAG(DZ_TIME_TIMEOVER, "DZ.Time.TimeOver");				
+		UE_DEFINE_GAMEPLAY_TAG(DZ_ORIGIN_VISIBILE_NOTICE,"DZ.MSG.Origin.VisibleNotice");				
 	}
 	
-	namespace FindAnomaly
+	namespace StageMSG
 	{
-		UE_DEFINE_GAMEPLAY_TAG(DZ_SEND_FIND_ANOMLAY, "DZ.FindAnomaly.Send");			
-		UE_DEFINE_GAMEPLAY_TAG(DZ_RESOULT_OF_FIND_ANOMLAY, "DZ.FindAnomaly.Result");		
+		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_CURRENTLEVEL_NOTICE, "DZ.MSG.Stage.CurrentLevelNotice");				
+	}
+	
+	namespace DoorMSG
+	{
+		UE_DEFINE_GAMEPLAY_TAG(DZ_DOOR_DOORRESET, "DZ.MSG.Door.Reset");
+		
+	}
+	
+	namespace TimeMSG
+	{
+		UE_DEFINE_GAMEPLAY_TAG(DZ_TIME_TIMERESET, "DZ.MSG.Time.Reset");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_TIME_REDUCE, "DZ.MSG.Time.Reduce");				
+		UE_DEFINE_GAMEPLAY_TAG(DZ_TIME_TIMEOVER, "DZ.MSG.Time.TimeOver");				
+	}
+	
+	namespace FindAnomalyMSG
+	{
+		UE_DEFINE_GAMEPLAY_TAG(DZ_SEND_FIND_ANOMLAY, "DZ.MSG.FindAnomaly.Send");			
+		UE_DEFINE_GAMEPLAY_TAG(DZ_RESOULT_OF_FIND_ANOMLAY, "DZ.MSG.FindAnomaly.Result");		
 	}
 }

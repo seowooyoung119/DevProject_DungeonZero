@@ -13,32 +13,33 @@
 UCLASS()
 class DUNGEONZERO_API UDZChangeToAnomalyActorHelperSystem : public UWorldSubsystem
 {
-	friend class UDZStageControlSystem;
+	
 	GENERATED_BODY()
+	
 //======================================================================================================================	
-#pragma region Getter	
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
+	
 public:
 	static UDZChangeToAnomalyActorHelperSystem* Get(const UObject* WorldContextObject);
+	
 #pragma endregion
 //======================================================================================================================	
-#pragma region LifeCycle
-public:
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-#pragma endregion	
-//======================================================================================================================
 #pragma region StageAPI
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// StageAPI
+	//━━━━━━━━━━━━━━━━━━━━
+	
 	/**
-	 * @param SelectedActors 이전에 선택된 원본 액터들 (자동으로 부숨)
+	 * @param SelectedActors 이전에 선택된 원본 액터들 (자동으로 숨김)
 	 * @return 생성된 어노말리 액터들의 배열
 	 */
 	TArray<AActor*> ReplaceWithAnomalyActors_internal(const TArray<AActor*>& SelectedActors);
+	
 #pragma endregion	
 //======================================================================================================================
-#pragma region Data
-	
-	UPROPERTY(Transient, VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
-	TMap<FName, FDZAnomalySettingTable> AnomalyDataMap;
-	
-#pragma endregion
-//======================================================================================================================	
 };

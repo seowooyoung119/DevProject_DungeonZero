@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZOriginMSG.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
 #include "DZOriginActorBase.generated.h"
 
 UCLASS()
@@ -12,6 +15,18 @@ class DUNGEONZERO_API ADZOriginActorBase : public AActor, public IDZCommonPlayRo
 {
 	GENERATED_BODY()
 
+//======================================================================================================================	
+#pragma region OnRep
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// OnRep
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+public:
+	UFUNCTION()
+	FORCEINLINE void OnRepIsVisible() { SetActorHiddenInGame(IsVisible); }
+	
+#pragma endregion
 //======================================================================================================================	
 #pragma region 라이프_사이클
 
@@ -21,9 +36,9 @@ class DUNGEONZERO_API ADZOriginActorBase : public AActor, public IDZCommonPlayRo
 
 public:
 	ADZOriginActorBase();
-
-protected:
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 #pragma endregion
 //======================================================================================================================		
@@ -36,12 +51,33 @@ protected:
 public:
 	// IDZCommonPlayRoleInterface ~ 
 	FORCEINLINE virtual EDZPlayRole GetPlayRole_Implementation() override { return PlayRole;}
+	FORCEINLINE virtual void ToggleHiddenInGame_Implementation(bool hiddenInGame) override { SetActorHiddenInGame(hiddenInGame); IsVisible = hiddenInGame; }
 	// ~ IDZCommonInteractInterface, IDZCommonPlayRoleInterface
 	
 protected:
 	// 롤 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | OriginActor")
 	EDZPlayRole PlayRole = EDZPlayRole::None;
+	
+#pragma endregion
+//======================================================================================================================	
+#pragma region 게임_플레이_메시지
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 플레이롤
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+public:
+	// 보이기, 숨김기 처리
+	void OnOriginVisibleReceived(FGameplayTag Channel, const FDZOriginMSG& Payload);
+
+	// 핸들 
+	FGameplayMessageListenerHandle OriginVisibleListenerHandle;
+	
+	// 보이기 숨기기 
+	UPROPERTY(ReplicatedUsing = OnRepIsVisible, EditAnywhere, BlueprintReadWrite, Category = "DZ | OriginActor")
+	bool IsVisible = true;
+	
 #pragma endregion
 //======================================================================================================================	
 };

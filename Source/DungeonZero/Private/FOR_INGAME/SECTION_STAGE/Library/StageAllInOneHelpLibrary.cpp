@@ -1,14 +1,15 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_STAGE/Library/StageBalanceDataLibrary.h"
+#include "FOR_INGAME/SECTION_STAGE/Library/StageAllInOneHelpLibrary.h"
 
 #include "FOR_COMMON/SECTION_LOG/Stage/System/DZStageSystemLOG.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "FOR_INGAME/SECTION_ANOMALY/OriginActor/Base/DZOriginActorBase.h"
+#include "FOR_INGAME/SECTION_ANOMALY/System/DZAnomalyDataSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/Setting/DZStageBalanceSetting.h"
 
-void UStageBalanceDataLibrary::CacheStageDataToMap(TMap<int32, FDZStageBalanceRow>& OutStageMap)
+void UStageAllInOneHelpLibrary::CacheStageDataToMap(TMap<int32, FDZStageBalanceRow>& OutStageMap)
 {
 	// 1. 세팅에서 데이터 테이블 포인터 가져오기
 	const UDZStageBalanceSetting* Settings = GetDefault<UDZStageBalanceSetting>();
@@ -32,7 +33,7 @@ void UStageBalanceDataLibrary::CacheStageDataToMap(TMap<int32, FDZStageBalanceRo
 	}
 }
 
-void UStageBalanceDataLibrary::DebugLogStageMap(const TMap<int32, FDZStageBalanceRow>& InStageMap)
+void UStageAllInOneHelpLibrary::DebugLogStageMap(const TMap<int32, FDZStageBalanceRow>& InStageMap)
 {
 	UE_LOG(DZStageDataMgrLog, Warning, TEXT("----------- [Stage Balance Map Debug Start] -----------"));
 	UE_LOG(DZStageDataMgrLog, Warning, TEXT("Total Stages Cached: %d"), InStageMap.Num());
@@ -53,7 +54,7 @@ void UStageBalanceDataLibrary::DebugLogStageMap(const TMap<int32, FDZStageBalanc
 	UE_LOG(DZStageDataMgrLog, Warning, TEXT("----------- [Stage Balance Map Debug End] -------------"));
 }
 
-void UStageBalanceDataLibrary::CacheAnomalyDataToMap(TMap<FName, FDZAnomalySettingTable>& OutStageMap)
+void UStageAllInOneHelpLibrary::CacheAnomalyDataToMap(TMap<FName, FDZAnomalySettingTable>& OutStageMap)
 {
 	// 1. 세팅에서 데이터 테이블 포인터 가져오기
 	const UDZStageBalanceSetting* Settings = GetDefault<UDZStageBalanceSetting>();
@@ -81,7 +82,7 @@ void UStageBalanceDataLibrary::CacheAnomalyDataToMap(TMap<FName, FDZAnomalySetti
 	}
 }
 
-void UStageBalanceDataLibrary::DebugLogAnomalyMap(const TMap<FName, FDZAnomalySettingTable>& InStageMap)
+void UStageAllInOneHelpLibrary::DebugLogAnomalyMap(const TMap<FName, FDZAnomalySettingTable>& InStageMap)
 {
 	UE_LOG(DZAnomalyDataMgrLog, Warning, TEXT("================ [Anomaly Map Debug Start] ================"));
 	UE_LOG(DZAnomalyDataMgrLog, Warning, TEXT("Total Count: %d"), InStageMap.Num());
@@ -102,4 +103,38 @@ void UStageBalanceDataLibrary::DebugLogAnomalyMap(const TMap<FName, FDZAnomalySe
 	}
 
 	UE_LOG(DZAnomalyDataMgrLog, Warning, TEXT("================ [Anomaly Map Debug End] =================="));
+}
+
+FDZAnomalySettingTable* UStageAllInOneHelpLibrary::IsAnyAnomalyTagIsMatch(const UObject* InWorldContextObject, AActor* InTargetActor)
+{
+	// 타겟 체크
+	if (!IsValid(InTargetActor))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IsAnyAnomalyTagIsMatch : !IsValid(InTargetActor) 실패"))
+		return nullptr;
+	}
+	
+	// 어노말리 데이터 테이블 시스템 가져오기
+	UDZAnomalyDataSystem* DataSystem = UDZAnomalyDataSystem::Get(InWorldContextObject);
+	if (!IsValid(DataSystem))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IsAnyAnomalyTagIsMatch : 어노말리 데이터 테이블 시스템 가져오기 실패"))
+		return nullptr;
+	}
+	
+	// 2. 액터의 태그를 순회하며 캐싱된 맵(AnomalyDataMap)에 키값이 있는지 확인
+	for (const FName& ActorTag : InTargetActor->Tags)
+	{
+		FDZAnomalySettingTable* Table = DataSystem->GetTable(ActorTag);
+		if (!Table)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("IsAnyAnomalyTagIsMatch :Table 실패"))
+			continue;
+		}
+		
+		// 매칭되는 첫 번째 태그 발견 해당 테이블 열 넘겨줌
+		return Table;
+	}
+	
+	return nullptr;
 }

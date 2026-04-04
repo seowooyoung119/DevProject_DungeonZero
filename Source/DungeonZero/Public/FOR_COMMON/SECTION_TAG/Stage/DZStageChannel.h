@@ -7,22 +7,35 @@
 
 namespace DZ
 {
-	namespace Stage
+	namespace PlayerMSG
 	{
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_PREPARE);				// 준비 전 초기화
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_READYNEWSTAGE)			// 준비 실시
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_OPENDOOR)				// 문 열기 
-		
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_STAGECLAER)				// 스테이지 클리어
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_PLAYER_CANMOVEANDSEE);		// 플레이어 움직임 및 시야 토글		
 	}
-
-	namespace Time
+	
+	namespace OriginMSG
 	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_ORIGIN_VISIBILE_NOTICE);		// 원본 액터 숨김 처리 토글
+	}
+	
+	namespace StageMSG
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_CURRENTLEVEL_NOTICE);	// 현재 레벨 알림			
+	}
+	
+	namespace DoorMSG
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_DOOR_DOORRESET);				// 문 리셋
+		
+	}
+	
+	namespace TimeMSG
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_TIME_TIMERESET);				// 타이머 리셋
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_TIME_REDUCE);					// 타이머 감소 중
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_TIME_TIMEOVER);				// 타임 오버 됨.
 	}
 	
-	namespace FindAnomaly
+	namespace FindAnomalyMSG
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_SEND_FIND_ANOMLAY);			// 어노말리인 것 같으면 이거다 찍을 때 호출하는 채널	
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_RESOULT_OF_FIND_ANOMLAY);		// 어노말리 찾기 결과 			

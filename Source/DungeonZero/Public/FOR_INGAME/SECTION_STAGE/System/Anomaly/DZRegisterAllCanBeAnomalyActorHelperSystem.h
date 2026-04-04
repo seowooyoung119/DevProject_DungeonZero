@@ -15,53 +15,42 @@
 UCLASS()
 class DUNGEONZERO_API UDZRegisterAllCanBeAnomalyActorHelperSystem : public UWorldSubsystem
 {
-	friend class UDZStageControlSystem;
 	
 	GENERATED_BODY()
 //======================================================================================================================	
-#pragma region Getter
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
 public:
 	static UDZRegisterAllCanBeAnomalyActorHelperSystem* Get(const UObject* WorldContextObject);
 	
 #pragma endregion
 //======================================================================================================================
-#pragma region LifeCycle
-	
-public:
-	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
-	virtual void Deinitialize() override;
-#pragma endregion
-//======================================================================================================================
 #pragma region RegisterAPI
-
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// RegisterAPI
+	//━━━━━━━━━━━━━━━━━━━━
 public:
 	UFUNCTION(BlueprintCallable, Category = "DZ")
-	FORCEINLINE void RegisterAllCanBeAnomalyActor(AActor* Actor)
-	{
-		// 클라이언트 패스
-		if (!IsValid(GetWorld())) return;
-		if (GetWorld()->GetNetMode() == NM_Client) return;
-		
-		PossibleActors.AddUnique(Actor);
-	};
-	
-#pragma endregion
-//======================================================================================================================
-#pragma region StageAPI
-	
-protected:
-	// 준비 전 초기화 (들어온 레벨 언로드 실시)
-	void OnPrepareMessageReceived(FGameplayTag GameplayTag, const FDZStageReadyMSG& Payload);
+	FORCEINLINE void RegisterAllCanBeAnomalyActor(AActor* Actor) { if (!IsValid(GetWorld()) || GetWorld()->GetNetMode() == NM_Client) return; PossibleActors.AddUnique(Actor); };
 	
 #pragma endregion
 //======================================================================================================================
 #pragma region Data
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// Data
+	//━━━━━━━━━━━━━━━━━━━━
+	
+public:
+	TArray<AActor*>& GetPossibleActors() { return PossibleActors; };
+	
 protected:
 	UPROPERTY(Transient, VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
 	TArray<AActor*> PossibleActors;
-	
-	// 초기화 핸들
-	FGameplayMessageListenerHandle PrepareListenerHandle;
 	
 #pragma endregion	
 //======================================================================================================================

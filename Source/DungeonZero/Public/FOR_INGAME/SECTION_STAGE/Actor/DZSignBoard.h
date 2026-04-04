@@ -3,18 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAllowPlayerControlMSG.h"
+#include "GameplayTagContainer.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
+#include "GameFramework/Actor.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
-#include "GameFramework/PlayerController.h"
-#include "DZPlayerController.generated.h"
+#include "DZSignBoard.generated.h"
 
+class UWidgetComponent;
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API ADZPlayerController : public APlayerController
+class DUNGEONZERO_API ADZSignBoard : public AActor
 {
 	GENERATED_BODY()
+	
 //======================================================================================================================	
 #pragma region REP_API
 	
@@ -24,42 +27,56 @@ class DUNGEONZERO_API ADZPlayerController : public APlayerController
 public:
 	
 	UFUNCTION()
-	void OnRep_IsVisibleAndMovable();
+	void OnRep_CurrentLevel();
 	
 #pragma endregion
 //======================================================================================================================	
-#pragma region 라이프_사이클
+#pragma region REP_API
 	
 	//━━━━━━━━━━━━━━━━━━━━
-	// 라이프 사이클 
-	//━━━━━━━━━━━━━━━━━━━━
-	
+	// REP_API
+	//━━━━━━━━━━━━━━━━━━━━	
 public:
-	ADZPlayerController();
+	ADZSignBoard();
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 #pragma endregion
 //======================================================================================================================	
-#pragma region StageAPI	
+#pragma region SignBoardAPI	
 	
 	//━━━━━━━━━━━━━━━━━━━━
-	// StageAPI
+	// SignBoardAPI
 	//━━━━━━━━━━━━━━━━━━━━
-
+	
 protected:
-	
 	// 메시지 수신 함수
-	void OnCanMoveAndSeeReceived(FGameplayTag Channel, const FDZAllowPlayerControlMSG& Payload);	
-
+	void OnCurrentLevelNoticeReceived(FGameplayTag Channel, const FDZStageMSG& Payload);
+	
 	// 구독 핸들
-	FGameplayMessageListenerHandle CanMoveAndSeeListenerHandle;
+	FGameplayMessageListenerHandle CurrentLevelNoticeListenerHandle;
 	
-	// 움직이고 볼 수 있는가?
-	UPROPERTY(ReplicatedUsing = OnRep_IsVisibleAndMovable, EditAnywhere, BlueprintReadWrite, Category = "DZ")
-	bool IsVisibleAndMovable = true;
+#pragma endregion
+//======================================================================================================================		
+#pragma region 컴포넌트_및_데이터	
 	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 컴포넌트 및 데이터
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+protected:
+	void UpdateUIbyCurrentLevel();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<USceneComponent> SignBoardRoot = nullptr;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	TObjectPtr<UWidgetComponent> SignBoardWidgetComponent = nullptr;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_CurrentLevel, EditAnywhere, BlueprintReadOnly, Category = "DZ")
+	int32 CurrentLevel = 0;
+
 #pragma endregion
 //======================================================================================================================		
 };

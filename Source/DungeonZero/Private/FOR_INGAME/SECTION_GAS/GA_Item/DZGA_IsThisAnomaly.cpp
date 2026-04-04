@@ -49,7 +49,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = nullptr;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
-		MessageSubsystem.BroadcastMessage(DZ::FindAnomaly::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
+		MessageSubsystem.BroadcastMessage(DZ::FindAnomalyMSG::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
 		
 		K2_EndAbility();
 		return;
@@ -62,7 +62,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
-		MessageSubsystem.BroadcastMessage(DZ::FindAnomaly::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
+		MessageSubsystem.BroadcastMessage(DZ::FindAnomalyMSG::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
 		
 		K2_EndAbility();
 		return;
@@ -76,7 +76,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
-		MessageSubsystem.BroadcastMessage(DZ::FindAnomaly::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
+		MessageSubsystem.BroadcastMessage(DZ::FindAnomalyMSG::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
 		
 		K2_EndAbility();
 		return;
@@ -89,7 +89,7 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
-		MessageSubsystem.BroadcastMessage(DZ::FindAnomaly::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
+		MessageSubsystem.BroadcastMessage(DZ::FindAnomalyMSG::DZ_SEND_FIND_ANOMLAY, FindAnomalyMSG);
 	
 		K2_EndAbility();
 		return;

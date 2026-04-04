@@ -1,10 +1,15 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_STAGE/System/DZChooseBecomeAnomalyActorHelperSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZChooseBecomeAnomalyActorHelperSystem.h"
 
 //======================================================================================================================	
-#pragma region Getter
+#pragma region 게터
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━
+
 UDZChooseBecomeAnomalyActorHelperSystem* UDZChooseBecomeAnomalyActorHelperSystem::Get(const UObject* WorldContextObject)
 {
 	if (!IsValid(WorldContextObject)) return nullptr;
@@ -17,6 +22,14 @@ UDZChooseBecomeAnomalyActorHelperSystem* UDZChooseBecomeAnomalyActorHelperSystem
 	
 	return ChooseBecomeAnomalyActorHelperSystem;
 }
+	
+#pragma endregion
+//======================================================================================================================	
+#pragma region StageAPI
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// StageAPI
+	//━━━━━━━━━━━━━━━━━━━━
 
 TArray<AActor*> UDZChooseBecomeAnomalyActorHelperSystem::ChooseRandomAnomalyActors_internal(const TArray<AActor*>& InPossibleActors, int32 MinCount, int32 MaxCount)
 {
@@ -55,7 +68,6 @@ TArray<AActor*> UDZChooseBecomeAnomalyActorHelperSystem::ChooseRandomAnomalyActo
 		SelectedActors.Add(ShuffledActors[i]);
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("ReadyNewStage 3단계 : 룸 로드 매니저 : 랜덤 뽑기 완료 %d / %d"), SelectedActors.Num(), InPossibleActors.Num());
 	return SelectedActors;
 }
 #pragma endregion	
