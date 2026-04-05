@@ -6,9 +6,7 @@
 #include "GameplayCueNotify_Actor.h"
 #include "DZGCN_AnomalyEyeLight.generated.h"
 
-class UNiagaraComponent;
-class UPointLightComponent;
-class UAudioComponent;
+class UStaticMeshComponent;
 
 /**
  * 
@@ -37,16 +35,7 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━	
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "DZ")
-	TObjectPtr<USceneComponent> EyeLightRoot = nullptr;
-	
-	UPROPERTY(VisibleAnywhere, Category = "DZ")
-	TObjectPtr<UNiagaraComponent> EyeLightVFXEffect = nullptr;
-	
-	UPROPERTY(VisibleAnywhere, Category = "DZ")
-	TObjectPtr<UPointLightComponent> EyeLightComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, Category = "DZ")
-	TObjectPtr<UAudioComponent> EyeSoundComponent = nullptr;
+	TObjectPtr<UStaticMeshComponent> Eye = nullptr;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	FName EyeLightTargetMeshTag = FName(TEXT(""));

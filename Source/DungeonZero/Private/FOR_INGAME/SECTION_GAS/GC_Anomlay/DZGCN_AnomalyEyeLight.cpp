@@ -20,31 +20,14 @@ ADZGCN_AnomalyEyeLight::ADZGCN_AnomalyEyeLight()
 	
 	bAutoDestroyOnRemove = true; 
 
-	EyeLightRoot = CreateDefaultSubobject<USceneComponent>(TEXT("EyeLightRoot"));
-	SetRootComponent(EyeLightRoot);
-	
-	EyeLightVFXEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("EyeLightVFXEffect"));
-	EyeLightVFXEffect->SetupAttachment(GetRootComponent());
-	EyeLightVFXEffect->SetAutoActivate(false);
-
-	EyeLightComponent = CreateDefaultSubobject<UPointLightComponent>(TEXT("EyeLightComponent"));
-	EyeLightComponent->SetupAttachment(EyeLightRoot);
-	EyeLightComponent->SetAutoActivate(false);
-	
-	EyeSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("EyeSoundComponent"));
-	EyeSoundComponent->SetupAttachment(EyeLightRoot);
-	EyeSoundComponent->SetAutoActivate(false);
-	
+	Eye = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Eye"));
+	SetRootComponent(Eye);
 }
 
 bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
 	// 부모 및 컴포넌트 체크
 	Super::OnActive_Implementation(MyTarget, Parameters);
-	if (!IsValid(EyeLightRoot))  return false;
-	if (!IsValid(EyeLightVFXEffect)) return false;
-	if (!IsValid(EyeLightComponent)) return false;
-	if (!IsValid(EyeSoundComponent))  return false;
 	
 	// 타겟 및 설정 체크
 	UStaticMeshComponent* TargetMesh = UDZAttachUtilLibrary::GetStaticMeshComponentByMeshTag(MyTarget, EyeLightTargetMeshTag);
@@ -67,11 +50,6 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 	SetActorRelativeRotation(FRotator::ZeroRotator);
 	
 	// 연출 시작
-	EyeLightVFXEffect->Activate();
-	EyeLightComponent->Activate();
-	EyeSoundComponent->Activate();
-	EyeSoundComponent->Play();
-
 	
 	if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트"))
 	else UE_LOG(LogTemp, Warning, TEXT("클라이언트"));
@@ -83,13 +61,6 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 bool ADZGCN_AnomalyEyeLight::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
 	// 연출 끝
-	if (IsValid(EyeLightVFXEffect) )EyeLightVFXEffect->Deactivate();
-	if (IsValid(EyeLightComponent)) EyeLightComponent->Deactivate();
-	if (IsValid(EyeSoundComponent))
-	{
-		EyeSoundComponent->Deactivate();
-		EyeSoundComponent->Stop();
-	}
 	
 	// 부착 해제
 	if (IsValid(GetAttachParentActor())) DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
