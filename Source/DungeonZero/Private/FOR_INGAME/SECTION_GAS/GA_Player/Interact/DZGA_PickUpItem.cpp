@@ -12,6 +12,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Interface/DZItemInterface.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
 #include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Item/DZRegisterLevelPlacedItemHelperSystem.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 
 UDZGA_PickUpItem::UDZGA_PickUpItem()
@@ -114,9 +115,22 @@ bool UDZGA_PickUpItem::AddItemToInventory_internal(FDZItemRuntimeData& ItemRunTi
 	bool IsSuccess = IDZInventoryCompActionInterface::Execute_AddItemToInventory(HotKeyInventoryComponent, ItemRunTimeData);
 	if (!IsSuccess) { K2_EndAbility(); return false; } 
 					
-	// 성공시 타겟 파괴
-	if (IsValid(TargetItem)) TargetItem->Destroy();
-			
+	// 성공시 타겟 처리 
+	// CASE A : 레벨에 배치된 경우 -> 원래 아이템 스택 카운트 (1) 다시 주고 숨김처리
+	// CASE B : 버려진 아이템인 경우 -> 파괴철
+	if (!IsValid(TargetItem)) return false;
+	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
+	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
+	if (LevelPlacedItemHelperSystem->IsThisItemPlaced(TargetItem) == true)
+	{
+		ItemRunTimeData.DynamicData.CurrentStack = 1;
+		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(TargetItem, false, false);
+	}
+	else
+	{
+		TargetItem->Destroy();
+	}
+	
 	// 호스트 전용 (UI 알림 -> 클라는 OnRep에서 호출)
 	FDZInventoryUpdateMessage Message;
 	Message.ChangeInventoryType = HotKeyInventoryComponent->GetInventoryData().InventoryType;
@@ -137,9 +151,22 @@ bool UDZGA_PickUpItem::AddItemToBody_internal(FDZItemRuntimeData& ItemRunTimeDat
 	bool IsSuccess = IDZInventoryCompActionInterface::Execute_AddItemToInventory(BodyEquipInventoryComponent, ItemRunTimeData);
 	if (!IsSuccess) { K2_EndAbility(); return false; }
 					
-	// 성공시 타겟 파괴
-	if (IsValid(TargetItem)) TargetItem->Destroy();
-			
+	// 성공시 타겟 처리 
+	// CASE A : 레벨에 배치된 경우 -> 원래 아이템 스택 카운트 (1) 다시 주고 숨김처리
+	// CASE B : 버려진 아이템인 경우 -> 파괴철
+	if (!IsValid(TargetItem)) return false;
+	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
+	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
+	if (LevelPlacedItemHelperSystem->IsThisItemPlaced(TargetItem) == true)
+	{
+		ItemRunTimeData.DynamicData.CurrentStack = 1;
+		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(TargetItem, false, false);
+	}
+	else
+	{
+		TargetItem->Destroy();
+	}	
+	
 	// 장비 비주얼 업데이트
 	UDZBodyEquipVisualComponent* BodyEquipVisualComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipVisualComponent(GetAvatarActorFromActorInfo());
 	if (!IsValid(BodyEquipVisualComponent)){ K2_EndAbility(); return false; }

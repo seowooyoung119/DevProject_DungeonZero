@@ -6,12 +6,15 @@
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZOriginMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/EndingMSG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
+#include "FOR_INGAME/SECTION_STAGE/Decal/DZDecalGarbageCollector.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZChangeToAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZChooseBecomeAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZRegisterAllCanBeAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Data/DZStageBalanceDataModule.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Item/DZDropItemGarbageCollectorSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Time/DZTimeReduceManager.h"
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerStart.h"
@@ -49,12 +52,22 @@ UDZStageControlSystem* UDZStageControlSystem::Get(const UObject* WorldContextObj
 
 void UDZStageControlSystem::PlayerEnterTheResultWay()
 {
+	// 0. 마지막 스테이지 클리어했는가?
+	if (IsAllFound_internal() == true && IsAllStageClear() == true)
+	{
+		DoEnding();
+		return;
+	}
+	
 	// 1. 모든 어노말리를 다 찾았는가?
 	if (IsAllFound_internal() == false) ReStratLevel_internal();
 	else StratNextLevel_internal();
 	
+	// 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
 	StopTimer_internal();
 	ResetDoor_internal();
+	GCDropItems_intenral();
+	GCDecal_internal_ThisisTempAPI(); // TODO : 임시 데칼 갈비지 컬렉터 나중에 지우기
 	
 	// 2. 플레이어 처리 
 	// 위치 이동 
@@ -77,6 +90,36 @@ void UDZStageControlSystem::PlayerEnterTheResultWay()
 	AllowPlayerSeeAndMove_internal();
 	AllowStartTimeTick_internal();
 	
+}
+
+bool UDZStageControlSystem::IsAllStageClear()
+{
+	// 런타임 모듈 가져오기 
+	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
+	if (!IsValid(StageRuntimePlayDataModule)) return false;
+	
+	// 레벨에 따른 새로운 시간 가져오기
+	UDZStageBalanceDataModule* StageBalanceDataModule = UDZStageBalanceDataModule::Get(this);
+	if (!IsValid(StageBalanceDataModule)) return false;
+	
+	int32 LastStageLevel = StageBalanceDataModule->GetLastStageLevel();
+	int32 CurrentStageLevel = StageRuntimePlayDataModule->GetCurrentLevel();
+	
+	return (LastStageLevel == CurrentStageLevel) ? true : false;
+}
+
+void UDZStageControlSystem::DoEnding()
+{
+	UDZTimeReduceManager* TimeReduceManager = UDZTimeReduceManager::Get(this);
+	if (!IsValid(TimeReduceManager)) return;
+	
+	// 타이머 중지
+	TimeReduceManager->StopTime();
+	
+	// 엔딩 알림
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZEndingMSG Payload;
+	MessageSubsystem.BroadcastMessage(DZ::EndingMSG::DZ_STAGE_ENDING_NOTICE, Payload);
 }
 
 bool UDZStageControlSystem::IsAllFound_internal()
@@ -130,6 +173,23 @@ void UDZStageControlSystem::ResetDoor_internal()
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	FDZDoorMSG Payload;
 	MessageSubsystem.BroadcastMessage(DZ::DoorMSG::DZ_DOOR_DOORRESET, Payload);
+}
+
+void UDZStageControlSystem::GCDropItems_intenral()
+{
+	// 드랍 아이템 전부 파괴 실시
+	UDZDropItemGarbageCollectorSystem* DropItemGarbageCollectorSystem = UDZDropItemGarbageCollectorSystem::Get(this);
+	if (!IsValid(DropItemGarbageCollectorSystem)) return;
+	DropItemGarbageCollectorSystem->GCAllDropItems();
+}
+
+void UDZStageControlSystem::GCDecal_internal_ThisisTempAPI()
+{
+	if (!IsValid(GetWorld())) return;
+
+	ADZDecalGarbageCollector* DecalGarbageCollector = Cast<ADZDecalGarbageCollector>(UGameplayStatics::GetActorOfClass(this, ADZDecalGarbageCollector::StaticClass()));
+	if (!IsValid(DecalGarbageCollector)) return;
+	DecalGarbageCollector->GCAllDecals();
 }
 
 void UDZStageControlSystem::HandlePlayers_internal()

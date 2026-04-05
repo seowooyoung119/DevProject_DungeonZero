@@ -3,8 +3,11 @@
 
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
 #include "Components/WidgetComponent.h"
+#include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZITemStaticData.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Item/DZDropItemGarbageCollectorSystem.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Item/DZRegisterLevelPlacedItemHelperSystem.h"
 #include "FOR_INGAME/SECTION_UI/Interact/Item/DZItemInteractToggleUI.h"
 #include "Net/UnrealNetwork.h"
 
@@ -24,6 +27,22 @@ void ADZItemActorBase::OnRep_ItemData()
 void ADZItemActorBase::OnRep_bIsPickUpAble()
 {
 	// 자식이 오버라이드
+}
+
+void ADZItemActorBase::OnRepIsVisible()
+{
+	if (IsVisible) SetActorHiddenInGame(false);
+	else SetActorHiddenInGame(true);
+	
+	if (IsValid(InteractWidgetComp)) InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void ADZItemActorBase::OnRepbCanCollisionAble()
+{
+	if (bCanCollisionAble) SetActorEnableCollision(true);
+	else SetActorEnableCollision(false);
+	
+	if (IsValid(InteractWidgetComp)) InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 #pragma endregion
@@ -51,6 +70,39 @@ void ADZItemActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty
 	
 	// 아이템 데이터 
 	DOREPLIFETIME_CONDITION(ADZItemActorBase, ItemData, COND_None);
+}
+
+void ADZItemActorBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (bIsLayOnLevel == true)
+	{
+		// 레벨 배치 아이템 액터 등록
+		UDZRegisterLevelPlacedItemHelperSystem* RegisterLevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(this);
+		if (IsValid(RegisterLevelPlacedItemHelperSystem)) RegisterLevelPlacedItemHelperSystem->RegisterLevelPlacedItem(this);
+	
+		// 레벨 배치 아이템 핸들 시스템 메시지 구독 (현재 원본 액터와 같이 함)
+		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+		OriginVisibleListenerHandle = MessageSubsystem.RegisterListener<FDZOriginMSG>(DZ::OriginMSG::DZ_ORIGIN_VISIBILE_NOTICE, this, &ADZItemActorBase::OnOriginVisibleReceived);
+	}
+	else
+	{
+		// 드랍 아이템 가비지 컬렉터 구독
+		UDZDropItemGarbageCollectorSystem* DropItemGarbageCollectorSystem = UDZDropItemGarbageCollectorSystem::Get(this);
+		if (IsValid(DropItemGarbageCollectorSystem)) DropItemGarbageCollectorSystem->RegisterDropItem(this);
+	}
+}
+
+void ADZItemActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	// 게임 플레이 메시지 해제
+	if (UGameplayMessageSubsystem::HasInstance(this))
+	{
+		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+		MessageSubsystem.UnregisterListener(OriginVisibleListenerHandle);
+	}
+	Super::EndPlay(EndPlayReason);
 }
 
 #pragma endregion
@@ -122,8 +174,38 @@ void ADZItemActorBase::InitItemID_Internal()
 
 void ADZItemActorBase::SetTogglePhysicsAndCollisions(bool InWantOn)
 {
-	
 }
 
 #pragma endregion
 //======================================================================================================================	
+#pragma region 게임_플레이_메시지
+	
+//━━━━━━━━━━━━━━━━━━━━
+// 플레이롤
+//━━━━━━━━━━━━━━━━━━━━	
+
+void ADZItemActorBase::OnOriginVisibleReceived(FGameplayTag Channel, const FDZOriginMSG& Payload)
+{
+	Execute_ToggleHiddenInGame(this, Payload.bIsVisible, Payload.bIsVisible);
+}
+
+void ADZItemActorBase::ToggleHiddenInGame_Implementation(bool InIsVisible, bool InbCanCollisionAble)
+{
+	{
+		if (InIsVisible) SetActorHiddenInGame(false);
+		else SetActorHiddenInGame(true);
+
+		if (InbCanCollisionAble) SetActorEnableCollision(true);
+		else SetActorEnableCollision(false);
+		
+		if (IsValid(InteractWidgetComp)) InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			
+		IsVisible = InIsVisible;
+		bCanCollisionAble = InbCanCollisionAble;
+	}
+}
+
+#pragma endregion
+//======================================================================================================================		
+	
+	

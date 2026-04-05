@@ -59,16 +59,22 @@ void ADZResultWayTriggerVolume::EndPlay(const EEndPlayReason::Type EndPlayReason
 
 void ADZResultWayTriggerVolume::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// 엔딩 시 이동 방지
+	if (IsNowEnding == true) return;
+	
+	// 이미 이동 중이면 중복 방지
 	if (IsMoveLogicHasStart == true) return;
 	
+	// 플레이어 캐릭터 확인
 	ADZPlayerCharacter* PlayerCharacter = Cast<ADZPlayerCharacter>(OtherActor);
 	if (!IsValid(PlayerCharacter)) return;
 	
+	// 이동 중 체크
 	IsMoveLogicHasStart = true;
 	
+	// 이동 실시
 	UDZStageControlSystem* StageControlSystem = UDZStageControlSystem::Get(this);
 	if (!IsValid(StageControlSystem)) return;
-	
 	StageControlSystem->PlayerEnterTheResultWay();
 }
 
@@ -83,6 +89,11 @@ void ADZResultWayTriggerVolume::OnBoxOverlap(UPrimitiveComponent* OverlappedComp
 void ADZResultWayTriggerVolume::OnAllowPlayerSeeAndMoveReceived(FGameplayTag Channel, const FDZAllowPlayerControlMSG& Payload)
 {
 	if (Payload.CanMoveAndSee == true) IsMoveLogicHasStart = false;
+}
+
+void ADZResultWayTriggerVolume::OnEndingReceived(FGameplayTag Channel, const FDZEndingMSG& Payload)
+{
+	IsNowEnding = true;
 }
 
 #pragma endregion

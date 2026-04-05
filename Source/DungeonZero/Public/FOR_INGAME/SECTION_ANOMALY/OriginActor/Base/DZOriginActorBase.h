@@ -88,7 +88,7 @@ protected:
 	// 플레이롤
 	//━━━━━━━━━━━━━━━━━━━━	
 	
-public:
+protected:
 	// 보이기, 숨김기 처리
 	void OnOriginVisibleReceived(FGameplayTag Channel, const FDZOriginMSG& Payload);
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "GameplayTagContainer.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAllowPlayerControlMSG.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/EndingMSG.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "DZResultWayTriggerVolume.generated.h"
 
@@ -55,12 +56,18 @@ protected:
 	
 protected:
 
-	// 메시지 수신 함수 (리셋용)
+	// 메시지 수신 함수
 	void OnAllowPlayerSeeAndMoveReceived(FGameplayTag Channel, const FDZAllowPlayerControlMSG& Payload);
-
+	void OnEndingReceived(FGameplayTag Channel, const FDZEndingMSG& Payload);
+	
 	// 구독 핸들
 	FGameplayMessageListenerHandle AllowPlayerControlListenerHandle;
+	FGameplayMessageListenerHandle EndingListenerHandle;
 
+	// 엔딩이냐?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	bool IsNowEnding = false;
+	
 #pragma endregion
 //======================================================================================================================		
 };

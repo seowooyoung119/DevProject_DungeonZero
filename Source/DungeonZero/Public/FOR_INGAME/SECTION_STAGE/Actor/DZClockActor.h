@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/EndingMSG.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "DZClockActor.generated.h"
 
@@ -91,6 +92,27 @@ protected:
 	FGameplayMessageListenerHandle TimeReduceListenerHandle;
 	FGameplayMessageListenerHandle TimeOverListenerHandle;
 	
+	
+	
+	
+#pragma endregion
+//======================================================================================================================
+#pragma region EndingAPI	
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// EndingAPI
+	//━━━━━━━━━━━━━━━━━━━━	
+
+protected:
+	// 엔딩 수신 함수
+	void OnEndingReceived(FGameplayTag Channel, const FDZEndingMSG& Payload);
+	
+	// 엔딩 종소리
+	void PlayEndingChime();
+	
+	// 구독 핸들
+	FGameplayMessageListenerHandle EndingListenerHandle;
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region Data		
@@ -103,6 +125,10 @@ protected:
 	// 종소리
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
 	TObjectPtr<USoundBase> ChimeSound = nullptr;
+	
+	// 엔딩 시 날 종소리
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
+	TObjectPtr<USoundBase> EndingChimeSound = nullptr;
 	
 	// 종소리 타이머 핸들
 	FTimerHandle ChimeTimerHandle;

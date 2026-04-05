@@ -86,6 +86,9 @@ void ADZClockActor::BeginPlay()
 	TimeResetListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_TIMERESET, this, &ADZClockActor::OnTimeResetReceived);
 	TimeReduceListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_REDUCE, this, &ADZClockActor::OnTimeReduceReceived);
 	TimeOverListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_TIMEOVER, this, &ADZClockActor::OnTimeOverReceived);
+	
+	// 엔딩 구독
+	EndingListenerHandle = MessageSubsystem.RegisterListener<FDZEndingMSG>(DZ::EndingMSG::DZ_STAGE_ENDING_NOTICE, this, &ADZClockActor::OnEndingReceived);
 }
 
 
@@ -97,7 +100,12 @@ void ADZClockActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 		MessageSubsystem.UnregisterListener(TimeReduceListenerHandle);
 		MessageSubsystem.UnregisterListener(TimeOverListenerHandle);
+		MessageSubsystem.UnregisterListener(TimeResetListenerHandle);
+		MessageSubsystem.UnregisterListener(EndingListenerHandle);
 	}
+	// 타이머 해제
+	if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+	
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -221,5 +229,30 @@ void ADZClockActor::PlaySingleChime()
 	
 }
 
+
+
 #pragma endregion
-//======================================================================================================================	
+//======================================================================================================================
+#pragma region EndingAPI	
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// EndingAPI
+	//━━━━━━━━━━━━━━━━━━━━	
+
+void ADZClockActor::OnEndingReceived(FGameplayTag Channel, const FDZEndingMSG& Payload)
+{
+	PlayEndingChime();
+}
+
+void ADZClockActor::PlayEndingChime()
+{
+	if (!IsValid(EndingChimeSound)) return;
+	UGameplayStatics::PlaySoundAtLocation(this, EndingChimeSound, GetActorLocation());
+	
+	float SoundDuration = EndingChimeSound->GetDuration();
+	FTimerHandle EndingTimerHandle;
+	GetWorldTimerManager().SetTimer(EndingTimerHandle, this, &ADZClockActor::PlayEndingChime, SoundDuration, true);
+}
+
+#pragma endregion
+//======================================================================================================================

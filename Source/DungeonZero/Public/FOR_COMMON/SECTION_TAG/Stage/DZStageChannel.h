@@ -22,6 +22,11 @@ namespace DZ
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_CURRENTLEVEL_NOTICE);	// 현재 레벨 알림			
 	}
 	
+	namespace EndingMSG
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_STAGE_ENDING_NOTICE);	// 마지막 스테이지 클리어	
+	}
+	
 	namespace DoorMSG
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_DOOR_DOORRESET);				// 문 리셋

@@ -7,6 +7,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
 #include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Item/DZDropItemGarbageCollectorSystem.h"
 
 
 //======================================================================================================================	
@@ -91,6 +92,12 @@ void UDZBodyEquipVisualComponent::TrySpawnVisual_internal(EDZInventorySlotType& 
 	
 	// 5. 스폰 실시
 	Value = SpawnLogic(*ItemStaticData);
+	
+	// 6. 가비지 컬렉터에서 장비 제거 
+	UDZDropItemGarbageCollectorSystem* DropItemGarbageCollectorSystem = UDZDropItemGarbageCollectorSystem::Get(GetWorld());
+	if (!IsValid(DropItemGarbageCollectorSystem)) return;
+	DropItemGarbageCollectorSystem->UnRegisterThisItem(Value);
+	
 }
 
 void UDZBodyEquipVisualComponent::HideSpawnVisual_internal(EDZInventorySlotType& InTargetSlotType)

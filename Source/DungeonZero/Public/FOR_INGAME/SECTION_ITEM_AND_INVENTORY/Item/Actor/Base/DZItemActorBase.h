@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZOriginMSG.h"
 #include "GameFramework/Actor.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
 #include "FOR_INGAME/SECTION_INTERACT/Interface/DZCommonInteractInterface.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZItemRuntimeData.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Interface/DZItemInterface.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
 #include "DZItemActorBase.generated.h"
 
 class UWidgetComponent;
@@ -30,6 +32,13 @@ public:
 	UFUNCTION()
 	virtual void OnRep_bIsPickUpAble();
 	
+	UFUNCTION()
+	FORCEINLINE void OnRepIsVisible();
+	
+	
+	UFUNCTION()
+	FORCEINLINE void OnRepbCanCollisionAble();
+	
 #pragma endregion
 //======================================================================================================================	
 #pragma region 라이프_사이클
@@ -40,11 +49,12 @@ public:
 public:
 	ADZItemActorBase();
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 #pragma endregion
 //======================================================================================================================	
 #pragma region 인터렉트_그리고_플레이롤_섹션
-	
 	
 	//━━━━━━━━━━━━━━━━━━━━
 	// 인터렉트_그리고_플레이롤_섹션
@@ -115,4 +125,40 @@ protected:
 	
 #pragma endregion
 //======================================================================================================================
+#pragma region 게임_플레이_메시지
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게임_플레이_메시지 (레벨 배치 관련 )
+	//━━━━━━━━━━━━━━━━━━━━	
+
+protected:
+	
+	// 보이기, 숨김기 처리
+	void OnOriginVisibleReceived(FGameplayTag Channel, const FDZOriginMSG& Payload);
+
+	// IDZCommonInteractInterface, IDZCommonPlayRoleInterface ~ 
+	virtual void ToggleHiddenInGame_Implementation(bool InIsVisible, bool InbCanCollisionAble) override;
+	
+	// ~ IDZCommonInteractInterface, IDZCommonPlayRoleInterface
+	
+	// 핸들 
+	FGameplayMessageListenerHandle OriginVisibleListenerHandle;
+	
+	// 레벨에 배치되어 있는가? 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
+	bool bIsLayOnLevel = false;
+
+	// 보이기 숨기기 
+	UPROPERTY(ReplicatedUsing = OnRepIsVisible, EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	bool IsVisible = true;
+	
+	// 보이기 숨기기 
+	UPROPERTY(ReplicatedUsing = OnRepbCanCollisionAble, EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	bool bCanCollisionAble = true;
+	
+#pragma endregion
+//======================================================================================================================		
+	
+	
+	
 };

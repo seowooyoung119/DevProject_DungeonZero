@@ -20,6 +20,11 @@ namespace DZ
 		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_CURRENTLEVEL_NOTICE, "DZ.MSG.Stage.CurrentLevelNotice");				
 	}
 	
+	namespace EndingMSG
+	{
+		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_ENDING_NOTICE, "DZ.MSG.Stage.EndingNotice");		
+	}
+	
 	namespace DoorMSG
 	{
 		UE_DEFINE_GAMEPLAY_TAG(DZ_DOOR_DOORRESET, "DZ.MSG.Door.Reset");

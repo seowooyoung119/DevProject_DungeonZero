@@ -73,6 +73,9 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	if (CurrentInteractActorPlayRole != EDZPlayRole::Anomaly)
 	{
 		UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 뭔가 보고 있는데 어노말리인 아닌 경우 보내기 실행"))
+		FString RoleEnumString = StaticEnum<EDZPlayRole>()->GetValueAsString(CurrentInteractActorPlayRole);
+		UE_LOG(LogTemp, Warning, TEXT("Current PlayRole: %s"), *RoleEnumString);
+		
 		FDZFindAnomalyMSG FindAnomalyMSG;
 		FindAnomalyMSG.FindAnomalyActor = CurrentInteractActor;
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());

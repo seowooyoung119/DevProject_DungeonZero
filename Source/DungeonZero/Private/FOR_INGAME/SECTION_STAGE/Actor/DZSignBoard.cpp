@@ -66,6 +66,10 @@ void ADZSignBoard::BeginPlay()
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	CurrentLevelNoticeListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, this, &ADZSignBoard::OnCurrentLevelNoticeReceived);
 
+	// 처음에 숨기기
+	if (!IsValid(SignBoardWidgetComponent->GetWidget())) return;
+	SignBoardWidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);
+	
 }
 
 void ADZSignBoard::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -102,6 +106,7 @@ void ADZSignBoard::UpdateUIbyCurrentLevel()
 	if (!IsValid(SignBoardUI)) return;
 	
 	SignBoardUI->LevelUiUpdate(CurrentLevel);
+	SignBoardUI->SetVisibility(ESlateVisibility::Visible);
 }
 
 #pragma endregion
