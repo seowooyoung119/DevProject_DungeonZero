@@ -84,3 +84,6 @@ DerivedDataCache/*
 
 # 라이더링크 제외
 Plugins/Developer/RiderLink/
+
+# zip 파일 무시
+*.zip
