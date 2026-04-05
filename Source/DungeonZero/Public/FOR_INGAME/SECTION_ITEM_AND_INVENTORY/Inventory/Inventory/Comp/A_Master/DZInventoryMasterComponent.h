@@ -94,7 +94,7 @@ public:
 	
 protected:
 	// 인벤토리 데이터 
-	UPROPERTY(ReplicatedUsing = OnRep_InventoryData, EditAnywhere, BlueprintReadWrite, Category = "TS | Inventory")
+	UPROPERTY(ReplicatedUsing = OnRep_InventoryData, EditAnywhere, BlueprintReadWrite, Category = "DZ | Inventory")
 	FDZInventoryCompData InventoryData;
 	
 #pragma endregion

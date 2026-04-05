@@ -71,7 +71,7 @@ protected:
 	// component
 	//━━━━━━━━━━━━━━━━━━━━
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DZ")
 	TObjectPtr<UStaticMeshComponent> DoorMesh = nullptr;
 	
 #pragma endregion
@@ -88,7 +88,7 @@ protected:
 	//---------------------
 	
 	// 부드러운 움직임을 위한 타임라인
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DZ") 
 	TObjectPtr<UTimelineComponent> DoorTimeline = nullptr;
 
 	// 부드러운 움직임을 위한 커브 테이블
@@ -96,9 +96,9 @@ protected:
 	TObjectPtr<UCurveFloat> DoorCurve = nullptr;
 
 	// 문이 열리고 닫히는 회전각도
-	UPROPERTY(EditAnywhere, Category = "DZ|Door")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	FRotator ClosedRotation = FRotator::ZeroRotator;
-	UPROPERTY(EditAnywhere, Category = "DZ|Door")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	FRotator OpenedRotation = FRotator::ZeroRotator;
 	
 	// 리플리케이션 변수: ReplicatedUsing을 통해 값이 변하면 OnRep 함수가 실행됨

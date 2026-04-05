@@ -63,23 +63,23 @@ public:
 protected:
 
 	// 상호작용 가능한 거리
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interact")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Interact")
 	float InteractDistance = 500.0f;
 	
 	// 캐싱한 플레이어 컨트롤러 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Interact")
 	TObjectPtr<APlayerController> OwnerPlayerController = nullptr;
 	
 	// 현재 보는 액터
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Interact")
 	TObjectPtr<AActor> CurrentInteractActor = nullptr;
 
 	// 마지막으로 본 액터
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Interact")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Interact")
 	TObjectPtr<AActor> LastInteractActor = nullptr;
 
 	// 디버그
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TS | Interact")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Interact")
 	bool bDebugDrawLine = false;
 	
 #pragma endregion 

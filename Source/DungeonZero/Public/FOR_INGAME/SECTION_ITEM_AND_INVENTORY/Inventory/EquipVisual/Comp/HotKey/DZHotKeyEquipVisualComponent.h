@@ -43,7 +43,7 @@ public:
 	void SwapSpawnVisual(int32 InTargetHotKeyIndex);
 	
 protected:	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Hotkey")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Hotkey")
 	TObjectPtr<ADZItemActorBase> CurrentVisualActor = nullptr;
 	
 #pragma endregion 

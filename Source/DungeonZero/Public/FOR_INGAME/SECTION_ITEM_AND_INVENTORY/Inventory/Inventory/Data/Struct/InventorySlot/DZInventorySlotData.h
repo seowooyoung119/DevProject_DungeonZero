@@ -16,11 +16,11 @@ struct DUNGEONZERO_API FDZInventorySlotData
 	GENERATED_BODY()
 	
 	// 인벤토리 슬롯 타입 
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "TS | Inventory")
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "DZ | Inventory")
 	EDZInventorySlotType InventorySlotType = EDZInventorySlotType::Common;
 	
 	// 아이템 데이터 
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "TS | Inventory")
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "DZ | Inventory")
 	FDZItemRuntimeData ItemData;
 	
 };

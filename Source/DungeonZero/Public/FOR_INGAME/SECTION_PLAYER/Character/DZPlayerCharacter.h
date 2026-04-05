@@ -74,7 +74,7 @@ protected:
 	// GAS 관련 초기화
 	virtual void InitGAS_internal(UAbilitySystemComponent* InASC);
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DZ")
 	TObjectPtr<UDZGiveGAGEDataAsset> BaseGAGEData = nullptr;
 	
 #pragma endregion

@@ -40,7 +40,7 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━	
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TS | Item")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
 	TObjectPtr<UStaticMeshComponent> ItemStaticMeshComp = nullptr;
 	
 #pragma endregion

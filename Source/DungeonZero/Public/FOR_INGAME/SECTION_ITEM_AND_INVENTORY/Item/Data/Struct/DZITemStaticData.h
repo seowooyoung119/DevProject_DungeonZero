@@ -15,6 +15,6 @@ struct DUNGEONZERO_API FDZITemStaticData
 	GENERATED_BODY()
 	
 	// 아이템 정보 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TS | Item")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Item")
 	FDZItemInfoTable ItemStaticInfo;
 };

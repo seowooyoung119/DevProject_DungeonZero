@@ -25,7 +25,7 @@ class DUNGEONZERO_API IDZInventoryOwnerActionInterface
 public:
 	
 	// 핫키 게터
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Inventory")
 	UDZHotKeyInventoryComponent* GetHotKeyComponent();
 
 };

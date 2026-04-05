@@ -49,7 +49,7 @@ public:
 	FORCEINLINE void SetActiveHotKeyIndex(int32 InActiveHotKeyIndex) { ActiveHotKeyIndex = InActiveHotKeyIndex; }
 
 protected:	
-	UPROPERTY(ReplicatedUsing = OnRep_ActiveHotKeyIndex, VisibleAnywhere, BlueprintReadOnly, Category = "TS | Hotkey")
+	UPROPERTY(ReplicatedUsing = OnRep_ActiveHotKeyIndex, VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Hotkey")
 	int32 ActiveHotKeyIndex = -1;
 	
 #pragma endregion 

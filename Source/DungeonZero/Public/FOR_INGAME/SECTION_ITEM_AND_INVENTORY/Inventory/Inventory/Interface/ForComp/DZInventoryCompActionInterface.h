@@ -24,19 +24,19 @@ class DUNGEONZERO_API IDZInventoryCompActionInterface
 	
 public:
 	// 아이템 습득
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Inventory")
 	bool AddItemToInventory(FDZItemRuntimeData InItemRuntimeData);
     
 	// 아이템 제거
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Inventory")
 	bool RemoveItemFromInventory(int32 TargetSlotIndex, int32 DeleteCount);
     
 	// 아이템 드랍
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Inventory")
 	bool DropItemToFromInventory(int32 TargetSlotIndex, int32 DeleteCount);
     
 	// 아이템 스왑
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TS | Inventory")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "DZ | Inventory")
 	bool SwapItemFromThisInventoryToAnotherInventory(FDZItemRuntimeData InItemRuntimeData);
 	
 };

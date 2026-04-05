@@ -46,7 +46,7 @@ protected:
 	
 protected:
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | BodyEquip")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | BodyEquip")
 	TMap<EDZInventorySlotType, TObjectPtr<ADZItemActorBase>> AttachedItems;
 	
 #pragma endregion	

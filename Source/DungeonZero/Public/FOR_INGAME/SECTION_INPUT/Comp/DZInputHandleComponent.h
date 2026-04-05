@@ -98,15 +98,15 @@ protected:
 	// 데이터
 	//━━━━━━━━━━━━━━━━━━━━	
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TS | Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Input")
 	TObjectPtr<UDZInputDataAsset> InputData = nullptr;
 	
 	// 오너 캐릭터 캐싱 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Input")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Input")
 	TObjectPtr<ACharacter> OwnerCharacter = nullptr;
 	
 	// 오너 컨트롤러 캐싱 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TS | Input")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Input")
 	TObjectPtr<APlayerController> OwnerController = nullptr;
 	
 #pragma endregion
