@@ -70,10 +70,6 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 	
 	// 연출 시작 (현재 없음)
 	
-	if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트"))
-	else UE_LOG(LogTemp, Warning, TEXT("클라이언트"));
-	
-	
 	return true;	
 }
 

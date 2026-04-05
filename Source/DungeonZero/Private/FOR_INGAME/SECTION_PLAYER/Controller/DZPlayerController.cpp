@@ -20,11 +20,15 @@ void ADZPlayerController::OnRep_IsVisibleAndMovable()
 	{
 		FInputModeGameOnly GameOnlyInputMode;
 		SetInputMode(GameOnlyInputMode);
+		if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, 
+			true, true);
 	}
 	else
 	{
 		FInputModeUIOnly UIOnlyInputMode;
 		SetInputMode(UIOnlyInputMode);
+		if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(0.f, 1.f, 3.f, FLinearColor::Black, 
+			true, true);
 	}
 }
 
@@ -87,16 +91,18 @@ void ADZPlayerController::OnCanMoveAndSeeReceived(FGameplayTag Channel, const FD
 	{
 		FInputModeGameOnly GameOnlyInputMode;
 		SetInputMode(GameOnlyInputMode);
+		if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, 
+			true);
 		IsVisibleAndMovable = true;
 	}
 	else
 	{
 		FInputModeUIOnly UIOnlyInputMode;
 		SetInputMode(UIOnlyInputMode);
+		if (IsValid(PlayerCameraManager))  PlayerCameraManager->StartCameraFade(0.f, 1.f, 3.f, FLinearColor::Black,
+			true, true);
 		IsVisibleAndMovable = false;
 	}
-	
-	// TODO : 암전 토글 
 }
 
 #pragma endregion

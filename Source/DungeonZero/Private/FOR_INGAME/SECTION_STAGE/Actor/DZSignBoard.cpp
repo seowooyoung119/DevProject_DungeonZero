@@ -17,6 +17,8 @@
 
 void ADZSignBoard::OnRep_CurrentLevel()
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnRep_CurrentLevel"));
+	UE_LOG(LogTemp, Warning, TEXT("CurrentLevel : %d"), CurrentLevel);
 	UpdateUIbyCurrentLevel();
 }
 
@@ -54,6 +56,8 @@ void ADZSignBoard::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (!HasAuthority()) return;
+	
 	// 스테이지 런타임 데이터 모듈 체크
 	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
 	if (!IsValid(StageRuntimePlayDataModule)) return;
@@ -62,7 +66,7 @@ void ADZSignBoard::BeginPlay()
 	UpdateUIbyCurrentLevel();
 	CurrentLevel = StageRuntimePlayDataModule->GetCurrentLevel();
 	
-	// 타임 리셋, 타임 감소 구독, 타임 오버 구독
+	// 구독
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	CurrentLevelNoticeListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, this, &ADZSignBoard::OnCurrentLevelNoticeReceived);
 
@@ -94,6 +98,7 @@ void ADZSignBoard::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ADZSignBoard::OnCurrentLevelNoticeReceived(FGameplayTag Channel, const FDZStageMSG& Payload)
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnCurrentLevelNoticeReceived"));
 	CurrentLevel = Payload.LoadStage;
 	UpdateUIbyCurrentLevel();
 }

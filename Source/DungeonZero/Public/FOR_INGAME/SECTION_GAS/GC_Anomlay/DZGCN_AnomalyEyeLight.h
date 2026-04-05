@@ -16,6 +16,7 @@ UCLASS()
 class DUNGEONZERO_API ADZGCN_AnomalyEyeLight : public AGameplayCueNotify_Actor
 {
 	GENERATED_BODY()
+	
 //======================================================================================================================	
 #pragma region 라이프_사이클
 
@@ -23,6 +24,7 @@ class DUNGEONZERO_API ADZGCN_AnomalyEyeLight : public AGameplayCueNotify_Actor
 	// 라이프 사이클
 	//━━━━━━━━━━━━━━━━━━━━		
 public:
+	
 	ADZGCN_AnomalyEyeLight();
 	virtual bool OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -35,8 +37,8 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━
 	// 컴포넌트_및_데이터
 	//━━━━━━━━━━━━━━━━━━━━	
-	
 protected:
+	
 	// 실제 위치를 고정해줄 가상 루트
 	UPROPERTY(VisibleAnywhere, Category = "DZ")
 	TObjectPtr<USceneComponent> SceneRoot;
@@ -58,6 +60,7 @@ protected:
 	// 눈알
 	//━━━━━━━━━━━━━━━━━━━━	
 protected:
+	
 	// 로컬 플레이어 감지용 볼륨
 	UPROPERTY(VisibleAnywhere, Category = "DZ")
 	TObjectPtr<UBoxComponent> DetectVolume = nullptr;
