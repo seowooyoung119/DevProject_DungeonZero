@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Cue/DZDecalCueData.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Cue/DZMaterialCueData.h"
 #include "UObject/Interface.h"

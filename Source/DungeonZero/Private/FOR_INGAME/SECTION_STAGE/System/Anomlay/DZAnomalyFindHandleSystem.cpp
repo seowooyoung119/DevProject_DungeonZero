@@ -4,8 +4,11 @@
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZAnomalyFindHandleSystem.h"
 
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
+
+#include "AbilitySystemComponent.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
+#include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 
 //======================================================================================================================	
 #pragma region 게터
@@ -80,10 +83,17 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 		StageRuntimePlayDataModule->HandleOnFoundAnomaly(Payload.FindAnomalyActor);
 		
 		//-------------------------------------
-		// 파괴로 임시 테스트 
-		UE_LOG(LogTemp, Warning, TEXT("UDZAnomalyFindHandleSystem 에서 어노말리면 파괴로 확인 테스트 중"));
-		if (IsValid(Payload.FindAnomalyActor)) Payload.FindAnomalyActor->Destroy();
-		// 파괴로 임시 테스트 
+		// 복원 임시 테스트 
+		if (IsValid(Payload.FindAnomalyActor))
+		{
+			ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(Payload.FindAnomalyActor);
+			if (UAbilitySystemComponent* ASC = AnomalyActor->GetAbilitySystemComponent())
+			{
+				ASC->CancelAbilities(); // 어빌리티 종료
+				// Destroy 없음 → 액터 그대로 남음
+			}
+		}
+		// 복원 임시 테스트 
 		//-------------------------------------
 		
 		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);

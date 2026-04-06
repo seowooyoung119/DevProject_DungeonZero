@@ -18,6 +18,10 @@ struct FDZMaterialSlotOverride
 	// 어노말리 활성화 시 적용할 머티리얼
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Material")
 	TObjectPtr<UMaterialInterface> OverrideMaterial = nullptr;
+	
+	// 복원용 원본 머티리얼
+	UPROPERTY(BlueprintReadWrite, Category = "DZ | Cue | Material")
+	TObjectPtr<UMaterialInterface> OriginalMaterial = nullptr;
 };
 
 // 타겟 메시 머티리얼 오버라이드 데이터

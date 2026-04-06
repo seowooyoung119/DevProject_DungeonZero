@@ -73,7 +73,7 @@ FVector UDZGA_AnomalyPatrol::GetPatrolLocation(AActor* TargetActor)
 	{
 		return ResultLocation;
 	}
-
+	bool bFound = false;
 	// 맵 밖으로 나가지 않게 NavMesh 위로 투영
 	FNavLocation ProjectedLocation;
 	for (int32 i = 0; i < 30; i++)
@@ -90,10 +90,15 @@ FVector UDZGA_AnomalyPatrol::GetPatrolLocation(AActor* TargetActor)
 		{
 			// NavMesh 위 값 저장
 			ResultLocation = NavLocation.Location;
+			bFound = true;
 			break;
 		}
 	}
-	
+	// 위치 탐색 실패 시 원 위치 반환
+	if (!bFound)
+	{
+		return OriginLocation;
+	}
 	ResultLocation.Z += PivotToBottom;
 	return ResultLocation;
 }
