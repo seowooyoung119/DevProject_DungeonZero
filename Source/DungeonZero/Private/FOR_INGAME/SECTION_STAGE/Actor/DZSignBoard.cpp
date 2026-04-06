@@ -17,8 +17,6 @@
 
 void ADZSignBoard::OnRep_CurrentLevel()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnRep_CurrentLevel"));
-	UE_LOG(LogTemp, Warning, TEXT("CurrentLevel : %d"), CurrentLevel);
 	UpdateUIbyCurrentLevel();
 }
 
@@ -43,7 +41,7 @@ ADZSignBoard::ADZSignBoard()
 	SetRootComponent(SignBoardRoot);
 	
 	SignBoardWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("SignBoardWidgetComponent"));
-	SetRootComponent(GetRootComponent());
+	SignBoardWidgetComponent->SetupAttachment(SignBoardRoot);
 }
 
 void ADZSignBoard::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -56,24 +54,12 @@ void ADZSignBoard::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (!HasAuthority())
-	{
-		// 스테이지 런타임 데이터 모듈 체크
-		UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
-		if (!IsValid(StageRuntimePlayDataModule)) return;
-	
-		// 스테이지 레벨 캐싱 및 업데이트
-		UpdateUIbyCurrentLevel();
-		CurrentLevel = StageRuntimePlayDataModule->GetCurrentLevel();
-	
-		// 구독
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		CurrentLevelNoticeListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, this, &ADZSignBoard::OnCurrentLevelNoticeReceived);
-	}
+	// 구독
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	CurrentLevelNoticeListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, this, &ADZSignBoard::OnCurrentLevelNoticeReceived);
 	
 	// 처음에 숨기기
-	if (!IsValid(SignBoardWidgetComponent->GetWidget())) return;
-	SignBoardWidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);
+	if (IsValid(SignBoardWidgetComponent->GetWidget())) SignBoardWidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);
 	
 }
 
@@ -99,7 +85,6 @@ void ADZSignBoard::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ADZSignBoard::OnCurrentLevelNoticeReceived(FGameplayTag Channel, const FDZStageMSG& Payload)
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnCurrentLevelNoticeReceived"));
 	CurrentLevel = Payload.LoadStage;
 	UpdateUIbyCurrentLevel();
 }
@@ -107,7 +92,6 @@ void ADZSignBoard::OnCurrentLevelNoticeReceived(FGameplayTag Channel, const FDZS
 void ADZSignBoard::UpdateUIbyCurrentLevel()
 {
 	if (!IsValid(SignBoardWidgetComponent)) return;
-	
 	UDZSignBoardUI* SignBoardUI = Cast<UDZSignBoardUI>(SignBoardWidgetComponent->GetWidget());
 	if (!IsValid(SignBoardUI)) return;
 	

@@ -75,7 +75,7 @@ protected:
 	TObjectPtr<UWidgetComponent> SignBoardWidgetComponent = nullptr;
 	
 	UPROPERTY(ReplicatedUsing = OnRep_CurrentLevel, EditAnywhere, BlueprintReadOnly, Category = "DZ")
-	int32 CurrentLevel = 0;
+	int32 CurrentLevel = -1;
 
 #pragma endregion
 //======================================================================================================================		

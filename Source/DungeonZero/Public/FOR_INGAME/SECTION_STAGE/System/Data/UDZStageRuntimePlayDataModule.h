@@ -40,7 +40,7 @@ public:
 	FORCEINLINE void HandleOnFoundAnomaly(AActor* InTargetActor) { --AnomalyCount; }
 	
 	// 어노말리 다 찾았는지 확인하는 함수
-	FORCEINLINE bool IsAllAnomalyHasBeenFound() const { return  AnomalyCount == 0 ? true : false; };
+	FORCEINLINE bool IsAllAnomalyHasBeenFound() const { return  AnomalyCount <= 0 ? true : false; };
 
 	
 	

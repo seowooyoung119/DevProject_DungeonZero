@@ -13,16 +13,13 @@
 
 UDZGA_AnomalyEyeLight::UDZGA_AnomalyEyeLight()
 {
-	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
+	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
 void UDZGA_AnomalyEyeLight::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
-	// 서버에서 실행
-	if (!HasAuthority(&ActivationInfo)) return;
 	
 	// ASC, 게임 플레이 큐 태그 체크
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
@@ -31,6 +28,7 @@ void UDZGA_AnomalyEyeLight::ActivateAbility(const FGameplayAbilitySpecHandle Han
 	
 	// 큐 파라미터 정보
 	FGameplayCueParameters CueParams;
+	CueParams.TargetAttachComponent = GetAvatarActorFromActorInfo()->GetRootComponent();
 	CueParams.Instigator = GetAvatarActorFromActorInfo();
 	CueParams.EffectCauser = GetAvatarActorFromActorInfo();
 	CueParams.AbilityLevel = GetAbilityLevel();

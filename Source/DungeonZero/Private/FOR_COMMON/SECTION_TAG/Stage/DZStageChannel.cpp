@@ -17,7 +17,8 @@ namespace DZ
 	
 	namespace StageMSG
 	{
-		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_CURRENTLEVEL_NOTICE, "DZ.MSG.Stage.CurrentLevelNotice");				
+		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_CURRENTLEVEL_NOTICE, "DZ.MSG.Stage.CurrentLevelNotice");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_STAGE_REMAINANOMLAY_NOTICE,"DZ.MSG.Stage.RemainAnomalyNotice");
 	}
 	
 	namespace EndingMSG

@@ -90,6 +90,9 @@ AActor* UDZInteractComponent::LineTrace_internal()
 
 void UDZInteractComponent::DoInteractUILogicAfterLineTrace()
 {
+	if (!IsValid(OwnerPlayerController)) return;
+	if (OwnerPlayerController->IsLocalPlayerController() == false) return;
+	
 	// 1. 상태 변화 체크: 현재 액터와 마지막 액터가 같다면 로직 수행 불필요
 	if (CurrentInteractActor == LastInteractActor) return;
 	

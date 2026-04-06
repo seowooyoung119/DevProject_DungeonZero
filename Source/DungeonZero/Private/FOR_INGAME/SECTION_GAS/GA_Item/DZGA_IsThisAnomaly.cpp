@@ -28,6 +28,8 @@ void UDZGA_IsThisAnomaly::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
+	if (!HasAuthority(&ActivationInfo)) { K2_EndAbility(); return;}
+	
 	UE_LOG(DZItem_IsThisAnomalyActionLog, Log, TEXT("이게 어노말리인가? 실행"))
 	
 	// 인터렉트 컴포넌트 체크

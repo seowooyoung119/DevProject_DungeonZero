@@ -17,13 +17,25 @@
 
 void ADZClockActor::OnRep_TimeLeft()
 {
-	
 	// 1. 비주얼 업데이트 (바늘 돌리기)
 	UpdateClockVisuals();
-    
-	// 2. 종소리 체크 (클라이언트에서도 소리가 나야 하므로)
-	CheckAndPlayChime(TimeLeft);
+}
 
+void ADZClockActor::OnRep_CallPlayChimeSoundToClient()
+{
+	// 소리 재생
+	if (IsValid(ChimeSound)) UGameplayStatics::PlaySoundAtLocation(this, ChimeSound, GetActorLocation());
+}
+
+void ADZClockActor::OnRep_CallPlayEndingSoundToClient()
+{
+	// 엔딩 사운드 재생 
+	if (!IsValid(EndingChimeSound)) return;
+	UGameplayStatics::PlaySoundAtLocation(this, EndingChimeSound, GetActorLocation());
+	
+	// 엔딩 사운드 반복 설정
+	float SoundDuration = EndingChimeSound->GetDuration();
+	GetWorldTimerManager().SetTimer(EndingTimerHandle, this, &ADZClockActor::PlayEndingChime, SoundDuration, true);
 }
 
 #pragma endregion
@@ -42,16 +54,13 @@ ADZClockActor::ADZClockActor()
 	// network
 	bReplicates = true;
 	
-	// 컴포넌트 구성
+	// 시계 구성 (루트, 몸통, 시침, 분침
 	RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
 	SetRootComponent(RootScene);
-
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMesh"));
 	BodyMesh->SetupAttachment(RootScene);
-
 	HourHandMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HourHandMesh"));
 	HourHandMesh->SetupAttachment(BodyMesh);
-
 	MinuteHandMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MinuteHandMesh"));
 	MinuteHandMesh->SetupAttachment(BodyMesh);
 }
@@ -60,38 +69,25 @@ void ADZClockActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ADZClockActor, TimeLeft);
+	DOREPLIFETIME(ADZClockActor, TotalDuration);
 }
 void ADZClockActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 스테이지 데이터 모듈 체크
-	UDZStageBalanceDataModule* StageBalanceDataModule = UDZStageBalanceDataModule::Get(this);
-	if (!IsValid(StageBalanceDataModule)) return;
-
-	// 스테이지 런타임 데이터 모듈 체크
-	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
-	if (!IsValid(StageRuntimePlayDataModule)) return;
-	
-	// 현제 레벨에 맞는 데이터 가져오기 
-	FDZStageBalanceRow* StageData = StageBalanceDataModule->GetStageBalanceRow(StageRuntimePlayDataModule->GetCurrentLevel());
-	if (!StageData) return;
-	TotalDuration = StageData->Time;
-	
-	// 초기 12시 방향 세팅 (분침)
+	// 비주얼 초기화는 모두가 수행
 	UpdateClockVisuals();
-	
-	// 타임 리셋, 타임 감소 구독, 타임 오버 구독
-	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	TimeResetListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_TIMERESET, this, &ADZClockActor::OnTimeResetReceived);
-	TimeReduceListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_REDUCE, this, &ADZClockActor::OnTimeReduceReceived);
-	TimeOverListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_TIMEOVER, this, &ADZClockActor::OnTimeOverReceived);
-	
-	// 엔딩 구독
-	EndingListenerHandle = MessageSubsystem.RegisterListener<FDZEndingMSG>(DZ::EndingMSG::DZ_STAGE_ENDING_NOTICE, this, &ADZClockActor::OnEndingReceived);
+
+	// 서버에서만 메시지 시스템을 구독하여 '상태'를 관리함
+	if (HasAuthority())
+	{
+		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+		TimeResetListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_TIMERESET, this, &ADZClockActor::OnTimeResetReceived);
+		TimeReduceListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_REDUCE, this, &ADZClockActor::OnTimeReduceReceived);
+		TimeOverListenerHandle = MessageSubsystem.RegisterListener<FDZTimeMSG>(DZ::TimeMSG::DZ_TIME_TIMEOVER, this, &ADZClockActor::OnTimeOverReceived);
+		EndingListenerHandle = MessageSubsystem.RegisterListener<FDZEndingMSG>(DZ::EndingMSG::DZ_STAGE_ENDING_NOTICE, this, &ADZClockActor::OnEndingReceived);
+	}
 }
-
-
 void ADZClockActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// 게임 플레이 메시지 해제
@@ -105,7 +101,6 @@ void ADZClockActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 	// 타이머 해제
 	if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
-	
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -135,7 +130,7 @@ void ADZClockActor::OnTimeResetReceived(FGameplayTag Channel, const FDZTimeMSG& 
 	LastChimedMinute = -1;
 	RemainingChimesToPlay = 0;
 	GetWorldTimerManager().ClearTimer(ChimeTimerHandle);
-
+	
 	// 3. 비주얼 업데이트 실행 (TimeLeft == TotalDuration 이면 Progress가 0이 되어 12시 방향이 됨)
 	UpdateClockVisuals();
 
@@ -164,17 +159,20 @@ void ADZClockActor::OnTimeOverReceived(FGameplayTag Channel, const FDZTimeMSG& P
 
 void ADZClockActor::UpdateClockVisuals()
 {
+	// 0 미만 일경우 업데이트 안함
 	if (TotalDuration <= 0.0f) return;
 
 	// 분침 회전 계산: 12시(0도)에서 시작해서 시간이 흐를수록 360도로 회전
 	float Progress = FMath::Clamp(1.0f - (TimeLeft / TotalDuration), 0.0f, 1.0f);
 	float TargetRotation = -(Progress * 360.0f);
 
+	// 회전각도 설정 
 	if (MinuteHandMesh) MinuteHandMesh->SetRelativeRotation(FRotator(TargetRotation, 0.f, 0.f));
 }
 
 void ADZClockActor::CheckAndPlayChime(float NewTime)
 {
+	// 0 미만 일경우 업데이트 안함
 	if (TotalDuration <= 0.0f) return;
 
 	// 현재 경과된 "분" 계산 (예: 300초 전체에서 240초 남았으면 60초 경과 = 1분)
@@ -184,6 +182,7 @@ void ADZClockActor::CheckAndPlayChime(float NewTime)
 	// 새로운 "분" 단계에 진입했고, 0분이 아닐 때 (1분 경과, 2분 경과...)
 	if (CurrentElapsedMinute > LastChimedMinute && CurrentElapsedMinute > 0)
 	{
+		// 종소리 횟수 갱신
 		LastChimedMinute = CurrentElapsedMinute;
         
 		// 1분마다 종소리를 늘려감 (1분 경과시 1번, 2분 경과시 2번...)
@@ -198,12 +197,8 @@ void ADZClockActor::PlayChimeSound(int32 Count)
 	// 1. 재생해야 할 총 횟수 설정
 	RemainingChimesToPlay = Count;
 
-	// 2. 반복 재생
-	GetWorldTimerManager().ClearTimer(ChimeTimerHandle);
-    
 	// 첫 소리는 바로 나게
 	PlaySingleChime();
-
 }
 
 void ADZClockActor::PlaySingleChime()
@@ -227,8 +222,9 @@ void ADZClockActor::PlaySingleChime()
 		GetWorldTimerManager().SetTimer(ChimeTimerHandle, this, &ADZClockActor::PlaySingleChime, ChimeInterval, false);
 	}
 	
+	// 클라이언트 전파
+	++CallPlayChimeSoundToClient;
 }
-
 
 
 #pragma endregion
@@ -246,12 +242,19 @@ void ADZClockActor::OnEndingReceived(FGameplayTag Channel, const FDZEndingMSG& P
 
 void ADZClockActor::PlayEndingChime()
 {
+	// 사운드 재생 타이머 중지
+	GetWorldTimerManager().ClearTimer(ChimeTimerHandle);
+	
+	// 엔딩 사운드 재생 
 	if (!IsValid(EndingChimeSound)) return;
 	UGameplayStatics::PlaySoundAtLocation(this, EndingChimeSound, GetActorLocation());
 	
-	float SoundDuration = EndingChimeSound->GetDuration();
-	FTimerHandle EndingTimerHandle;
-	GetWorldTimerManager().SetTimer(EndingTimerHandle, this, &ADZClockActor::PlayEndingChime, SoundDuration, true);
+	// 엔딩 사운드 반복 설정
+	float GetSoundDuration = EndingChimeSound->GetDuration();
+	GetWorldTimerManager().SetTimer(EndingTimerHandle, this, &ADZClockActor::PlayEndingChime, GetSoundDuration, true);
+	
+	// 클라이언트 전파
+	++CallPlayEndingSoundToClient;
 }
 
 #pragma endregion

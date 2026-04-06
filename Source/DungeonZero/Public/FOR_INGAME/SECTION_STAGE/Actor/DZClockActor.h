@@ -23,6 +23,12 @@ public:
 	
 	UFUNCTION()
 	void OnRep_TimeLeft();
+
+	UFUNCTION()
+	void OnRep_CallPlayChimeSoundToClient(); // 종소리 사운드 동기화용 호출
+
+	UFUNCTION()
+	void OnRep_CallPlayEndingSoundToClient(); // 엔딩 사운드 복제용 호출 
 	
 #pragma endregion
 //======================================================================================================================	
@@ -92,9 +98,6 @@ protected:
 	FGameplayMessageListenerHandle TimeReduceListenerHandle;
 	FGameplayMessageListenerHandle TimeOverListenerHandle;
 	
-	
-	
-	
 #pragma endregion
 //======================================================================================================================
 #pragma region EndingAPI	
@@ -122,6 +125,10 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━
 protected:
 
+	//-------------------
+	// 종소리
+	//-------------------
+	
 	// 종소리
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
 	TObjectPtr<USoundBase> ChimeSound = nullptr;
@@ -129,35 +136,50 @@ protected:
 	// 엔딩 시 날 종소리
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
 	TObjectPtr<USoundBase> EndingChimeSound = nullptr;
-	
-	// 종소리 타이머 핸들
-	FTimerHandle ChimeTimerHandle;
+
+	//-------------------
+	// 종소리 옵션
+	//-------------------
 	
 	// 종소리 간격 (에디터에서 조절 가능하게)
 	UPROPERTY(EditAnywhere, Category = "DZ")
 	float ChimeInterval = 1.0f;
 	
-	// 남은 종소리 횟수 카운터
-	int32 RemainingChimesToPlay = 0;
+	//-------------------
+	// 타이머
+	//-------------------
 	
-	// 타겟 스테이지 레벨 (처음 시간 알기 위함)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
-	int32 TargetRoomLevel = -1;
+	// 종소리 타이머 핸들
+	FTimerHandle ChimeTimerHandle;
+	FTimerHandle EndingTimerHandle;
 	
-	// 마지막으로 종이 울린 분(Minute) 체크용
-	int32 LastChimedMinute = -1;
+	//-------------------
+	// 관리용 데이터 (서버만 사용)
+	//-------------------
+	
+	int32 LocalLastChimedMinute = -1;	// 클라이언트의 이전 종소리 단계 기록 (중복 재생 방지)
+	int32 RemainingChimesToPlay = 0;	// 남은 종소리 횟수 카운터
+	int32 LastChimedMinute = -1;		// 마지막으로 종이 울린 분(Minute) 체크용
 
-	// 데이터에서 가져올 초기 전체 시간
+	//-------------------
+	// 관리용 데이터 (서버 및 클라이언트 사용)
+	//-------------------
+
+	// 데이터에서 가져올 초기 전체 시간 (복제하여 시침 회전 값 계산 때 사용)
+	UPROPERTY(Replicated)
 	float TotalDuration = 0.0f;
 
-	// 남은 시간 
-	UPROPERTY(ReplicatedUsing = OnRep_TimeLeft, VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
+	// 남은 시간 (onRep 에서 시침 회전 호출) 
+	UPROPERTY(ReplicatedUsing = OnRep_TimeLeft)
 	float TimeLeft = 0.0f;
 	
-	// 디버그 on off
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "DZ")
-	bool bWantPrintDebug = false;
+	//-------------------
+	// 동기화용 데이터
+	//-------------------
 	
+	// NOTE :: 서버에서 계산한 값대로 사운드 호출을 하기위한 변수이므로 아무 의미 없이 그냥 증가 시킴
+	UPROPERTY(ReplicatedUsing = OnRep_CallPlayChimeSoundToClient) int32 CallPlayChimeSoundToClient = 0;
+	UPROPERTY(ReplicatedUsing = OnRep_CallPlayEndingSoundToClient) int32 CallPlayEndingSoundToClient = 0;
 	
 #pragma endregion
 //======================================================================================================================	

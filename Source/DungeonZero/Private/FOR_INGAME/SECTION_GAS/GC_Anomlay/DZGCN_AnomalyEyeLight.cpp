@@ -17,6 +17,8 @@ ADZGCN_AnomalyEyeLight::ADZGCN_AnomalyEyeLight()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false; // 시작 시엔 Tick을 꺼둠 (최적화)
+
+	bReplicates = true;
 	
 	// 1. 가상의 루트를 생성하고 설정
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
@@ -38,6 +40,8 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 {
 	// 부모 및 컴포넌트 체크
 	Super::OnActive_Implementation(MyTarget, Parameters);
+	
+	UE_LOG(LogTemp, Warning, TEXT("ADZGCN_AnomalyEyeLight:: MyTarget : %s"), *MyTarget->GetName());
 	
 	// 타겟 및 설정 체크
 	UStaticMeshComponent* TargetMesh = UDZAttachUtilLibrary::GetStaticMeshComponentByMeshTag(MyTarget, EyeLightTargetMeshTag);

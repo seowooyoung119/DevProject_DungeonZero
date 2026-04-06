@@ -2,6 +2,8 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZAnomalyFindHandleSystem.h"
+
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 
@@ -98,6 +100,15 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 		FindResultPayload.bIsFindAnomaly = false;
 		MessageSubsystem.BroadcastMessage(DZ::FindAnomalyMSG::DZ_RESOULT_OF_FIND_ANOMLAY, FindResultPayload);
 	}
+	
+	// 남은 어노 말리 발송 (성공, 실패 여부 상관 없이)
+	{
+		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+		FDZStageRemainAnomalyMSG StageRemainAnomalyMSG;
+		StageRemainAnomalyMSG.StageRemainAnomaly = StageRuntimePlayDataModule->GetAnomalyCount();
+		MessageSubsystem.BroadcastMessage(DZ::StageMSG::DZ_STAGE_REMAINANOMLAY_NOTICE, StageRemainAnomalyMSG);
+		
+	}	
 }
 
 #pragma endregion
