@@ -3,6 +3,7 @@
 
 #include "DungeonZero/Public/FOR_INGAME/SECTION_INTERACT/Comp/DZInteractComponent.h"
 #include "DungeonZero/Public/FOR_LIBRARY/Getter/DZGetControllerLibrary.h"
+#include "FOR_INGAME/SECTION_INTERACT/Interface/DZCommonInteractInterface.h"
 #include "FOR_INGAME/SECTION_INTERACT/Library/DZInteractDebugLibrary.h"
 #include "FOR_INGAME/SECTION_INTERACT/Library/DZInteractDebugTraceFunctionLibrary.h"
 
@@ -89,7 +90,20 @@ AActor* UDZInteractComponent::LineTrace_internal()
 
 void UDZInteractComponent::DoInteractUILogicAfterLineTrace()
 {
+	// 1. 상태 변화 체크: 현재 액터와 마지막 액터가 같다면 로직 수행 불필요
+	if (CurrentInteractActor == LastInteractActor) return;
 	
+	// 2. [지난 액터 처리] 마지막 액터가 유효했다면 위젯 끄기
+	if (IsValid(LastInteractActor.Get()) && LastInteractActor->GetClass()->ImplementsInterface(UDZCommonInteractInterface::StaticClass()))
+	{
+		IDZCommonInteractInterface::Execute_ToggleInteractWidget(LastInteractActor.Get(), false);
+	}
+	
+	// 3. [현재 액터 처리] 현재 액터가 유효하다면 위젯 켜기
+	if (IsValid(CurrentInteractActor.Get()) && CurrentInteractActor->GetClass()->ImplementsInterface(UDZCommonInteractInterface::StaticClass()))
+	{
+		IDZCommonInteractInterface::Execute_ToggleInteractWidget(CurrentInteractActor.Get(), true);
+	}
 }
 
 #pragma endregion 

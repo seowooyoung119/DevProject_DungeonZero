@@ -27,17 +27,17 @@ class DUNGEONZERO_API ADZItemActorBase : public AActor, public IDZCommonPlayRole
 	
 public:
 	UFUNCTION()
-	void OnRep_ItemData();
+	virtual void OnRep_ItemData();
 	
 	UFUNCTION()
 	virtual void OnRep_bIsPickUpAble();
 	
 	UFUNCTION()
-	FORCEINLINE void OnRepIsVisible();
+	virtual void OnRepIsVisible();
 	
 	
 	UFUNCTION()
-	FORCEINLINE void OnRepbCanCollisionAble();
+	virtual void OnRepbCanCollisionAble();
 	
 #pragma endregion
 //======================================================================================================================	
@@ -138,7 +138,6 @@ protected:
 
 	// IDZCommonInteractInterface, IDZCommonPlayRoleInterface ~ 
 	virtual void ToggleHiddenInGame_Implementation(bool InIsVisible, bool InbCanCollisionAble) override;
-	
 	// ~ IDZCommonInteractInterface, IDZCommonPlayRoleInterface
 	
 	// 핸들 

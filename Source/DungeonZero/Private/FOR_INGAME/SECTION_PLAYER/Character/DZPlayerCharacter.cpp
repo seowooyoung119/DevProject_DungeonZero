@@ -161,7 +161,7 @@ void ADZPlayerCharacter::InitGAS_internal(UAbilitySystemComponent* InASC)
 		
 		UGameplayAbility* AbilityCDO = GA.GetDefaultObject();
 		if (!IsValid(AbilityCDO)) continue;
-		if (AbilityCDO->AbilityTags.HasTag(DZ::GA::DZ_GA_INIT)) InASC->TryActivateAbility(Handle);
+		if (AbilityCDO->GetAssetTags().HasTag(DZ::GA::DZ_GA_INIT)) InASC->TryActivateAbility(Handle);
 	}
 }
 

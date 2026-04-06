@@ -14,6 +14,14 @@
 #include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Item/DZRegisterLevelPlacedItemHelperSystem.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
+#include "AbilitySystemComponent.h"
+
+//======================================================================================================================	
+#pragma region 라이프_사이클
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// 라이프 사이클
+	//━━━━━━━━━━━━━━━━━━━━	
 
 UDZGA_PickUpItem::UDZGA_PickUpItem()
 {
@@ -44,37 +52,36 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 	
 	if (!TriggerEventData) { K2_EndAbility(); return; }
 	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 타겟 const 제거
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// 캐스팅 후 const 제거
+	const ADZItemActorBase* ConstTargetItem = CastChecked<ADZItemActorBase>(TriggerEventData->Target);
+	if (!IsValid(ConstTargetItem)) { K2_EndAbility(); return; }
+	ADZItemActorBase* TargetItem = const_cast<ADZItemActorBase*>(ConstTargetItem);
+	if (!IsValid(TargetItem)) { K2_EndAbility(); return; }
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 아이템 데이터 가져오기
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// 아이템 인터페이스 확인 
+	IDZItemInterface* ItemInterface = CastChecked<IDZItemInterface>(TargetItem);
+	if (!ItemInterface) { K2_EndAbility(); return; }
+	
+	// 아이템 데이터 가져오기 (레퍼런스)
+	FDZItemRuntimeData& ItemRuntimeData = ItemInterface->GetItemRuntimeDataPtr();
+	
+	// 정적 데이터 가져오기
+	UDZItemDataSubSystem* ItemDataSubSystem = UDZItemDataSubSystem::Get(GetWorld());
+	if (!IsValid(ItemDataSubSystem)) { K2_EndAbility(); return; }
+	FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(ItemRuntimeData.StaticDataID);
+	if (!ItemStaticData) { K2_EndAbility(); return; }
+
 	// 실제 상호작용 로직 (서버에서만 실행)
 	if (GetAvatarActorFromActorInfo()->HasAuthority() && IsValid(TriggerEventData->Target))
 	{
-		
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// 타겟 const 제거
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		
-		// 캐스팅 후 const 제거
-		const ADZItemActorBase* ConstTargetItem = CastChecked<ADZItemActorBase>(TriggerEventData->Target);
-		if (!IsValid(ConstTargetItem)) { K2_EndAbility(); return; }
-		ADZItemActorBase* TargetItem = const_cast<ADZItemActorBase*>(ConstTargetItem);
-		if (!IsValid(TargetItem)) { K2_EndAbility(); return; }
-		
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// 아이템 데이터 가져오기
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		
-		// 아이템 인터페이스 확인 
-		IDZItemInterface* ItemInterface = CastChecked<IDZItemInterface>(TargetItem);
-		if (!ItemInterface) { K2_EndAbility(); return; }
-		
-		// 아이템 데이터 가져오기 (레퍼런스)
-		FDZItemRuntimeData& ItemRuntimeData = ItemInterface->GetItemRuntimeDataPtr();
-		
-		// 정적 데이터 가져오기
-		UDZItemDataSubSystem* ItemDataSubSystem = UDZItemDataSubSystem::Get(GetWorld());
-		if (!IsValid(ItemDataSubSystem)) { K2_EndAbility(); return; }
-		FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(ItemRuntimeData.StaticDataID);
-		if (!ItemStaticData) { K2_EndAbility(); return; }
-
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// 타입에 맞는 인벤토리에 넣기
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,10 +107,40 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 				break;
 			}
 		}
-		
-		K2_EndAbility();
 	}
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 후 처리 사운드 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// ASC, 게임 플레이 큐 태그 체크
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!IsValid(ASC)) { K2_EndAbility(); return;}
+	if (!ItemDropSoundGameplayCue.IsValid()) { K2_EndAbility(); return;}
+
+	// 큐 파라미터 정보
+	FGameplayCueParameters CueParams;
+	CueParams.Instigator = GetAvatarActorFromActorInfo();
+	CueParams.EffectCauser = GetAvatarActorFromActorInfo();
+	CueParams.RawMagnitude = static_cast<float>(ItemRuntimeData.StaticDataID);// RawMagnitude 을 스태틱 ID 넘겨주는 것으로 쓰는 중!
+
+	// 게임 플레이 큐 액터 스폰 요청
+	ASC->AddGameplayCue(ItemDropSoundGameplayCue, CueParams);
+	UE_LOG(LogTemp, Warning, TEXT("후 처리 실행 "))
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// END
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	K2_EndAbility();
 }
+
+#pragma endregion
+//======================================================================================================================	
+#pragma region 내부처리
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// 내부처리
+	//━━━━━━━━━━━━━━━━━━━━	
 
 bool UDZGA_PickUpItem::AddItemToInventory_internal(FDZItemRuntimeData& ItemRunTimeData, AActor* TargetItem, FDZITemStaticData& ItemStaticDataForCheck)
 {
@@ -181,3 +218,6 @@ bool UDZGA_PickUpItem::AddItemToBody_internal(FDZItemRuntimeData& ItemRunTimeDat
 	
 	return true;
 }
+
+#pragma endregion
+//======================================================================================================================	

@@ -6,7 +6,6 @@
 #include "Engine/DeveloperSettings.h"
 #include "DZItemDataSystemSettings.generated.h"
 
-class UTSItemTablesDataAsset;
 /**
  * 
  */

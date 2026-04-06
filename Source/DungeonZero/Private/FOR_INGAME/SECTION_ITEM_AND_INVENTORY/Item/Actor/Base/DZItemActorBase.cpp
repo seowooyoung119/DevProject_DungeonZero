@@ -70,6 +70,9 @@ void ADZItemActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty
 	
 	// 아이템 데이터 
 	DOREPLIFETIME_CONDITION(ADZItemActorBase, ItemData, COND_None);
+	DOREPLIFETIME(ADZItemActorBase, IsVisible);  
+	DOREPLIFETIME(ADZItemActorBase, bCanCollisionAble); 
+	DOREPLIFETIME(ADZItemActorBase, bIsNotPickItem);    
 }
 
 void ADZItemActorBase::BeginPlay()
@@ -191,18 +194,16 @@ void ADZItemActorBase::OnOriginVisibleReceived(FGameplayTag Channel, const FDZOr
 
 void ADZItemActorBase::ToggleHiddenInGame_Implementation(bool InIsVisible, bool InbCanCollisionAble)
 {
-	{
-		if (InIsVisible) SetActorHiddenInGame(false);
-		else SetActorHiddenInGame(true);
+	if (InIsVisible) SetActorHiddenInGame(false);
+	else SetActorHiddenInGame(true);
 
-		if (InbCanCollisionAble) SetActorEnableCollision(true);
-		else SetActorEnableCollision(false);
+	if (InbCanCollisionAble) SetActorEnableCollision(true);
+	else SetActorEnableCollision(false);
 		
-		if (IsValid(InteractWidgetComp)) InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	if (IsValid(InteractWidgetComp)) InteractWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			
-		IsVisible = InIsVisible;
-		bCanCollisionAble = InbCanCollisionAble;
-	}
+	IsVisible = InIsVisible;
+	bCanCollisionAble = InbCanCollisionAble;
 }
 
 #pragma endregion

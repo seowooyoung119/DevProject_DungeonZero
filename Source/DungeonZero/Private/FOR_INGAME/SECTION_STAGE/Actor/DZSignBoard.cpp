@@ -56,20 +56,21 @@ void ADZSignBoard::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (!HasAuthority()) return;
+	if (!HasAuthority())
+	{
+		// 스테이지 런타임 데이터 모듈 체크
+		UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
+		if (!IsValid(StageRuntimePlayDataModule)) return;
 	
-	// 스테이지 런타임 데이터 모듈 체크
-	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
-	if (!IsValid(StageRuntimePlayDataModule)) return;
+		// 스테이지 레벨 캐싱 및 업데이트
+		UpdateUIbyCurrentLevel();
+		CurrentLevel = StageRuntimePlayDataModule->GetCurrentLevel();
 	
-	// 스테이지 레벨 캐싱 및 업데이트
-	UpdateUIbyCurrentLevel();
-	CurrentLevel = StageRuntimePlayDataModule->GetCurrentLevel();
+		// 구독
+		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+		CurrentLevelNoticeListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, this, &ADZSignBoard::OnCurrentLevelNoticeReceived);
+	}
 	
-	// 구독
-	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	CurrentLevelNoticeListenerHandle = MessageSubsystem.RegisterListener<FDZStageMSG>(DZ::StageMSG::DZ_STAGE_CURRENTLEVEL_NOTICE, this, &ADZSignBoard::OnCurrentLevelNoticeReceived);
-
 	// 처음에 숨기기
 	if (!IsValid(SignBoardWidgetComponent->GetWidget())) return;
 	SignBoardWidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);

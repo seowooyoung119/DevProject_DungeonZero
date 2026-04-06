@@ -7,6 +7,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZITemStaticData.h"
 #include "DZItemInteractToggleUI.generated.h"
 
+class UTextBlock;
 /**
  * 
  */
@@ -15,6 +16,23 @@ class DUNGEONZERO_API UDZItemInteractToggleUI : public UUserWidget
 {
 	GENERATED_BODY()
 	
+//=====================================================================================================================
+#pragma region 위젯_모듈
+	//━━━━━━━━━━━━━━━━━━━━
+	// 위젯_모듈
+	//━━━━━━━━━━━━━━━━━━━━
+
+protected:
+	
+	// 아이템 이름
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> ItemNameTextBlock = nullptr;
+
+	// 아이템 상호작용 키
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> InteractKeyTextBlock = nullptr;
+	
+#pragma endregion
 //======================================================================================================================	
 #pragma region ItemUIAPI		
 
