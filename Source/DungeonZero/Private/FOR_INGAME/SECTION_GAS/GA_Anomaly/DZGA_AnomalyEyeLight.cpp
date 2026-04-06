@@ -21,6 +21,9 @@ void UDZGA_AnomalyEyeLight::ActivateAbility(const FGameplayAbilitySpecHandle Han
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
+	// 서버에서 실행
+	if (!HasAuthority(&ActivationInfo)) return;
+	
 	// ASC, 게임 플레이 큐 태그 체크
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	if (!IsValid(ASC)) { K2_EndAbility(); return;}

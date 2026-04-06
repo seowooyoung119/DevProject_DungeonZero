@@ -18,9 +18,6 @@ ADZGCN_AnomalyEyeLight::ADZGCN_AnomalyEyeLight()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false; // 시작 시엔 Tick을 꺼둠 (최적화)
 	
-	bReplicates = true;
-	bAutoDestroyOnRemove = true; 
-
 	// 1. 가상의 루트를 생성하고 설정
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	SetRootComponent(SceneRoot);
@@ -44,33 +41,32 @@ bool ADZGCN_AnomalyEyeLight::OnActive_Implementation(AActor* MyTarget, const FGa
 	
 	// 타겟 및 설정 체크
 	UStaticMeshComponent* TargetMesh = UDZAttachUtilLibrary::GetStaticMeshComponentByMeshTag(MyTarget, EyeLightTargetMeshTag);
-	if (!IsValid(TargetMesh))
-	{
-		if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트: 타겟 및 설정 체크"))
-		else UE_LOG(LogTemp, Warning, TEXT("클라이언트: 타겟 및 설정 체크"));
-		return false;
-	}
+	if (!IsValid(TargetMesh)) return false;
+	
 	// 부착 
 	bool bAttachIsSuccess = AttachToComponent(TargetMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachSocketName);
-    if (!bAttachIsSuccess)
-    {
-    	if (HasAuthority()) UE_LOG(LogTemp, Warning, TEXT("호스트 : 부착"))
-    	else UE_LOG(LogTemp, Warning, TEXT("클라이언트 : 부착"));
-	    return false;
-    }
+    if (!bAttachIsSuccess) return false;
+	
 	// 후 보정
 	SetActorRelativeLocation(FVector::ZeroVector);
 	SetActorRelativeRotation(FRotator::ZeroRotator);
 	Eye->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
 	DetectVolume->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
 	
-	// 트리거 바인딩
-	DetectVolume->OnComponentBeginOverlap.AddDynamic(this, &ADZGCN_AnomalyEyeLight::OnOverlapBegin);
-	DetectVolume->OnComponentEndOverlap.AddDynamic(this, &ADZGCN_AnomalyEyeLight::OnOverlapEnd);
-	
 	// 연출 시작 (현재 없음)
 	
 	return true;	
+}
+
+void ADZGCN_AnomalyEyeLight::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	// 트리거 바인딩
+	DetectVolume->OnComponentBeginOverlap.AddDynamic(this, &ADZGCN_AnomalyEyeLight::OnOverlapBegin);
+	DetectVolume->OnComponentEndOverlap.AddDynamic(this, &ADZGCN_AnomalyEyeLight::OnOverlapEnd);
+
+	if (!IsValid(GetAttachParentActor())) SetActorHiddenInGame(true);
 }
 
 void ADZGCN_AnomalyEyeLight::Tick(float DeltaSeconds)
