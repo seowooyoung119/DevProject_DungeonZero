@@ -73,8 +73,12 @@ bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, con
 void ADZGCN_AnomalyChangeMaterial::ApplyAnomalyMaterial(AActor* MyTarget, FDZMaterialCueData& CueData)
 {
 	// 태그로 타겟 메시 컴포넌트 찾기 
-	UStaticMeshComponent* TargetMesh = CastChecked<UStaticMeshComponent>(
+	UStaticMeshComponent* TargetMesh = Cast<UStaticMeshComponent>(
 		MyTarget->FindComponentByTag(UStaticMeshComponent::StaticClass(), CueData.TargetMeshTag));
+	if (!IsValid(TargetMesh))
+	{
+		return;
+	}
 	// 해당 타겟 메시의 머티리얼 변경
 	for (auto& SlotOverride : CueData.SlotOverrides)
 	{
@@ -88,8 +92,12 @@ void ADZGCN_AnomalyChangeMaterial::ApplyAnomalyMaterial(AActor* MyTarget, FDZMat
 void ADZGCN_AnomalyChangeMaterial::ApplyOriginalMaterial(AActor* MyTarget, FDZMaterialCueData& CueData)
 {
 	// 태그로 타겟 메시 컴포넌트 찾기 
-	UStaticMeshComponent* TargetMesh = CastChecked<UStaticMeshComponent>(
+	UStaticMeshComponent* TargetMesh = Cast<UStaticMeshComponent>(
 		MyTarget->FindComponentByTag(UStaticMeshComponent::StaticClass(), CueData.TargetMeshTag));
+	if (!IsValid(TargetMesh))
+	{
+		return;
+	}
 	// 해당 타겟 메시의 머티리얼 변경
 	for (auto& SlotOverride : CueData.SlotOverrides)
 	{
