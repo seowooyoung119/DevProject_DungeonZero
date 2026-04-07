@@ -18,7 +18,10 @@ UDZGA_AnomalyScaleLoop::UDZGA_AnomalyScaleLoop()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-void UDZGA_AnomalyScaleLoop::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+void UDZGA_AnomalyScaleLoop::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                             const FGameplayAbilityActorInfo* ActorInfo,
+                                             const FGameplayAbilityActivationInfo ActivationInfo,
+                                             const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -61,15 +64,26 @@ void UDZGA_AnomalyScaleLoop::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	}
 }
 
-void UDZGA_AnomalyScaleLoop::EndAbility(const FGameplayAbilitySpecHandle Handle,const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+void UDZGA_AnomalyScaleLoop::EndAbility(const FGameplayAbilitySpecHandle Handle,
+                                        const FGameplayAbilityActorInfo* ActorInfo,
+                                        const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
+                                        bool bWasCancelled)
 {
 	if (IsValid(GetWorld()) && ScaleInterpTimerHandle.IsValid())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(ScaleInterpTimerHandle);
 	}
+	// 스케일 복구
+	if (IsValid(CachedAvatarActor.Get()))
+	{
+		if (ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(CachedAvatarActor.Get()))
+		{
+			AnomalyActor->SetAnomalyScale(1.0f);
+		}
+	}
 
 	CachedAvatarActor = nullptr;
-	
+
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 #pragma endregion
@@ -95,7 +109,7 @@ void UDZGA_AnomalyScaleLoop::UpdateScaleInterp()
 	ScaleInterpElapsedTime += ScaleInterpInterval;
 	float Alpha = 0.5f + 0.5f * FMath::Sin(2.0f * PI * ScaleInterpElapsedTime / ScaleInterpolationDuration - PI * 0.5f);
 	float NewScale = FMath::Lerp(MinScale, MaxScale, Alpha);
-	
+
 	if (ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(AvatarActor))
 	{
 		AnomalyActor->SetAnomalyScale(NewScale);

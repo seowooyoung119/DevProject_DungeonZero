@@ -17,7 +17,6 @@
 ADZGCN_AnomalyAttachNiagara::ADZGCN_AnomalyAttachNiagara()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	//GameplayCueTag = DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA;
 }
 
 bool ADZGCN_AnomalyAttachNiagara::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)

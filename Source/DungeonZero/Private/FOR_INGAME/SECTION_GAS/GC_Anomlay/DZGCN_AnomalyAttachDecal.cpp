@@ -16,17 +16,22 @@
 ADZGCN_AnomalyAttachDecal::ADZGCN_AnomalyAttachDecal()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	//GameplayCueTag = DZ::GameplayCue::DZ_CUE_ANOMALY_DECAL;
 }
 
 bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
 	// DZCueVisualInterface 상속 받은 액터만 진행
-	if (!MyTarget->Implements<UDZCueVIsualInterface>()) return false;
-	
+	if (!MyTarget->Implements<UDZCueVIsualInterface>())
+	{
+		return false;
+	}
+
 	IDZCueVIsualInterface* MyTargetInterface = Cast<IDZCueVIsualInterface>(MyTarget);
-	if (!MyTargetInterface) return false;
-	
+	if (!MyTargetInterface)
+	{
+		return false;
+	}
+
 	// 데칼 부착
 	TArray<FDZDecalCueData> DecalCueData;
 	for (auto& Tag : Parameters.AggregatedSourceTags)
@@ -35,7 +40,10 @@ bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const 
 		{
 			for (auto& CueData : DecalCueData)
 			{
-				if (IsValid(MyTarget)) ApplyDecal(MyTarget, CueData);
+				if (IsValid(MyTarget))
+				{
+					ApplyDecal(MyTarget, CueData);
+				}
 			}
 		}
 	}
@@ -66,28 +74,31 @@ void ADZGCN_AnomalyAttachDecal::ApplyDecal(AActor* MyTarget, FDZDecalCueData& Cu
 {
 	UWorld* World = GetWorld();
 	if (!IsValid(World)) return;
-	
+
 	// 태그로 타겟 메시 찾기
 	for (auto& TargetMesh : MyTarget->GetComponentsByTag(UStaticMeshComponent::StaticClass(), CueData.TargetMeshTag))
 	{
 		if (!IsValid(TargetMesh)) continue;
-		
+
 		UStaticMeshComponent* TargetStaticMesh = CastChecked<UStaticMeshComponent>(TargetMesh);
 		if (!IsValid(TargetStaticMesh)) continue;
-		
+
 		// 데칼 스폰해서 소켓에 부착 
 		const UStaticMeshSocket* Socket = TargetStaticMesh->GetSocketByName(CueData.SocketName);
-		if (!Socket->IsValidLowLevel())	continue;
-		
+		if (!Socket->IsValidLowLevel()) continue;
+
 		FTransform SocketTransform = TargetStaticMesh->GetSocketTransform(CueData.SocketName);
-			
+
 		FActorSpawnParameters Params;
 		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-		AActor* SpawnedDecal = GetWorld()->SpawnActorDeferred<AActor>(CueData.DecalClass,SocketTransform,nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		AActor* SpawnedDecal = GetWorld()->SpawnActorDeferred<AActor>(CueData.DecalClass, SocketTransform, nullptr,
+		                                                              nullptr,
+		                                                              ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!IsValid(SpawnedDecal)) continue;
-	
-		SpawnedDecal->AttachToComponent(TargetStaticMesh,FAttachmentTransformRules::SnapToTargetIncludingScale,CueData.SocketName);
+
+		SpawnedDecal->AttachToComponent(TargetStaticMesh, FAttachmentTransformRules::SnapToTargetIncludingScale,
+		                                CueData.SocketName);
 		SpawnedDecal->FinishSpawning(SocketTransform);
 		CachedDecal.Add(SpawnedDecal);
 	}

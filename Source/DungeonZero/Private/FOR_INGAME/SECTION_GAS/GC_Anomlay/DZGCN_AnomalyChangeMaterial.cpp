@@ -9,13 +9,12 @@
 //======================================================================================================================	
 #pragma region 라이프_사이클
 
-	//━━━━━━━━━━━━━━━━━━━━
-	// 라이프 사이클
-	//━━━━━━━━━━━━━━━━━━━━	
+//━━━━━━━━━━━━━━━━━━━━
+// 라이프 사이클
+//━━━━━━━━━━━━━━━━━━━━	
 ADZGCN_AnomalyChangeMaterial::ADZGCN_AnomalyChangeMaterial()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	//GameplayCueTag = DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL;
 }
 
 bool ADZGCN_AnomalyChangeMaterial::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
@@ -49,12 +48,18 @@ bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, con
 	if (!MyTarget)
 	{
 		return false;
-		
+	}
+	if (CachedMaterialCueData.Num() == 0)
+	{
+		return false;
 	}
 	// 원본 머티리얼로 복원
 	for (auto& MaterialData : CachedMaterialCueData)
 	{
-		ApplyOriginalMaterial(MyTarget, MaterialData);
+		if (IsValid(MyTarget))
+		{
+			ApplyOriginalMaterial(MyTarget, MaterialData);
+		}
 	}
 	return true;
 }
@@ -62,9 +67,9 @@ bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, con
 //======================================================================================================================	
 #pragma region 내부 함수
 
-	//━━━━━━━━━━━━━━━━━━━━
-	// 내부 함수
-	//━━━━━━━━━━━━━━━━━━━━	
+//━━━━━━━━━━━━━━━━━━━━
+// 내부 함수
+//━━━━━━━━━━━━━━━━━━━━	
 void ADZGCN_AnomalyChangeMaterial::ApplyAnomalyMaterial(AActor* MyTarget, FDZMaterialCueData& CueData)
 {
 	// 태그로 타겟 메시 컴포넌트 찾기 
