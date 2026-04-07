@@ -64,7 +64,9 @@ public:
 	int32 GetRemainingTime() const { return RemainingTime; };
 	void SetRemainingTime(const int32& InRemainingTimeNum) { RemainingTime = InRemainingTimeNum; };
 	
-	
+	// 다음 스테이지를 위해 캐싱된 모든 어노말리들
+	TArray<AActor*> GetAnomalyActorsForClearForNextStage() { return AnomalyActorsForClearForNextStage; };
+	void SetAnomalyActorsForClearForNextStage(const TArray<AActor*>& InArray) { AnomalyActorsForClearForNextStage = InArray; };
 	
 protected:
 	// 현재 스테이지 레벨 (기본 0)
@@ -78,6 +80,10 @@ protected:
 	// 변환 어노말리들
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
 	TArray<AActor*> AnomalyActors;
+	
+	// 변환 어노말리들 (스테이지 초기화를 위한 캐싱)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
+	TArray<AActor*> AnomalyActorsForClearForNextStage;
 	
 	// 남은 시간
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")

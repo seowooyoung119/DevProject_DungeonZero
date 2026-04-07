@@ -81,6 +81,9 @@ void ADZPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ADZPlayerController::OnCanMoveAndSeeReceived(FGameplayTag Channel, const FDZAllowPlayerControlMSG& Payload)
 {
+	// 입력 퍼버 전부 초기화
+	FlushPressedKeys();
+	
 	if (Payload.CanMoveAndSee == true)
 	{
 		FInputModeGameOnly GameOnlyInputMode;

@@ -245,7 +245,7 @@ void UDZStageControlSystem::HandleAnomalies_internal()
 	if (!IsValid(StageRuntimePlayDataModule)) return;
 
 	// 모든 어노말리 파괴
-	for (auto& Anomaly : StageRuntimePlayDataModule->GetAnomalyActors())
+	for (auto& Anomaly : StageRuntimePlayDataModule->GetAnomalyActorsForClearForNextStage())
 	{
 		if (!IsValid(Anomaly)) continue;
 		
@@ -298,10 +298,10 @@ void UDZStageControlSystem::RefreshAnomalyActors_internal()
 	
 	UE_LOG(LogTemp, Warning, TEXT("NewAnomalies %d"), NewAnomalies.Num())
 	
-	// 캐싱
+	// 캐싱(확인용 어노말리 배열, 어노말리 카운트, 스테이지 클리어용 어노말리 배열)
 	StageRuntimePlayDataModule->SetAnomalyActors(NewAnomalies);
 	StageRuntimePlayDataModule->SetAnomalyCount(NewAnomalies.Num());
-	
+	StageRuntimePlayDataModule->SetAnomalyActorsForClearForNextStage(SelectedActors);
 }
 
 void UDZStageControlSystem::HandleRemainingTime_internal()
