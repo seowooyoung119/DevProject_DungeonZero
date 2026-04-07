@@ -15,6 +15,8 @@
 #include "FOR_INGAME/SECTION_STAGE/System/Item/DZRegisterLevelPlacedItemHelperSystem.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "AbilitySystemComponent.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventoryInternalHelperLibrary.h"
+#include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Library/DZItemCheckLibrary.h"
 
 //======================================================================================================================	
 #pragma region 라이프_사이클
@@ -50,8 +52,15 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-	if (!TriggerEventData) { K2_EndAbility(); return; }
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 검증
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	// 데이터, 타겟, 플레이어 체크
+	if (!TriggerEventData) { K2_EndAbility(); return; }
+	if (!IsValid(TriggerEventData->Target)) { K2_EndAbility(); return; }
+	if (!IsValid(GetAvatarActorFromActorInfo())) { K2_EndAbility(); return; } 
+		
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// 타겟 const 제거
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,15 +88,15 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 	FDZITemStaticData* ItemStaticData = ItemDataSubSystem->GetItemStaticData(ItemRuntimeData.StaticDataID);
 	if (!ItemStaticData) { K2_EndAbility(); return; }
 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 타입에 맞는 인벤토리에 넣기
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 	// 실제 상호작용 로직 (서버에서만 실행)
-	if (GetAvatarActorFromActorInfo()->HasAuthority() && IsValid(TriggerEventData->Target))
+	if (GetAvatarActorFromActorInfo()->HasAuthority())
 	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// 타입에 맞는 인벤토리에 넣기
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		
-		// 플레이어 체크
-		if (!IsValid(GetAvatarActorFromActorInfo())) { K2_EndAbility(); return; } 
+		// 성공 여부 변수
+		bool IsSuccess = false;
 		
 		// 가능한 인벤토리 타입 순회
 		TArray<EDZInventoryCompType> TempInventoryCompType = ItemStaticData->ItemStaticInfo.MatchInventoryCompType;
@@ -99,39 +108,73 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 				break;
 				
 			case EDZInventoryCompType::PlayerHotKey:
-				AddItemToInventory_internal(ItemRuntimeData, TargetItem, *ItemStaticData);
+				IsSuccess = AddItemToInventory_internal(ItemRuntimeData, TargetItem, *ItemStaticData);
 				break;
 				
 			case EDZInventoryCompType::PlayerBody:
-				AddItemToBody_internal(ItemRuntimeData, TargetItem, *ItemStaticData);
+				IsSuccess =AddItemToBody_internal(ItemRuntimeData, TargetItem, *ItemStaticData);
 				break;
 			}
 		}
+	
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// 후 처리 사운드 (서버)
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+		// 게임 플레이 큐 요청
+		if (IsSuccess == false) { K2_EndAbility(); return; }
+		RequestAddGameplayCue(ItemRuntimeData.StaticDataID); 
+		
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// END
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		K2_EndAbility();
+		return;
+		
 	}
 	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// 후 처리 사운드 
+	// 후 처리 사운드 (클라 및 다른 클라)
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	// ASC, 게임 플레이 큐 태그 체크
-	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-	if (!IsValid(ASC)) { K2_EndAbility(); return;}
-	if (!ItemDropSoundGameplayCue.IsValid()) { K2_EndAbility(); return;}
+	if (!GetAvatarActorFromActorInfo()->HasAuthority())
+	{
+		// 들어갈 수 있는 예측
+		bool ShouldPlaySound = false;
+		
+		// 가능한 타입 순회
+		TArray<EDZInventoryCompType> TempInventoryCompType = ItemStaticData->ItemStaticInfo.MatchInventoryCompType;
+		for (EDZInventoryCompType InventoryCompType : TempInventoryCompType)
+		{
+			switch (InventoryCompType)
+			{
+			case EDZInventoryCompType::None:
+				break;
+				
+			case EDZInventoryCompType::PlayerHotKey:
+				ShouldPlaySound = IsItemCanAddToInventory_internal(ItemRuntimeData);
+				break;
+				
+			case EDZInventoryCompType::PlayerBody:
+				ShouldPlaySound= IsItemCanAddToBody_internal(ItemRuntimeData);
+				break;
+			}
+		}
+		
+		// 게임 플레이 큐 요청
+		if (!ShouldPlaySound) { K2_EndAbility(); return; }
+		RequestAddGameplayCue(ItemRuntimeData.StaticDataID);
+		
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// END
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		K2_EndAbility();
+	}
+}
 
-	// 큐 파라미터 정보
-	FGameplayCueParameters CueParams;
-	CueParams.Instigator = GetAvatarActorFromActorInfo();
-	CueParams.EffectCauser = GetAvatarActorFromActorInfo();
-	CueParams.RawMagnitude = static_cast<float>(ItemRuntimeData.StaticDataID);// RawMagnitude 을 스태틱 ID 넘겨주는 것으로 쓰는 중!
-
-	// 게임 플레이 큐 액터 스폰 요청
-	ASC->AddGameplayCue(ItemDropSoundGameplayCue, CueParams);
-	UE_LOG(LogTemp, Warning, TEXT("후 처리 실행 "))
-	
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// END
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	K2_EndAbility();
+void UDZGA_PickUpItem::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 #pragma endregion
@@ -144,79 +187,149 @@ void UDZGA_PickUpItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 
 bool UDZGA_PickUpItem::AddItemToInventory_internal(FDZItemRuntimeData& ItemRunTimeData, AActor* TargetItem, FDZITemStaticData& ItemStaticDataForCheck)
 {
+	if (!IsValid(TargetItem)) return false;
+
+	// 레벨 배치 시스템 가져오기
+	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
+	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
+	
 	// 플레이어 핫키 인벤토리 가져오기
 	UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetAvatarActorFromActorInfo());
-	if (!IsValid(HotKeyInventoryComponent)){ K2_EndAbility(); return false; } 
-				
+	if (!IsValid(HotKeyInventoryComponent)) return false; 
+
 	// 아이템 넣기 시도 
 	bool IsSuccess = IDZInventoryCompActionInterface::Execute_AddItemToInventory(HotKeyInventoryComponent, ItemRunTimeData);
-	if (!IsSuccess) { K2_EndAbility(); return false; } 
+	if (!IsSuccess) return false; 
 					
 	// 성공시 타겟 처리 
 	// CASE A : 레벨에 배치된 경우 -> 원래 아이템 스택 카운트 (1) 다시 주고 숨김처리
-	// CASE B : 버려진 아이템인 경우 -> 파괴철
-	if (!IsValid(TargetItem)) return false;
-	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
-	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
 	if (LevelPlacedItemHelperSystem->IsThisItemPlaced(TargetItem) == true)
 	{
 		ItemRunTimeData.DynamicData.CurrentStack = 1;
 		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(TargetItem, false, false);
 	}
+	// CASE B : 드랍 아이템인 경우 -> 파괴철
 	else
 	{
 		TargetItem->Destroy();
 	}
 	
 	// 호스트 전용 (UI 알림 -> 클라는 OnRep에서 호출)
-	FDZInventoryUpdateMessage Message;
-	Message.ChangeInventoryType = HotKeyInventoryComponent->GetInventoryData().InventoryType;
-	Message.InventoryComp = HotKeyInventoryComponent;
-	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
-	MessageSubsystem.BroadcastMessage(DZ::Inventory::DZ_INVNETORY_UPDATE, Message);
-	
+	BroadcastItemPickUp( HotKeyInventoryComponent->GetInventoryData().InventoryType, HotKeyInventoryComponent);
 	return true;
 }
 
 bool UDZGA_PickUpItem::AddItemToBody_internal(FDZItemRuntimeData& ItemRunTimeData, AActor* TargetItem, FDZITemStaticData& ItemStaticDataForCheck)
 {
+	if (!IsValid(TargetItem)) return false;
+	
+	// 레벨 배치 시스템 가져오기
+	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
+	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
+	
 	// 플레이어 장비 인벤토리 가져오기
 	UDZBodyEquipInventoryComponent* BodyEquipInventoryComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipInventoryComponent(GetAvatarActorFromActorInfo());
-	if (!IsValid(BodyEquipInventoryComponent)){ K2_EndAbility(); return false; } 
+	if (!IsValid(BodyEquipInventoryComponent)) return false;
 				
 	// 아이템 넣기 시도 
 	bool IsSuccess = IDZInventoryCompActionInterface::Execute_AddItemToInventory(BodyEquipInventoryComponent, ItemRunTimeData);
-	if (!IsSuccess) { K2_EndAbility(); return false; }
+	if (!IsSuccess)  return false;
 					
 	// 성공시 타겟 처리 
 	// CASE A : 레벨에 배치된 경우 -> 원래 아이템 스택 카운트 (1) 다시 주고 숨김처리
-	// CASE B : 버려진 아이템인 경우 -> 파괴철
-	if (!IsValid(TargetItem)) return false;
-	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
-	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
 	if (LevelPlacedItemHelperSystem->IsThisItemPlaced(TargetItem) == true)
 	{
 		ItemRunTimeData.DynamicData.CurrentStack = 1;
 		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(TargetItem, false, false);
 	}
+	// CASE B : 버려진 아이템인 경우 -> 파괴철
 	else
 	{
 		TargetItem->Destroy();
 	}	
+
+	// 잠기 비주얼 가져오기
+	UDZBodyEquipVisualComponent* BodyEquipVisualComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipVisualComponent(GetAvatarActorFromActorInfo());
+	if (!IsValid(BodyEquipVisualComponent)) return false;
 	
 	// 장비 비주얼 업데이트
-	UDZBodyEquipVisualComponent* BodyEquipVisualComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipVisualComponent(GetAvatarActorFromActorInfo());
-	if (!IsValid(BodyEquipVisualComponent)){ K2_EndAbility(); return false; }
 	BodyEquipVisualComponent->HandleVisual(ItemStaticDataForCheck.ItemStaticInfo.MatchInventorySlotType);
 	
 	// 호스트 전용 (UI 알림 -> 클라는 OnRep에서 호출)
+	BroadcastItemPickUp( BodyEquipInventoryComponent->GetInventoryData().InventoryType, BodyEquipInventoryComponent);
+	return true;
+}
+
+bool UDZGA_PickUpItem::IsItemCanAddToInventory_internal(FDZItemRuntimeData& ItemRunTimeData)
+{
+	// 스택아이템인지 아닌지 판단 
+	bool bIsStackItem = UTSItemCheckLibrary::IsThisITemCanStack_Lib(this,ItemRunTimeData);
+	
+	// 플레이어 핫키 인벤토리 가져오기
+	UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetAvatarActorFromActorInfo());
+	if (!IsValid(HotKeyInventoryComponent)){ K2_EndAbility(); return false; } 
+	
+	// 넣을 수 있는지 예측
+	if (bIsStackItem)
+	{
+		int32 FoundSlotIndex = UDZInventoryInternalHelperLibrary::FindStackSlot_Lib(this, HotKeyInventoryComponent->GetInventoryData(), ItemRunTimeData);
+		if (FoundSlotIndex >= 0) return true;
+		
+		int32 FoundSlot = UDZInventoryInternalHelperLibrary::FindEmptySlot_Lib(this, HotKeyInventoryComponent->GetInventoryData(), ItemRunTimeData);
+		if (FoundSlot >= 0) return true;
+	}
+	else
+	{
+		int32 FoundSlot = UDZInventoryInternalHelperLibrary::FindEmptySlot_Lib(this, HotKeyInventoryComponent->GetInventoryData(), ItemRunTimeData);
+		if (FoundSlot >= 0) return true;
+	}
+	
+	return false;
+}
+
+bool UDZGA_PickUpItem::IsItemCanAddToBody_internal(FDZItemRuntimeData& ItemRunTimeData)
+{
+	// 스택아이템인지 아닌지 판단 
+	bool bIsStackItem = UTSItemCheckLibrary::IsThisITemCanStack_Lib(this,ItemRunTimeData);
+	
+	// 플레이어 장비 인벤토리 가져오기
+	UDZBodyEquipInventoryComponent* BodyEquipInventoryComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipInventoryComponent(GetAvatarActorFromActorInfo());
+	if (!IsValid(BodyEquipInventoryComponent)){ K2_EndAbility(); return false; } 
+	
+	// 넣을 수 있는지 예측
+	int32 FoundSlot = UDZInventoryInternalHelperLibrary::FindEmptySlot_Lib(this, BodyEquipInventoryComponent->GetInventoryData(), ItemRunTimeData);
+	if (FoundSlot >= 0) return true;
+	
+	return false;
+}
+
+void UDZGA_PickUpItem::RequestAddGameplayCue(int32 ItemID)
+{
+	// ASC, 게임 플레이 큐 태그 체크
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!IsValid(ASC)) { K2_EndAbility(); return;}
+	if (!ItemPickUpSoundGameplayCue.IsValid()) { K2_EndAbility(); return;}
+
+	// 큐 파라미터 정보
+	FGameplayCueParameters CueParams;
+	CueParams.Instigator = GetAvatarActorFromActorInfo();
+	CueParams.EffectCauser = GetAvatarActorFromActorInfo();
+	CueParams.RawMagnitude = static_cast<float>(ItemID);// RawMagnitude 을 스태틱 ID 넘겨주는 것으로 쓰는 중!
+
+	// 게임 플레이 큐 액터 스폰 요청
+	ASC->ExecuteGameplayCue(ItemPickUpSoundGameplayCue, CueParams);
+}
+
+void UDZGA_PickUpItem::BroadcastItemPickUp(const EDZInventoryCompType InventoryCompType, UDZInventoryMasterComponent* InventoryComponentPtr) const
+{
+	if (!IsValid(InventoryComponentPtr)) return;
+	if (InventoryCompType == EDZInventoryCompType::None) return;
+	
 	FDZInventoryUpdateMessage Message;
-	Message.ChangeInventoryType = BodyEquipInventoryComponent->GetInventoryData().InventoryType;
-	Message.InventoryComp = BodyEquipInventoryComponent;
+	Message.ChangeInventoryType = InventoryCompType;
+	Message.InventoryComp = InventoryComponentPtr;
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetWorld());
 	MessageSubsystem.BroadcastMessage(DZ::Inventory::DZ_INVNETORY_UPDATE, Message);
-	
-	return true;
 }
 
 #pragma endregion

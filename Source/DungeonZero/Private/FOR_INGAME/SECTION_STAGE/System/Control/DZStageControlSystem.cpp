@@ -63,15 +63,21 @@ void UDZStageControlSystem::PlayerEnterTheResultWay()
 	if (IsAllFound_internal() == false) ReStratLevel_internal();
 	else StratNextLevel_internal();
 	
-	// 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
+	// 1.5 플레이어 처리 
+	// 모든 플레이어 입력 멈춤 
+	// 플레이어 암전 처리
+	HandlePlayersInputAndSee_internal();
+	
+	// 2. 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
 	StopTimer_internal();
 	ResetDoor_internal();
 	GCDropItems_intenral();
-	GCDecal_internal_ThisisTempAPI(); // TODO : 임시 데칼 갈비지 컬렉터 나중에 지우기
+	GCDecal_internal_ThisisTempAPI(); 
 	
-	// 2. 플레이어 처리 
-	// 위치 이동 
-	HandlePlayers_internal();
+	// 1.5. 플레이어 처리 
+	// 일정 딜레이 후 위치 이동 (암전 처리 클라 전파를 위한 시간 딜레이)
+	FTimerHandle PlayerMoveTimerHandle; 
+	GetWorld()->GetTimerManager().SetTimer(PlayerMoveTimerHandle, this, &UDZStageControlSystem::HandlePlayersLocation_internal, 3.0f, false);
 	
 	// 3. 어노말리들 처리 
 	HandleAnomalies_internal();
@@ -86,10 +92,15 @@ void UDZStageControlSystem::PlayerEnterTheResultWay()
 	HandleRemainingTime_internal();
 	
 	// 6. 후 처리
-	NoticeCurrentLevel_internal();
-	AllowPlayerSeeAndMove_internal();
-	AllowStartTimeTick_internal();
+
+	// 레벨 번호 갱신
+	NoticeCurrentLevel_internal(); 
 	
+	// 일정 딜레이 후 플레이어 암전 해제 및 입력 작동
+	FTimerHandle TimerHandle; 
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UDZStageControlSystem::AllowPlayerSeeAndMove_internal, 6.0f, false);
+	
+	// 타이머 시작은 문 열면 시작하도록 바꿈
 }
 
 bool UDZStageControlSystem::IsAllStageClear()
@@ -153,6 +164,15 @@ void UDZStageControlSystem::StratNextLevel_internal()
 	StageRuntimePlayDataModule->SetCurrentLevel(CurrentStageLevel);
 }
 
+void UDZStageControlSystem::HandlePlayersInputAndSee_internal()
+{
+	// 움직임 불가, 시야 암전 알림
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZAllowPlayerControlMSG Payload;
+	Payload.CanMoveAndSee = false;
+	MessageSubsystem.BroadcastMessage(DZ::PlayerMSG::DZ_PLAYER_CANMOVEANDSEE, Payload);
+}
+
 void UDZStageControlSystem::StopTimer_internal()
 {
 	UDZTimeReduceManager* TimeReduceManager = UDZTimeReduceManager::Get(this);
@@ -192,14 +212,8 @@ void UDZStageControlSystem::GCDecal_internal_ThisisTempAPI()
 	DecalGarbageCollector->GCAllDecals();
 }
 
-void UDZStageControlSystem::HandlePlayers_internal()
+void UDZStageControlSystem::HandlePlayersLocation_internal()
 {
-	// 움직임 불가 알림
-	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	FDZAllowPlayerControlMSG Payload;
-	Payload.CanMoveAndSee = false;
-	MessageSubsystem.BroadcastMessage(DZ::PlayerMSG::DZ_PLAYER_CANMOVEANDSEE, Payload);
-	
 	// 위치 이동 :: 플레이어 스타트 인덱스 매칭하며 플레이어를 차례로 이동시킴 
 	{
 		TArray<AActor*> PlayerStarts;
@@ -223,7 +237,6 @@ void UDZStageControlSystem::HandlePlayers_internal()
 			PlayerPawn->SetActorLocation(MoveLocation);
 		}
 	}
-	
 }
 
 void UDZStageControlSystem::HandleAnomalies_internal()
@@ -331,7 +344,7 @@ void UDZStageControlSystem::AllowPlayerSeeAndMove_internal()
 	MessageSubsystem.BroadcastMessage(DZ::PlayerMSG::DZ_PLAYER_CANMOVEANDSEE, Payload);
 }
 
-void UDZStageControlSystem::AllowStartTimeTick_internal()
+void UDZStageControlSystem::AllowStartTimeTick()
 {
 	UDZTimeReduceManager* TimeReduceManager = UDZTimeReduceManager::Get(this);
 	if (!IsValid(TimeReduceManager)) return;

@@ -32,12 +32,9 @@ UUDZStageRuntimePlayDataModule* UUDZStageRuntimePlayDataModule::Get(const UObjec
 
 bool UUDZStageRuntimePlayDataModule::HandleIsThereAnyAnomaly(AActor* InTargetActor)
 {
-	for (auto& AnomalyActor : AnomalyActors)
-	{
-		if (AnomalyActor == InTargetActor) return true;
-	}
-	
-	return false;
+	// Remove는 삭제에 성공하면 삭제된 요소의 개수(int32)를 반환합니다.
+	// 0보다 크면 성공적으로 찾아서 지웠다는 뜻입니다.
+	return AnomalyActors.Remove(InTargetActor) > 0;
 }
 
 #pragma endregion

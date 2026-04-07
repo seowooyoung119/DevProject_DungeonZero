@@ -113,7 +113,7 @@ void UDZGA_DropItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	CueParams.RawMagnitude = static_cast<float>(ItemRuntimeDataID);// RawMagnitude 을 스태틱 ID 넘겨주는 것으로 쓰는 중!
 	
 	// 게임 플레이 큐 액터 스폰 요청
-	ASC->AddGameplayCue(ItemDropSoundGameplayCue, CueParams);
+	ASC->ExecuteGameplayCue(ItemDropSoundGameplayCue, CueParams);
 	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// END

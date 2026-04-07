@@ -16,5 +16,5 @@ class DUNGEONZERO_API UDZGCN_PickItem : public UGameplayCueNotify_Static
 	
 public:
 	UDZGCN_PickItem();
-	virtual bool OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const override;
+	virtual bool OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const override;
 };

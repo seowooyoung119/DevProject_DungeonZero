@@ -28,6 +28,9 @@ public:
 	UFUNCTION()
 	void OnRep_IsOpened();
 	
+	UFUNCTION()
+	void OnRep_DoorSoundVarForRep();
+	
 #pragma endregion
 //======================================================================================================================
 #pragma region 라이프_사이클
@@ -84,6 +87,16 @@ protected:
 protected:
 
 	//---------------------
+	//  문 사운드
+	//---------------------
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DZ")
+	TObjectPtr<USoundBase> DoorSound = nullptr;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_DoorSoundVarForRep,EditAnywhere, BlueprintReadWrite, Category="DZ")
+	int32 DoorSoundVarForRep = -1;
+	
+	//---------------------
 	// 문 열고 닫기 관련
 	//---------------------
 	
@@ -104,6 +117,17 @@ protected:
 	// 리플리케이션 변수: ReplicatedUsing을 통해 값이 변하면 OnRep 함수가 실행됨
 	UPROPERTY(ReplicatedUsing = OnRep_IsOpened)
 	bool bIsOpened = false;
+	
+	//---------------------
+	//  스테이지 관련 데이터 처리
+	//---------------------
+	
+	// 문이 스테이지 시작을 위한 문인지 체크
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	bool bIsDoorForStartTime = false;
+
+	// 스테이지마다 리셋되어 딱 한번만 타이머 시작이 가능하도록 중복 방지하는 변수
+	bool bIsDoorForStartTimeHasBeenUsed = true;
 	
 #pragma endregion
 //======================================================================================================================

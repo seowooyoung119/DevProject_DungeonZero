@@ -16,6 +16,6 @@ class DUNGEONZERO_API UDZGCN_DropITem : public UGameplayCueNotify_Static
 
 public:
 	UDZGCN_DropITem();
-	virtual bool OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const override;
+	virtual bool OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const override;
 	
 };

@@ -16,20 +16,10 @@
 
 void ADZPlayerController::OnRep_IsVisibleAndMovable()
 {
-	if (IsVisibleAndMovable == true)
-	{
-		FInputModeGameOnly GameOnlyInputMode;
-		SetInputMode(GameOnlyInputMode);
-		if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, 
-			true, true);
-	}
-	else
-	{
-		FInputModeUIOnly UIOnlyInputMode;
-		SetInputMode(UIOnlyInputMode);
-		if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(0.f, 1.f, 3.f, FLinearColor::Black, 
-			true, true);
-	}
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZAllowPlayerControlMSG Payload;
+	Payload.CanMoveAndSee = IsVisibleAndMovable;
+	MessageSubsystem.BroadcastMessage(DZ::PlayerMSG::DZ_PLAYER_CANMOVEANDSEE, Payload);
 }
 
 #pragma endregion
@@ -54,6 +44,10 @@ void ADZPlayerController::GetLifetimeReplicatedProps(TArray<class FLifetimePrope
 void ADZPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	// 카메라 페이드
+	if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(1.f, 0.f, 10.f, FLinearColor::Black, 
+		true, true);
 	
 	// 입력 모드 설정
 	FInputModeGameOnly GameOnlyInputMode;

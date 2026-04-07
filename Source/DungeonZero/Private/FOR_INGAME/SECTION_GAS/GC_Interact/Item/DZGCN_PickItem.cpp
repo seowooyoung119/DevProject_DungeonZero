@@ -9,10 +9,9 @@ UDZGCN_PickItem::UDZGCN_PickItem()
 {
 }
 
-bool UDZGCN_PickItem::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
+bool UDZGCN_PickItem::OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
 {
-	Super::OnActive_Implementation(MyTarget, Parameters);
-
+	Super::OnExecute_Implementation(MyTarget, Parameters);
 	
 	// 아이템 사운드 매니저 가져오기 
 	UDZITemSoundSystem* ItemSoundSystem = UDZITemSoundSystem::Get(this);
@@ -28,8 +27,5 @@ bool UDZGCN_PickItem::OnActive_Implementation(AActor* MyTarget, const FGameplayC
 	
 	UGameplayStatics::PlaySoundAtLocation(MyTarget, LoadSound, MyTarget->GetActorLocation());
 	
-	UE_LOG(LogTemp, Warning, TEXT("PickUpSound"));
-	
 	return true;
 }
-

@@ -6,6 +6,8 @@
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
+#include "FOR_INGAME/SECTION_STAGE/System/Control/DZStageControlSystem.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 //======================================================================================================================
@@ -19,6 +21,15 @@ void ADZDoorActor::OnRep_IsOpened()
 {
 	if (bIsOpened) DoorTimeline->Play();
 	else DoorTimeline->Reverse();
+	
+}
+
+void ADZDoorActor::OnRep_DoorSoundVarForRep()
+{
+	if (IsValid(DoorSound))
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DoorSound, GetActorLocation());
+	}
 }
 
 #pragma endregion
@@ -59,6 +70,7 @@ void ADZDoorActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ADZDoorActor, bIsOpened);
+	DOREPLIFETIME(ADZDoorActor, DoorSoundVarForRep);
 }
 
 void ADZDoorActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -106,8 +118,24 @@ void ADZDoorActor::BeginPlay()
 
 void ADZDoorActor::ToggleDoor(bool WantOpen)
 {
+	// onRep 호출 (클라 동기화)
 	bIsOpened = WantOpen;
+	++DoorSoundVarForRep;
+	
+	// 서버 로직 호출
 	if (HasAuthority()) OnRep_IsOpened();
+	if (HasAuthority()) OnRep_DoorSoundVarForRep();
+	
+	// 최초로 1회에 한정 (스테이지 넘어갈 때마다 리셋됨)
+	if (bIsDoorForStartTimeHasBeenUsed == true) return;
+	
+	// 타이머 시작 요청
+	UDZStageControlSystem* StageControlSystem = UDZStageControlSystem::Get(this);
+	if (!IsValid(StageControlSystem)) return;
+	StageControlSystem->AllowStartTimeTick();
+	
+	// 1회 사용 마크
+	bIsDoorForStartTimeHasBeenUsed = true;
 }
 
 void ADZDoorActor::UpdateDoorRotation(float Value)
@@ -126,7 +154,14 @@ void ADZDoorActor::UpdateDoorRotation(float Value)
 
 void ADZDoorActor::OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload)
 {
-	ToggleDoor(Payload.bIsDoorOpen);
+	// onRep 호출 (클라 동기화)
+	bIsOpened = Payload.bIsDoorOpen;
+	
+	// 서버 로직 호출 (사운드 제외)
+	if (HasAuthority()) OnRep_IsOpened();
+	
+	// 1회 사용 마크 리셋
+	bIsDoorForStartTimeHasBeenUsed = false;
 }
 
 

@@ -9,10 +9,9 @@ UDZGCN_DropITem::UDZGCN_DropITem()
 {
 }
 
-bool UDZGCN_DropITem::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
+bool UDZGCN_DropITem::OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
 {
 	Super::OnExecute_Implementation(MyTarget, Parameters);
-	
 	// 아이템 사운드 매니저 가져오기 
 	UDZITemSoundSystem* ItemSoundSystem = UDZITemSoundSystem::Get(this);
 	if (!IsValid(ItemSoundSystem)) return false;
@@ -30,4 +29,5 @@ bool UDZGCN_DropITem::OnActive_Implementation(AActor* MyTarget, const FGameplayC
 	UE_LOG(LogTemp, Warning, TEXT("DropSound"));
 	
 	return true;
+	
 }

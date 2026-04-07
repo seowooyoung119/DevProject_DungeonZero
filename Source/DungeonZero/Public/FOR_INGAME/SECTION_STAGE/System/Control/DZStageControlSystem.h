@@ -57,17 +57,18 @@ protected:
 	// 다음 레벨 시작 (레벨 num만 갱신 후 이후 로직은 전부 같음)
 	void StratNextLevel_internal();
 	
-	// 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
+	// 1.5. 플레이어 처리 
+	// 위치 이동 
+	void HandlePlayersInputAndSee_internal();
+	
+	// 2. 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
 	void StopTimer_internal();
 	void ResetDoor_internal();
 	void GCDropItems_intenral();
-	void GCDecal_internal_ThisisTempAPI();
+	void GCDecal_internal_ThisisTempAPI();	// 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
 	
-	// 2. 플레이어 처리 
-	// 모든 플레이어 입력 멈춤 
-	// 플레이어 암전 처리
-	// 위치 이동 
-	void HandlePlayers_internal();
+	// 2.5위치 이동 
+	void HandlePlayersLocation_internal();
 	
 	// 3. 어노말리들 처리
 	// 모든 어노말리 파괴
@@ -90,11 +91,13 @@ protected:
 	
 	// 6. 후 처리 
 	// 레벨 번호 알림
-	// 플레이어 암전 해제 및 입력 작동
-	// 타이머 시작
+	// 일정 딜레이 후 플레이어 암전 해제 및 입력 작동
+	// 타이머 시작 (문 열면 시작하도록 바꿈)
 	void NoticeCurrentLevel_internal();
 	void AllowPlayerSeeAndMove_internal();
-	void AllowStartTimeTick_internal();
+	
+public:
+	void AllowStartTimeTick();
 	
 #pragma endregion
 //======================================================================================================================	
