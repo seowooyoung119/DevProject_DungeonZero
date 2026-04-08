@@ -8,7 +8,7 @@ ADZStaticMeshAnomalyActor::ADZStaticMeshAnomalyActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	MainMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainMesh"));
-	SetRootComponent(MainMeshComp);
+	MainMeshComp->SetupAttachment(RootComponent);
 	MainMeshComp->ComponentTags.Add(TEXT("MainMesh"));
 }
 

@@ -45,11 +45,7 @@ bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, con
 	{
 		return false;
 	}
-	if (!MyTarget)
-	{
-		return false;
-	}
-	if (CachedMaterialCueData.Num() == 0)
+	if (!IsValid(MyTarget))
 	{
 		return false;
 	}

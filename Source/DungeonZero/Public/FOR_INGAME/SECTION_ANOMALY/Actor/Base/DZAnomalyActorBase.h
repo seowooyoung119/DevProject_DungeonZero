@@ -11,11 +11,13 @@
 #include "FOR_INGAME/SECTION_GAS/Interface/DZCueVIsualInterface.h"
 #include "DZAnomalyActorBase.generated.h"
 
-class UDZGiveGAGEDataAsset;
+class UBoxComponent;
+class UDZAnomalyGrantDataAsset;
 class UAbilitySystemComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface, public IDZCommonPlayRoleInterface, public IDZCueVIsualInterface
+class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface,
+                                            public IDZCommonPlayRoleInterface, public IDZCueVIsualInterface
 {
 	GENERATED_BODY()
 
@@ -32,18 +34,45 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 #pragma endregion
+//======================================================================================================================
+#pragma region 게터
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// 게터
+	//━━━━━━━━━━━━━━━━━━━━	
+public:
+	virtual UPrimitiveComponent* GetAnomalyPrimitiveComponent() { return nullptr; }
+
+#pragma endregion
+//======================================================================================================================
+#pragma region 컴포넌트
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// 컴포넌트
+	//━━━━━━━━━━━━━━━━━━━━	
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | AnomalyActor")
+	TObjectPtr<USceneComponent> SceneComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor")
+	TObjectPtr<UAbilitySystemComponent> AnomalyAbilitySystemComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | AnomalyActor")
+	TObjectPtr<UBoxComponent> TriggerBox;
+#pragma endregion
 //======================================================================================================================		
 #pragma region 플레이롤
-	
+
 	//━━━━━━━━━━━━━━━━━━━━
 	// 플레이롤
 	//━━━━━━━━━━━━━━━━━━━━	
-	
+
 public:
 	// IDZCommonPlayRoleInterface ~ 
-	FORCEINLINE virtual EDZPlayRole GetPlayRole_Implementation() override { return PlayRole;}
+	FORCEINLINE virtual EDZPlayRole GetPlayRole_Implementation() override { return PlayRole; }
 	// ~ IDZCommonInteractInterface
-	
+
 protected:
 	// 롤 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor | PlayRole")
@@ -73,11 +102,8 @@ protected:
 	UFUNCTION()
 	void OnRep_AnomalyScale();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor")
-	TObjectPtr<UAbilitySystemComponent> AnomalyAbilitySystemComponent = nullptr;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = " DZ | AnomalyActor")
-	TObjectPtr<UDZGiveGAGEDataAsset> BaseGAGEData = nullptr;
+	TObjectPtr<UDZAnomalyGrantDataAsset> AnomalyGrantData = nullptr;
 
 	// 부여된 어빌리티 핸들 저장
 	UPROPERTY()
@@ -89,11 +115,11 @@ protected:
 #pragma endregion
 //======================================================================================================================	
 #pragma region Cue Visual Interface
-	
+
 	//━━━━━━━━━━━━━━━━━━━━
 	// Cue Visual Interface
 	//━━━━━━━━━━━━━━━━━━━━	
-	
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
 	virtual bool GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData) override;
@@ -101,20 +127,53 @@ public:
 	virtual bool GetDecalCueData(const FGameplayTag& GATag, TArray<FDZDecalCueData>& OutData) override;
 	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
 	virtual bool GetMaterialCueData(const FGameplayTag& GATag, TArray<FDZMaterialCueData>& OutData) override;
+	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
+	virtual void SetRecieveDecals(bool bEnable) override;
 
 protected:
 	// 소켓별 나이아가라 이펙트 리스트
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
 	TMap<FGameplayTag, FDZNiagaraCueDataArray> NiagaraMap;
-	
+
 	// 소켓별 데칼 리스트
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
 	TMap<FGameplayTag, FDZDecalCueDataArray> DecalMap;
-	
+
 	// 메시 머티리얼 오버라이드 리스트
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
 	TMap<FGameplayTag, FDZMaterialCueDataArray> MaterialMap;
-	
+
 #pragma endregion
-//======================================================================================================================	
+//======================================================================================================================
+#pragma region 트리거
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// 트리거
+	//━━━━━━━━━━━━━━━━━━━━	
+protected:
+	bool bActivateOnTrigger = false;
+	int32 OverlappingPlayers = 0;
+
+	UFUNCTION()
+	void OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                           int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                         int32 OtherBodyIndex);
+
+#pragma endregion
+//======================================================================================================================
+#pragma region 피직스
+
+	//━━━━━━━━━━━━━━━━━━━━
+	// 피직스
+	//━━━━━━━━━━━━━━━━━━━━	
+public:
+	UFUNCTION()
+	void OnHitGround_Internal(UPrimitiveComponent* HitComp, AActor* OtherActor,
+	                          UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+	                          const FHitResult& Hit);
+
+#pragma endregion
+//======================================================================================================================
 };

@@ -17,3 +17,7 @@ bool IDZCueVIsualInterface::GetMaterialCueData(const FGameplayTag& GATag, TArray
 {
 	return false;
 }
+
+void IDZCueVIsualInterface::SetRecieveDecals(bool bEnable)
+{
+}
