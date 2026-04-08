@@ -17,7 +17,7 @@ struct FDZAnomalyGrantData
 	TSubclassOf<UGameplayAbility> GameplayAbility;
 	// 트리거로 동작하는 어빌리티면 체크
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ")
-	bool bActivateOnTrigger;
+	bool bActivateOnTrigger = false;
 	
 };
 UCLASS()
