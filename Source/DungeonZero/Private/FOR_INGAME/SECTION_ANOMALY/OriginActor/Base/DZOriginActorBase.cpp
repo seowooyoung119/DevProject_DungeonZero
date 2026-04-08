@@ -23,6 +23,11 @@ ADZOriginActorBase::ADZOriginActorBase()
 	bReplicates = true;
 }
 
+bool ADZOriginActorBase::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const
+{
+	return true;
+}
+
 void ADZOriginActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

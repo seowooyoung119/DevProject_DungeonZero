@@ -30,6 +30,10 @@ ADZStaticMeshItem::ADZStaticMeshItem()
 	// tick
 	PrimaryActorTick.bCanEverTick = false;
 	
+	// net
+	bReplicates = true;
+	SetReplicatingMovement(true);
+	
 	// 스태틱 메쉬
 	ItemStaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemStaticMeshComp"));
 	SetRootComponent(ItemStaticMeshComp);	

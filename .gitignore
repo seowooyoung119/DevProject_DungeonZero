@@ -82,6 +82,10 @@ DerivedDataCache/*
 /Content/Asset/
 /Content/ThirParty/
 
+# 테스트 폴더 일부 제외
+/Content/TEST/FOOT_SYSTEM_TEST/
+/Content/TEST/SAHDOW_ANOMALY_TEST/
+
 # 라이더링크 제외
 Plugins/Developer/RiderLink/
 

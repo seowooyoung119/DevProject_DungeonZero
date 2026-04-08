@@ -55,8 +55,8 @@ void UDZTimeReduceManager::StartTime()
 	if (!IsValid(GetWorld())) return;
 	if (GetWorld()->GetNetMode() == NM_Client) return;
 	
-	// 타이머 핸들 초기화
-	if (TimerHandle.IsValid()) TimerHandle.Invalidate();
+	// 타이머 클리어
+	if (TimerHandle.IsValid()) GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 	
 	// 시작 
 	if (IsValid(GetWorld()))
@@ -107,6 +107,8 @@ void UDZTimeReduceManager::TimeReduceHandle()
 		// 타이머 종료 
 		if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("UDZTimeReduceManager : TimeReduceHandle"));
 }
 
 #pragma endregion

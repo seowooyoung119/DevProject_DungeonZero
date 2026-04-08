@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-#include "DZAN_Footstep.generated.h"
+#include "DZAN_AnomalyFootStepSound.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API UDZAN_Footstep : public UAnimNotify
+class DUNGEONZERO_API UDZAN_AnomalyFootStepSound : public UAnimNotify
 {
 	GENERATED_BODY()
 	

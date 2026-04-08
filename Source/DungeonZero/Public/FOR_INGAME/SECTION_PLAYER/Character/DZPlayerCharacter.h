@@ -9,7 +9,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Interface/ForOwner/DZInventoryOwnerActionInterface.h"
 #include "DZPlayerCharacter.generated.h"
 
-class UDZFootstepSoundComponent;
+class UDZPlayerFootstepSoundComponent;
 class USpotLightComponent;
 class UDZGiveGAGEDataAsset;
 class UDZInteractComponent;
@@ -189,7 +189,7 @@ protected:
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ")
-	TObjectPtr<UDZFootstepSoundComponent> FootstepSoundComponent = nullptr;
+	TObjectPtr<UDZPlayerFootstepSoundComponent> PlayerFootstepSoundComponent = nullptr;
 	
 #pragma endregion	
 //======================================================================================================================

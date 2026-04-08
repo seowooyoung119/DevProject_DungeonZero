@@ -15,7 +15,7 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/EquipVisual/Comp/HotKey/DZHotKeyEquipVisualComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/BodyEquip/DZBodyEquipInventoryComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Comp/HotKey/DZHotKeyInventoryComponent.h"
-#include "FOR_INGAME/SECTION_SOUND/Comp/DZFootstepSoundComponent.h"
+#include "FOR_INGAME/SECTION_SOUND/FootStep/Comp/DZPlayerFootstepSoundComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -95,7 +95,7 @@ ADZPlayerCharacter::ADZPlayerCharacter()
 	BaseViewLightComponent->SetupAttachment(CameraComponent);
 	
 	// Footstep
-	FootstepSoundComponent = CreateDefaultSubobject<UDZFootstepSoundComponent>(TEXT("FootstepSoundComponent"));
+	PlayerFootstepSoundComponent = CreateDefaultSubobject<UDZPlayerFootstepSoundComponent>(TEXT("PlayerFootstepSoundComponent"));
 }
 
 void ADZPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

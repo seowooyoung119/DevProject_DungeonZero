@@ -33,11 +33,11 @@ public:
 	virtual void OnRep_bIsPickUpAble();
 	
 	UFUNCTION()
-	virtual void OnRepIsVisible();
+	virtual void OnRep_IsVisible();
 	
 	
 	UFUNCTION()
-	virtual void OnRepbCanCollisionAble();
+	virtual void OnRep_bCanCollisionAble();
 	
 #pragma endregion
 //======================================================================================================================	
@@ -48,6 +48,7 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
 	ADZItemActorBase();
+	virtual bool IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -102,7 +103,7 @@ protected:
 	FDZItemRuntimeData ItemData;
 	
 	// 아이템 ID (레벨 배치시 설정)
-	UPROPERTY(ReplicatedUsing = OnRep_ItemData,EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
 	int32 ItemIDIfLayOnLevel;
 	
 #pragma endregion
@@ -116,7 +117,7 @@ public:
 protected:
 	
 	// 피직스 콜리전 토글
-	UPROPERTY(ReplicatedUsing = OnRep_bIsPickUpAble, EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
+	UPROPERTY(ReplicatedUsing = OnRep_bIsPickUpAble,  meta=(RepNotifyMode = "Always"), EditAnywhere, BlueprintReadWrite, Category = "DZ | Item")
 	bool bIsNotPickItem = true;
 	
 	// 비긴 플레이에서 피직스 켤거임?
@@ -148,11 +149,11 @@ protected:
 	bool bIsLayOnLevel = false;
 
 	// 보이기 숨기기 
-	UPROPERTY(ReplicatedUsing = OnRepIsVisible, EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	UPROPERTY(ReplicatedUsing = OnRep_IsVisible,  meta=(RepNotifyMode = "Always"),EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	bool IsVisible = true;
 	
 	// 보이기 숨기기 
-	UPROPERTY(ReplicatedUsing = OnRepbCanCollisionAble, EditAnywhere, BlueprintReadWrite, Category = "DZ")
+	UPROPERTY(ReplicatedUsing = OnRep_bCanCollisionAble, meta=(RepNotifyMode = "Always"), EditAnywhere, BlueprintReadWrite, Category = "DZ")
 	bool bCanCollisionAble = true;
 	
 #pragma endregion

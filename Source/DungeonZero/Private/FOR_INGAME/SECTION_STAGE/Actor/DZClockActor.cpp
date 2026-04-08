@@ -133,6 +133,14 @@ void ADZClockActor::OnTimeResetReceived(FGameplayTag Channel, const FDZTimeMSG& 
 	
 	// 3. 비주얼 업데이트 실행 (TimeLeft == TotalDuration 이면 Progress가 0이 되어 12시 방향이 됨)
 	UpdateClockVisuals();
+	
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeResetReceived : TimeResetReceived : %f"), TotalDuration);
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeResetReceived : TimeLeft : %f"), TimeLeft);
+	
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeResetReceived : LocalLastChimedMinute : %d"), LocalLastChimedMinute);
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeResetReceived : RemainingChimesToPlay : %d"), RemainingChimesToPlay);
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeResetReceived : LastChimedMinute : %d"), LastChimedMinute);
+	
 
 }
 
@@ -146,6 +154,14 @@ void ADZClockActor::OnTimeReduceReceived(FGameplayTag Channel, const FDZTimeMSG&
 	
 	// 종소리 업데이트
 	CheckAndPlayChime(Payload.RemainTime);
+	
+	
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeReduceReceived : TimeResetReceived : %f"), TotalDuration);
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeReduceReceived : TimeLeft : %f"), TimeLeft);
+	
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeReduceReceived : LocalLastChimedMinute : %d"), LocalLastChimedMinute);
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeReduceReceived : RemainingChimesToPlay : %d"), RemainingChimesToPlay);
+	UE_LOG(LogTemp, Warning, TEXT("OnTimeReduceReceived :LastChimedMinute : %d"), LastChimedMinute);
 }
 
 void ADZClockActor::OnTimeOverReceived(FGameplayTag Channel, const FDZTimeMSG& Payload)
@@ -196,6 +212,9 @@ void ADZClockActor::PlayChimeSound(int32 Count)
 
 	// 1. 재생해야 할 총 횟수 설정
 	RemainingChimesToPlay = Count;
+	
+	// 타이머 클리어
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 
 	// 첫 소리는 바로 나게
 	PlaySingleChime();
@@ -206,7 +225,7 @@ void ADZClockActor::PlaySingleChime()
 	// 없으면 타이머 지우기
 	if (RemainingChimesToPlay <= 0)
 	{
-		GetWorldTimerManager().ClearTimer(ChimeTimerHandle);
+		GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 		return;
 	}
 

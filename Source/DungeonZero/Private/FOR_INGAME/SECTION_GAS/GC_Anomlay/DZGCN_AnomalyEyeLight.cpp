@@ -17,8 +17,6 @@ ADZGCN_AnomalyEyeLight::ADZGCN_AnomalyEyeLight()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false; // 시작 시엔 Tick을 꺼둠 (최적화)
-
-	bReplicates = true;
 	
 	// 1. 가상의 루트를 생성하고 설정
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
@@ -69,8 +67,6 @@ void ADZGCN_AnomalyEyeLight::BeginPlay()
 	// 트리거 바인딩
 	DetectVolume->OnComponentBeginOverlap.AddDynamic(this, &ADZGCN_AnomalyEyeLight::OnOverlapBegin);
 	DetectVolume->OnComponentEndOverlap.AddDynamic(this, &ADZGCN_AnomalyEyeLight::OnOverlapEnd);
-
-	if (!IsValid(GetAttachParentActor())) SetActorHiddenInGame(true);
 }
 
 void ADZGCN_AnomalyEyeLight::Tick(float DeltaSeconds)

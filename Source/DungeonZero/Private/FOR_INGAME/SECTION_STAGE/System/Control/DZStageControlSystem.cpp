@@ -301,7 +301,7 @@ void UDZStageControlSystem::RefreshAnomalyActors_internal()
 	// 캐싱(확인용 어노말리 배열, 어노말리 카운트, 스테이지 클리어용 어노말리 배열)
 	StageRuntimePlayDataModule->SetAnomalyActors(NewAnomalies);
 	StageRuntimePlayDataModule->SetAnomalyCount(NewAnomalies.Num());
-	StageRuntimePlayDataModule->SetAnomalyActorsForClearForNextStage(SelectedActors);
+	StageRuntimePlayDataModule->SetAnomalyActorsForClearForNextStage(NewAnomalies);
 }
 
 void UDZStageControlSystem::HandleRemainingTime_internal()

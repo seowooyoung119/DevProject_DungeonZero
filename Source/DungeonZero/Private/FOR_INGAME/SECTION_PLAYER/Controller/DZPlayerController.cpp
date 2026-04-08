@@ -81,11 +81,11 @@ void ADZPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ADZPlayerController::OnCanMoveAndSeeReceived(FGameplayTag Channel, const FDZAllowPlayerControlMSG& Payload)
 {
-	// 입력 퍼버 전부 초기화
-	FlushPressedKeys();
-	
 	if (Payload.CanMoveAndSee == true)
 	{
+		// 입력 퍼버 전부 초기화
+    	FlushPressedKeys();
+    	
 		FInputModeGameOnly GameOnlyInputMode;
 		SetInputMode(GameOnlyInputMode);
 		if (IsValid(PlayerCameraManager)) PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, 

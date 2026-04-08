@@ -29,6 +29,10 @@ ADZSkeletalMeshItem::ADZSkeletalMeshItem()
 	// tick
 	PrimaryActorTick.bCanEverTick = false;
 	
+	// net
+	bReplicates = true;
+	SetReplicatingMovement(true);
+	
 	// 스켈레탈 메쉬
 	ItemSkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ItemSkeletalMeshComp"));
 	SetRootComponent(ItemSkeletalMeshComp);
