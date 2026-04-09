@@ -1,18 +1,19 @@
-﻿	// All CopyRight by BooZaGameStudio // 
+﻿// All CopyRight by BooZaGameStudio // 
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "DZGA_AnomalyEyeLight.generated.h"
+#include "DZGA_AnomalyShadow.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONZERO_API UDZGA_AnomalyEyeLight : public UGameplayAbility
+class DUNGEONZERO_API UDZGA_AnomalyShadow : public UGameplayAbility
 {
 	GENERATED_BODY()
+	
 //======================================================================================================================	
 #pragma region 라이프_사이클
 
@@ -21,7 +22,7 @@ class DUNGEONZERO_API UDZGA_AnomalyEyeLight : public UGameplayAbility
 	//━━━━━━━━━━━━━━━━━━━━	
 public:
 	
-	UDZGA_AnomalyEyeLight();
+	UDZGA_AnomalyShadow();
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
@@ -34,10 +35,10 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━	
 private:
 	
-	// 이 어빌리티가 실행될 때 발생시킬 게임플레이 큐 태그
+	// 어노말리 발각 후 양피지에 의해 봉인될 때 발생시킬 게임플레이 큐 태그
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-	FGameplayTag AnomalyCueTag = FGameplayTag::EmptyTag;
+	FGameplayTag AnomalySealCueTag = FGameplayTag::EmptyTag;
 
 #pragma endregion
-//======================================================================================================================		
+//======================================================================================================================	
 };

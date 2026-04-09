@@ -130,7 +130,25 @@ void UDZFootStepVFXMasterComponent::SpawnVFXAndDecal(const FVector& SocketLocati
 	FinalDecalRotation = UKismetMathLibrary::ComposeRotators(FRotator(0, 0, FoundDecalRotation), FinalDecalRotation);
 
 	// 3. 데칼 스폰
-	UGameplayStatics::SpawnDecalAtLocation(GetWorld(), TargetMaterial, Data.DecalSize, Hit.ImpactPoint, FinalDecalRotation, Data.DecalLifeSpan);
+	UDecalComponent* DecalComp = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), TargetMaterial, Data.DecalSize, Hit.ImpactPoint, FinalDecalRotation, Data.DecalLifeSpan);
+	if (!IsValid(DecalComp))
+	{
+		return;
+	}
+	
+	// 4. 다이내믹 머티리얼 생성 및 파라미터 전달
+	UMaterialInstanceDynamic* DynamicMat = DecalComp->CreateDynamicMaterialInstance();
+	if (!IsValid(DynamicMat))
+	{
+		return;
+	}
+	
+	// 현재 게임 시간을 SpawnTime으로 전달
+	DynamicMat->SetScalarParameterValue(TEXT("SpawnTime"), GetWorld()->GetTimeSeconds());
+	// 사라지는 총 시간(LifeSpan) 전달
+	DynamicMat->SetScalarParameterValue(TEXT("LifeSpan"), Data.DecalLifeSpan);
+	
+	FootPrints.Add(DecalComp);
 }
 
 

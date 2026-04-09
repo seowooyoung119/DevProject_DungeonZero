@@ -8,6 +8,7 @@
 #include "GameplayAbilitySpecHandle.h"
 #include "GameplayTagContainer.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/Interface/DZCommonPlayRoleInterface.h"
+#include "FOR_INGAME/SECTION_ANOMALY/Interface/DZAnomalySealAdditionalFunction.h"
 #include "FOR_INGAME/SECTION_GAS/Interface/DZCueVIsualInterface.h"
 #include "DZAnomalyActorBase.generated.h"
 
@@ -16,8 +17,8 @@ class UDZAnomalyGrantDataAsset;
 class UAbilitySystemComponent;
 
 UCLASS()
-class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface,
-                                            public IDZCommonPlayRoleInterface, public IDZCueVIsualInterface
+class DUNGEONZERO_API ADZAnomalyActorBase : public AActor, public IAbilitySystemInterface, 
+public IDZCommonPlayRoleInterface, public IDZCueVIsualInterface, public IDZAnomalySealAdditionalFunction
 {
 	GENERATED_BODY()
 
@@ -176,4 +177,15 @@ public:
 
 #pragma endregion
 //======================================================================================================================
+#pragma region 어노말리_엔딩_펑션
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 어노말리 엔딩 펑션
+	//━━━━━━━━━━━━━━━━━━━━	
+public:
+	// GAS로 하기 비효율적이거나 액터와 연관이 되어 있을 경우 이 인터페이스의 API를 상속하여 로직을 추가한 뒤 GAS의 EndAbility 에서 인터페이스 호출 
+	virtual void AnomalySealAdditionalFunction_Implementation() override { return; };
+	
+#pragma endregion
+//======================================================================================================================	
 };

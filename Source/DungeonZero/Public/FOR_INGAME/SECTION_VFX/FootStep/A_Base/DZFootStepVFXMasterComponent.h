@@ -55,6 +55,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | Footstep")
 	TObjectPtr<ACharacter> OwnerCharacter = nullptr;
 	
+	// 생성된 발자국들
+	UPROPERTY()
+	TArray<TWeakObjectPtr<UDecalComponent>> FootPrints = {};
+	
 #pragma endregion
 //======================================================================================================================		
 };
