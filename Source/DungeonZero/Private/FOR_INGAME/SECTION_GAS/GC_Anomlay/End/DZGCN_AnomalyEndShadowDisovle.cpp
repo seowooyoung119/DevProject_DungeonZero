@@ -5,11 +5,11 @@
 #include "FOR_INGAME/SECTION_ANOMALY/Interface/DZAnomalySealAdditionalFunction.h"
 #include "Kismet/GameplayStatics.h"
 
-UDZGCN_AnomalyEndShadowDissolve::UDZGCN_AnomalyEndShadowDissolve()
+ADZGCN_AnomalyEndShadowDissolve::ADZGCN_AnomalyEndShadowDissolve()
 {
 }
 
-bool UDZGCN_AnomalyEndShadowDissolve::OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
+bool ADZGCN_AnomalyEndShadowDissolve::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
 	// 1. AvatarActor가 유효 체크
 	AActor* AvatarActor = MyTarget;
