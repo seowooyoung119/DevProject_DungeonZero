@@ -1,16 +1,17 @@
 ﻿// All CopyRight by BooZaGameStudio // 
 
 
-#include "FOR_INGAME/SECTION_GAS/GC_Anomlay/End/DZGCN_AnomalyEndShadowDisovle.h"
+#include "FOR_INGAME/SECTION_GAS/GC_Anomlay/End/DZGCN_AnomalyEndFootPrintDisovle.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Interface/DZAnomalySealAdditionalFunction.h"
 #include "Kismet/GameplayStatics.h"
 
-ADZGCN_AnomalyEndShadowDissolve::ADZGCN_AnomalyEndShadowDissolve()
+
+ADZGCN_AnomalyEndFootPrintDisovle::ADZGCN_AnomalyEndFootPrintDisovle()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-bool ADZGCN_AnomalyEndShadowDissolve::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
+bool ADZGCN_AnomalyEndFootPrintDisovle::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
 	// 1. AvatarActor가 유효 체크
 	AActor* AvatarActor = MyTarget;
@@ -32,3 +33,5 @@ bool ADZGCN_AnomalyEndShadowDissolve::OnRemove_Implementation(AActor* MyTarget, 
 	
 	return true;
 }
+
+

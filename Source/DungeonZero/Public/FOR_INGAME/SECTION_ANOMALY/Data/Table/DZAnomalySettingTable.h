@@ -7,7 +7,6 @@
 #include "DZAnomalySettingTable.generated.h"
 
 class ADZOriginActorBase;
-class ADZAnomalyActorBase;
 
 /**
  * 
@@ -19,9 +18,9 @@ struct DUNGEONZERO_API FDZAnomalySettingTable : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName= "원본 액터")
-	TSubclassOf<ADZOriginActorBase> AnomalyClass;
+	TSubclassOf<ADZOriginActorBase> AnomalyClass = nullptr;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName= "어노말리 액터")
-	TSubclassOf<ADZAnomalyActorBase> AnomalyClass_Anomaly;
+	TSubclassOf<AActor> AnomalyClass_Anomaly = nullptr;
 	
 };

@@ -3,6 +3,7 @@
 
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZAnomalyFindHandleSystem.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
 
 #include "AbilitySystemComponent.h"
@@ -86,8 +87,8 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 		// 복원 임시 테스트 
 		if (IsValid(Payload.FindAnomalyActor))
 		{
-			ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(Payload.FindAnomalyActor);
-			if (UAbilitySystemComponent* ASC = AnomalyActor->GetAbilitySystemComponent())
+			UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Payload.FindAnomalyActor);
+			if (IsValid(ASC))
 			{
 				ASC->CancelAbilities(); // 어빌리티 종료
 				ASC->ClearAllAbilities(); // 어빌리티 삭제
