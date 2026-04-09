@@ -153,6 +153,7 @@ protected:
 	//━━━━━━━━━━━━━━━━━━━━	
 protected:
 	bool bActivateOnTrigger = false;
+	bool bDeactivateOnTrigger = false;
 	int32 OverlappingPlayers = 0;
 
 	UFUNCTION()

@@ -90,6 +90,7 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 			if (UAbilitySystemComponent* ASC = AnomalyActor->GetAbilitySystemComponent())
 			{
 				ASC->CancelAbilities(); // 어빌리티 종료
+				ASC->ClearAllAbilities(); // 어빌리티 삭제
 				// Destroy 없음 → 액터 그대로 남음
 			}
 		}

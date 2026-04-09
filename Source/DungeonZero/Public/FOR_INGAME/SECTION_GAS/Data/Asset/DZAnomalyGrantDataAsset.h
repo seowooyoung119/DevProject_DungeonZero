@@ -15,9 +15,12 @@ struct FDZAnomalyGrantData
 	// 부여할 어빌리티 클래스
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ")
 	TSubclassOf<UGameplayAbility> GameplayAbility;
-	// 트리거로 동작하는 어빌리티면 체크
+	// 오버랩시 활성화
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ")
-	bool bActivateOnTrigger = false;
+	bool bActivateOnTrigger = true;
+	// 오버랩 종료시 비활성화
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ")
+	bool bDeactivateOnTrigger = true;
 	
 };
 UCLASS()

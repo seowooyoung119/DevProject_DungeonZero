@@ -105,6 +105,7 @@ void ADZAnomalyActorBase::InitGAS_internal(UAbilitySystemComponent* InASC)
 	const FDZAnomalyGrantData& SelectedData = ValidAbilities[FMath::RandRange(0, ValidAbilities.Num() - 1)];
 	// 트리거 여부 저장
 	bActivateOnTrigger = SelectedData.bActivateOnTrigger;
+	bDeactivateOnTrigger = SelectedData.bDeactivateOnTrigger;
 	// 어빌리티 부여
 	FGameplayAbilitySpec AbilitySpec(SelectedData.GameplayAbility, 1, INDEX_NONE,
 	                                 this);
@@ -211,6 +212,10 @@ void ADZAnomalyActorBase::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedCom
                                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (!IsValid(OtherActor) || !OtherActor->IsA<ADZPlayerCharacter>())
+	{
+		return;
+	}
+	if (!bDeactivateOnTrigger)
 	{
 		return;
 	}
