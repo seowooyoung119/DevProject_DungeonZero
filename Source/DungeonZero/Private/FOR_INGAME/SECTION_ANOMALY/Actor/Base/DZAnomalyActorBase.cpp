@@ -4,8 +4,8 @@
 #include "DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "AbilitySystemComponent.h"
 #include "Components/BoxComponent.h"
+#include "FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyTriggerComponent.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Asset/DZAnomalyGrantDataAsset.h"
-#include "FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -28,13 +28,6 @@ ADZAnomalyActorBase::ADZAnomalyActorBase()
 	AnomalyAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(
 		TEXT("AnomalyAbilitySystemComponent"));
 	AnomalyAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-	
-	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
-	SetRootComponent(SceneComponent);
-	
-	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
-	TriggerBox->SetupAttachment(RootComponent);
-	TriggerBox->SetCollisionProfileName(TEXT("Trigger"));
 }
 
 void ADZAnomalyActorBase::BeginPlay()
@@ -118,16 +111,23 @@ void ADZAnomalyActorBase::ActivateAnomaly_internal(UAbilitySystemComponent* InAS
 	{
 		return;
 	}
+	UDZAnomalyTriggerComponent* TriggerComp = FindComponentByClass<UDZAnomalyTriggerComponent>();
+
 	if (bActivateOnTrigger)
 	{
-		// 오버랩 바인딩
-		TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ADZAnomalyActorBase::OnTriggerBeginOverlap);
-		TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ADZAnomalyActorBase::OnTriggerEndOverlap);
+		if (!IsValid(TriggerComp))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("[%s] bActivateOnTrigger == true지만 TriggerComponent 없음"), *GetName());
+			return;
+		}
+		TriggerComp->SetupTrigger(InASC, AnomalyAbilitySpecHandle, bActivateOnTrigger, bDeactivateOnTrigger);
 	}
 	else
 	{
-		// 어빌리티 즉시 실행, 트리거 박스 콜리전 해제
-		TriggerBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		if (IsValid(TriggerComp))
+		{
+			TriggerComp->TriggerBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
 		InASC->TryActivateAbility(AnomalyAbilitySpecHandle);
 	}
 }
@@ -186,51 +186,3 @@ void ADZAnomalyActorBase::SetRecieveDecals(bool bEnable)
 }
 #pragma endregion
 //======================================================================================================================	
-#pragma region 트리거
-
-//──────────────
-// 트리거
-//──────────────	
-
-void ADZAnomalyActorBase::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-                                                UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                                const FHitResult& SweepResult)
-{
-	if (!IsValid(OtherActor) || !OtherActor->IsA<ADZPlayerCharacter>())
-	{
-		return;
-	}
-	OverlappingPlayers++;
-	// 플레이어 처음 들어왔을 때 어빌리티 실행
-	if (OverlappingPlayers == 1)
-	{
-		AnomalyAbilitySystemComponent->TryActivateAbility(AnomalyAbilitySpecHandle);
-	}
-}
-
-void ADZAnomalyActorBase::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-                                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (!IsValid(OtherActor) || !OtherActor->IsA<ADZPlayerCharacter>())
-	{
-		return;
-	}
-	if (!bDeactivateOnTrigger)
-	{
-		return;
-	}
-	OverlappingPlayers = FMath::Max(0, OverlappingPlayers - 1);
-	// 플레이어 다 나갔을 때 어빌리티 취소
-	if (OverlappingPlayers == 0)
-	{
-		AnomalyAbilitySystemComponent->CancelAbilityHandle(AnomalyAbilitySpecHandle);
-	}
-}
-
-void ADZAnomalyActorBase::OnHitGround_Internal(UPrimitiveComponent* HitComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-}
-
-#pragma endregion
-//======================================================================================================================		

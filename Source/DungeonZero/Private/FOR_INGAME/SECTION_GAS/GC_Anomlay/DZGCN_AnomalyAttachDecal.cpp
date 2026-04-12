@@ -54,6 +54,7 @@ bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const 
 
 bool ADZGCN_AnomalyAttachDecal::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
+	Super::OnRemove_Implementation(MyTarget, Parameters);
 	if (CachedDecal.Num() == 0)
 	{
 		return false;
@@ -70,7 +71,7 @@ bool ADZGCN_AnomalyAttachDecal::OnRemove_Implementation(AActor* MyTarget, const 
 	// 데칼 삭제
 	for (auto& Decal : CachedDecal)
 	{
-		if (Decal.IsValid() && IsValid(Decal.Get()))
+		if (IsValid(Decal))
 		{
 			Decal->Destroy();
 		}

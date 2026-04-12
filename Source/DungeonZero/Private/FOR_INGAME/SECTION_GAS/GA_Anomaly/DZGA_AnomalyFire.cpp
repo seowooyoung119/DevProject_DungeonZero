@@ -24,6 +24,13 @@ UDZGA_AnomalyFire::UDZGA_AnomalyFire()
 	FGameplayTagContainer AssetTags;
 	AssetTags.AddTag(DZ::GA::DZ_GA_ANOMALY_FIRE);
 	SetAssetTags(AssetTags);
+	
+	// 어빌리티 트리거 태그
+	bRetriggerInstancedAbility = true;
+	FAbilityTriggerData TriggerData;
+	TriggerData.TriggerTag = DZ::GA::DZ_GA_ANOMALY_EVENTTRIGGER;
+	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	AbilityTriggers.Add(TriggerData);
 }
 
 void UDZGA_AnomalyFire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -43,6 +50,8 @@ void UDZGA_AnomalyFire::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	CueParams.AggregatedSourceTags.AppendTags(GetAssetTags());
 	// 나이아가라 이펙트 부착 큐 실행
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA, CueParams);
+	// 머티리얼 변경 큐 실행
+	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL, CueParams);
 }
 
 void UDZGA_AnomalyFire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -53,6 +62,7 @@ void UDZGA_AnomalyFire::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 		if (ASC)
 		{
 			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA);
+			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL);
 		}
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);

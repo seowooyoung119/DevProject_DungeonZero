@@ -12,7 +12,7 @@ struct FDZDecalCueData
 
 	// 부착할 데칼 액터
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Decal")
-	TSubclassOf<AActor> DecalClass;
+	TSubclassOf<AActor> DecalClass = nullptr;
 	// 부착 위치 소켓 명
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Decal")
 	FName SocketName = FName("DecalAttach");

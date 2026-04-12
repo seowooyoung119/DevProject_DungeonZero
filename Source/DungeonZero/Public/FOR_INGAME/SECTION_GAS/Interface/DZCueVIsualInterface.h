@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "FOR_INGAME/SECTION_GAS/Data/Cue/DZDecalCueData.h"
-#include "FOR_INGAME/SECTION_GAS/Data/Cue/DZMaterialCueData.h"
+#include "FOR_INGAME/SECTION_GAS/Data/Struct/DZDecalCueData.h"
+#include "FOR_INGAME/SECTION_GAS/Data/Struct/DZMaterialCueData.h"
 #include "UObject/Interface.h"
-#include "FOR_INGAME/SECTION_GAS/Data/Cue/DZNiagaraCueData.h"
+#include "FOR_INGAME/SECTION_GAS/Data/Struct/DZNiagaraCueData.h"
 #include "DZCueVIsualInterface.generated.h"
 
 UINTERFACE(NotBlueprintable)

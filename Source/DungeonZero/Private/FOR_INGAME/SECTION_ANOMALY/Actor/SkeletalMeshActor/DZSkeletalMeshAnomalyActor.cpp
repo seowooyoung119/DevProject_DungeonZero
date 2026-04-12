@@ -8,7 +8,7 @@ ADZSkeletalMeshAnomalyActor::ADZSkeletalMeshAnomalyActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	MainMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MainMesh"));
-	MainMeshComp->SetupAttachment(RootComponent);
+	SetRootComponent(MainMeshComp);
 	MainMeshComp->ComponentTags.Add(TEXT("MainMesh"));
 }
 

@@ -24,6 +24,13 @@ UDZGA_AnomalyBloodDecal::UDZGA_AnomalyBloodDecal()
 	FGameplayTagContainer AssetTags;
 	AssetTags.AddTag(DZ::GA::DZ_GA_ANOMALY_BLOODDECAL);
 	SetAssetTags(AssetTags);
+	
+	// 어빌리티 트리거 태그
+	bRetriggerInstancedAbility = true;
+	FAbilityTriggerData TriggerData;
+	TriggerData.TriggerTag = DZ::GA::DZ_GA_ANOMALY_EVENTTRIGGER;
+	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	AbilityTriggers.Add(TriggerData);
 }
 
 void UDZGA_AnomalyBloodDecal::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)

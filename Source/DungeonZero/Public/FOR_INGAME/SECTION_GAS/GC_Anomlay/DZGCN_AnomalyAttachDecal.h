@@ -12,7 +12,7 @@ UCLASS()
 class DUNGEONZERO_API ADZGCN_AnomalyAttachDecal : public AGameplayCueNotify_Actor
 {
 	GENERATED_BODY()
-
+//======================================================================================================================	
 #pragma region 라이프_사이클
 
 	//━━━━━━━━━━━━━━━━━━━━
@@ -35,8 +35,8 @@ protected:
 	void ApplyDecal(AActor* MyTarget, FDZDecalCueData& CueData);
 	
 	// 어노말리 액터에 부착된 나이아가라 컴포넌트 캐싱
-	UPROPERTY()
-	TArray<TWeakObjectPtr<AActor>> CachedDecal;
+	UPROPERTY(BlueprintReadOnly)
+	TArray<TObjectPtr<AActor>> CachedDecal;
 #pragma endregion
 //======================================================================================================================	
 };

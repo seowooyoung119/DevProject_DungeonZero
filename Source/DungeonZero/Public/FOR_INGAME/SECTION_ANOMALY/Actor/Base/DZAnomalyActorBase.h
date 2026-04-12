@@ -12,7 +12,6 @@
 #include "FOR_INGAME/SECTION_GAS/Interface/DZCueVIsualInterface.h"
 #include "DZAnomalyActorBase.generated.h"
 
-class UBoxComponent;
 class UDZAnomalyGrantDataAsset;
 class UAbilitySystemComponent;
 
@@ -53,14 +52,8 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━	
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | AnomalyActor")
-	TObjectPtr<USceneComponent> SceneComponent;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | AnomalyActor")
 	TObjectPtr<UAbilitySystemComponent> AnomalyAbilitySystemComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | AnomalyActor")
-	TObjectPtr<UBoxComponent> TriggerBox;
 #pragma endregion
 //======================================================================================================================		
 #pragma region 플레이롤
@@ -154,28 +147,6 @@ protected:
 protected:
 	bool bActivateOnTrigger = false;
 	bool bDeactivateOnTrigger = false;
-	int32 OverlappingPlayers = 0;
-
-	UFUNCTION()
-	void OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                           int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	UFUNCTION()
-	void OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                         int32 OtherBodyIndex);
-
-#pragma endregion
-//======================================================================================================================
-#pragma region 피직스
-
-	//━━━━━━━━━━━━━━━━━━━━
-	// 피직스
-	//━━━━━━━━━━━━━━━━━━━━	
-public:
-	UFUNCTION()
-	void OnHitGround_Internal(UPrimitiveComponent* HitComp, AActor* OtherActor,
-	                          UPrimitiveComponent* OtherComp, FVector NormalImpulse,
-	                          const FHitResult& Hit);
-
 #pragma endregion
 //======================================================================================================================
 #pragma region 어노말리_엔딩_펑션
