@@ -6,7 +6,6 @@
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
-#include "FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyTriggerComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
@@ -52,10 +51,6 @@ ADZAnomalyDoor::ADZAnomalyDoor()
 	// 문 메쉬
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
 	DoorMesh->SetupAttachment(RootComponent);
-	
-	// 트리거 컴포넌트
-	TriggerComp = CreateDefaultSubobject<UDZAnomalyTriggerComponent>(TEXT("TriggerComp"));
-	TriggerComp->SetupAttachment(RootComponent);
 
 	// 타임라인
 	DoorTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("DoorTimeline"));

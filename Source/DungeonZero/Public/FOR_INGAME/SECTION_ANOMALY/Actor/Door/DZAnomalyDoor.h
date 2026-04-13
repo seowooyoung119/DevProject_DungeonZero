@@ -80,9 +80,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DZ")
 	TObjectPtr<UStaticMeshComponent> DoorMesh = nullptr;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DZ")
-	TObjectPtr<UDZAnomalyTriggerComponent> TriggerComp = nullptr;
-	
 #pragma endregion
 //======================================================================================================================	
 #pragma region Data
