@@ -9,6 +9,7 @@
 #include "FOR_INGAME/SECTION_UI/Interact/Item/DZItemInteractToggleUI.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/GameNetworkManager.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -66,7 +67,33 @@ ADZItemActorBase::ADZItemActorBase()
 
 bool ADZItemActorBase::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const
 {
-	return true;
+	if (bAlwaysRelevant || IsOwnedBy(ViewTarget) || IsOwnedBy(RealViewer) || this == ViewTarget || ViewTarget == GetInstigator())
+	{
+		return true;
+	}
+	else if (bNetUseOwnerRelevancy && Owner)
+	{
+		return Owner->IsNetRelevantFor(RealViewer, ViewTarget, SrcLocation);
+	}
+	else if (bOnlyRelevantToOwner)
+	{
+		return false;
+	}
+	else if (RootComponent && RootComponent->GetAttachParent() && RootComponent->GetAttachParent()->GetOwner() && (Cast<USkeletalMeshComponent>(RootComponent->GetAttachParent()) || (RootComponent->GetAttachParent()->GetOwner() == Owner)))
+	{
+		return RootComponent->GetAttachParent()->GetOwner()->IsNetRelevantFor(RealViewer, ViewTarget, SrcLocation);
+	}
+
+	// 제거 목록  : 히든 및 콜리전 관련 체크 코드 
+	// 사유 : 게임 로직 상 히든과 콜리전을 꺼도 복제가 되어야 함
+	
+	if (!RootComponent)
+	{
+		UE_LOG(LogNet, Warning, TEXT("Actor %s / %s has no root component in AActor::IsNetRelevantFor. (Make bAlwaysRelevant=true?)"), *GetClass()->GetName(), *GetName() );
+		return false;
+	}
+
+	return !GetDefault<AGameNetworkManager>()->bUseDistanceBasedRelevancy || IsWithinNetRelevancyDistance(SrcLocation);
 }
 
 void ADZItemActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
