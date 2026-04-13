@@ -94,6 +94,11 @@ Plugins/Developer/RiderLink/
 
 # zip 파일 무시
 *.zip
+
+# 기사 콘텐츠
+/Content/IronSpear_Content/
+
+
 /Content/__ExternalActors__/AnimatedStorageBox/DemoLevel/AnimatedStorageBoxDemoLevel/3/38/WG8AVQ12PO9MN8P4C4DNEW.uasset
 /Content/__ExternalActors__/AnimatedStorageBox/DemoLevel/AnimatedStorageBoxDemoLevel/3/LF/CTOF3O4JYZDWRT1JAERA6X.uasset
 /Content/__ExternalActors__/AnimatedStorageBox/DemoLevel/AnimatedStorageBoxDemoLevel/4/12/OFP2WVHWMJ9OMQS7CUR2B0.uasset
