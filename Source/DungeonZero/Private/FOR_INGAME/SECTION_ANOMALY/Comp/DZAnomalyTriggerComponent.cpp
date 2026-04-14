@@ -4,7 +4,6 @@
 #include "FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyTriggerComponent.h"
 
 #include "AbilitySystemComponent.h"
-#include "Components/BoxComponent.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/GA/DZGATag.h"
 #include "FOR_INGAME/SECTION_PLAYER/Character/DZPlayerCharacter.h"
 
@@ -16,9 +15,8 @@
 //──────────────
 UDZAnomalyTriggerComponent::UDZAnomalyTriggerComponent()
 {
-	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
-	TriggerBox->SetupAttachment(this);
-	TriggerBox->SetCollisionProfileName(TEXT("Trigger"));
+	SetCollisionProfileName(TEXT("Trigger"));
+	SetGenerateOverlapEvents(true);
 }
 #pragma endregion
 //======================================================================================================================
@@ -37,12 +35,12 @@ void UDZAnomalyTriggerComponent::SetupTrigger(UAbilitySystemComponent* InASC,
 
 	if (bActivateOnTrigger)
 	{
-		TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &UDZAnomalyTriggerComponent::OnTriggerBeginOverlap);
-		TriggerBox->OnComponentEndOverlap.AddDynamic(this, &UDZAnomalyTriggerComponent::OnTriggerEndOverlap);
+		OnComponentBeginOverlap.AddDynamic(this, &UDZAnomalyTriggerComponent::OnTriggerBeginOverlap);
+		OnComponentEndOverlap.AddDynamic(this, &UDZAnomalyTriggerComponent::OnTriggerEndOverlap);
 	}
 	else
 	{
-		TriggerBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 

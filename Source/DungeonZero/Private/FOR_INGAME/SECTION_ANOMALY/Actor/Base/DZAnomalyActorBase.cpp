@@ -126,7 +126,7 @@ void ADZAnomalyActorBase::ActivateAnomaly_internal(UAbilitySystemComponent* InAS
 	{
 		if (IsValid(TriggerComp))
 		{
-			TriggerComp->TriggerBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			TriggerComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 		InASC->TryActivateAbility(AnomalyAbilitySpecHandle);
 	}

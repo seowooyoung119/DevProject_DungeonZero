@@ -4,15 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameplayAbilitySpecHandle.h"
-#include "Components/SceneComponent.h"
+#include "Components/BoxComponent.h"
 #include "DZAnomalyTriggerComponent.generated.h"
 
-
-class UBoxComponent;
 class UAbilitySystemComponent;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class DUNGEONZERO_API UDZAnomalyTriggerComponent : public USceneComponent
+class DUNGEONZERO_API UDZAnomalyTriggerComponent : public UBoxComponent
 {
 	GENERATED_BODY()
 
@@ -27,19 +25,7 @@ public:
 	UDZAnomalyTriggerComponent();
 
 #pragma endregion
-	//======================================================================================================================
-	
-#pragma region 컴포넌트
 
-	//━━━━━━━━━━━━━━━━━━━━
-	// 컴포넌트
-	//━━━━━━━━━━━━━━━━━━━━
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | TriggerComponent")
-	TObjectPtr<UBoxComponent> TriggerBox;
-
-#pragma endregion
 	//======================================================================================================================
 #pragma region 트리거
 
