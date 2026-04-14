@@ -1,0 +1,37 @@
+﻿// All CopyRight by BooZaGameStudio // 
+
+
+#include "FOR_INGAME/SECTION_GAS/GC_Anomlay/End/DZGCN_AnomalyEndCeilingEyesFall.h"
+#include "FOR_INGAME/SECTION_ANOMALY/Interface/DZAnomalySealAdditionalFunction.h"
+#include "Kismet/GameplayStatics.h"
+
+
+ADZGCN_AnomalyEndCeilingEyesFall::ADZGCN_AnomalyEndCeilingEyesFall()
+{
+	PrimaryActorTick.bCanEverTick = false;
+}
+
+bool ADZGCN_AnomalyEndCeilingEyesFall::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
+{
+	// 1. AvatarActor가 유효 체크
+	AActor* AvatarActor = MyTarget;
+	if (IsValid(AvatarActor))
+	{
+		// 2. 인터페이스를 구현했는지 체크
+		if (AvatarActor->GetClass()->ImplementsInterface(UDZAnomalySealAdditionalFunction::StaticClass()))
+		{
+			// 3. 엔딩 함수 call
+			IDZAnomalySealAdditionalFunction::Execute_AnomalySealAdditionalFunction(AvatarActor);
+			
+			// 4. 사운드 call
+			if (IsValid(FallSound))
+			{
+				UGameplayStatics::PlaySoundAtLocation(GetWorld(), FallSound, AvatarActor->GetActorLocation());
+			}
+		}
+	}
+	
+	return true;
+}
+
+
