@@ -143,6 +143,16 @@ void ADZAnomalyActorBase::OnRep_AnomalyScale()
 //──────────────
 // Cue Visual Interface
 //──────────────	
+bool ADZAnomalyActorBase::GetLoopSoundCueData(const FGameplayTag& GATag, FDZLoopSoundCueData& OutData)
+{
+	if (LoopSoundMap.Find(GATag))
+	{
+		OutData = LoopSoundMap[GATag];
+		return true;
+	}
+	return false;
+}
+
 bool ADZAnomalyActorBase::GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData)
 {
 	if (NiagaraMap.Find(GATag))

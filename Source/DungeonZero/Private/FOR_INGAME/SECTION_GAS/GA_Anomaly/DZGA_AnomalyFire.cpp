@@ -52,6 +52,8 @@ void UDZGA_AnomalyFire::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA, CueParams);
 	// 머티리얼 변경 큐 실행
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL, CueParams);
+	// LoopSound 큐 실행
+	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_LOOPSOUND, CueParams);
 }
 
 void UDZGA_AnomalyFire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -63,6 +65,7 @@ void UDZGA_AnomalyFire::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 		{
 			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA);
 			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL);
+			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_LOOPSOUND);
 		}
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);

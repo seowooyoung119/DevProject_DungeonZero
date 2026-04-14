@@ -116,6 +116,8 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
+	virtual bool GetLoopSoundCueData(const FGameplayTag& GATag, FDZLoopSoundCueData& OutData) override;
+	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
 	virtual bool GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData) override;
 	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
 	virtual bool GetDecalCueData(const FGameplayTag& GATag, TArray<FDZDecalCueData>& OutData) override;
@@ -136,6 +138,10 @@ protected:
 	// 메시 머티리얼 오버라이드 리스트
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
 	TMap<FGameplayTag, FDZMaterialCueDataArray> MaterialMap;
+	
+	// 루프 사운드 리스트
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | AnomalyActor | CueVisual")
+	TMap<FGameplayTag, FDZLoopSoundCueData> LoopSoundMap;
 
 #pragma endregion
 //======================================================================================================================

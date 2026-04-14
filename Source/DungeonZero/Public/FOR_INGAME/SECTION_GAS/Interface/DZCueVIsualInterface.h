@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Struct/DZDecalCueData.h"
+#include "FOR_INGAME/SECTION_GAS/Data/Struct/DZLoopSoundCueData.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Struct/DZMaterialCueData.h"
 #include "UObject/Interface.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Struct/DZNiagaraCueData.h"
@@ -24,6 +25,9 @@ class DUNGEONZERO_API IDZCueVIsualInterface
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "DZ | Cue")
+	virtual bool GetLoopSoundCueData(const FGameplayTag& GATag, FDZLoopSoundCueData& OutData);
+	
 	UFUNCTION(BlueprintCallable, Category = "DZ | Cue")
 	virtual bool GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData);
 	

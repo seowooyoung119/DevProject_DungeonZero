@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/GA/DZGATag.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/GameplayCue/DZGameplayCueTag.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/Status/DZAnomalyStatus.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyPhysicsImpactComponent.h"
@@ -85,9 +86,10 @@ void UDZGA_AnomalyJump::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	{
 		return;			
 	}
-
+	FGameplayCueParameters CueParams;
+	CueParams.AggregatedSourceTags.AppendTags(GetAssetTags());
 	// 루프 사운드 큐 실행
-	ASC->AddGameplayCue(LoopSoundCueTag);
+	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_LOOPSOUND, CueParams);
 }
 
 void UDZGA_AnomalyJump::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -99,7 +101,7 @@ void UDZGA_AnomalyJump::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 		UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
 		if (ASC)
 		{
-			ASC->RemoveGameplayCue(LoopSoundCueTag);
+			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_LOOPSOUND);
 		}
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);

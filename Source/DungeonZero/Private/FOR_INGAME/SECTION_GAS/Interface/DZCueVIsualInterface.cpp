@@ -3,6 +3,11 @@
 
 #include "FOR_INGAME/SECTION_GAS/Interface/DZCueVIsualInterface.h"
 
+bool IDZCueVIsualInterface::GetLoopSoundCueData(const FGameplayTag& GATag, FDZLoopSoundCueData& OutData)
+{
+	return false;
+}
+
 bool IDZCueVIsualInterface::GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData)
 {
 	return false;

@@ -35,15 +35,11 @@ public:
 
 #pragma endregion
 //======================================================================================================================	
-#pragma region 설정
+#pragma region 내부함수
 	//━━━━━━━━━━━━━━━━━━━━
-	// 설정
+	// 내부함수
 	//━━━━━━━━━━━━━━━━━━━━	
-	void SpawnAndAttachSound_internal(AActor* MyTarget);
-	
-	// 재생할 루프 사운드 에셋
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USoundBase> LoopSound;
+	bool SpawnAndAttachLoopSound_internal(AActor* MyTarget, const FGameplayCueParameters& Parameters);
 
 #pragma endregion
 //======================================================================================================================	

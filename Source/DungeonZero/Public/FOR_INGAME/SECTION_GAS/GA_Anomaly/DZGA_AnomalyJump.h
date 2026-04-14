@@ -52,15 +52,4 @@ protected:
 	TObjectPtr<AActor> CachedInstigator;
 #pragma endregion
 //======================================================================================================================	
-#pragma region 설정
-
-	//━━━━━━━━━━━━━━━━━━━━
-	// 설정
-	//━━━━━━━━━━━━━━━━━━━━
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Anomaly | Drop")
-	FGameplayTag LoopSoundCueTag;
-	
-#pragma endregion
-//======================================================================================================================	
-
 };
