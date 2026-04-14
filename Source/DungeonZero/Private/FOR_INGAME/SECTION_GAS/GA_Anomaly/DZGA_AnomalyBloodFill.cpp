@@ -40,6 +40,8 @@ void UDZGA_AnomalyBloodFill::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_DECAL, CueParams);
 	// 머티리얼 변경 큐 실행
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL, CueParams);
+	// 나이아가라 부착 큐 실행
+	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA, CueParams);
 }
 
 void UDZGA_AnomalyBloodFill::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -52,6 +54,7 @@ void UDZGA_AnomalyBloodFill::EndAbility(const FGameplayAbilitySpecHandle Handle,
 		{
 			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_DECAL);
 			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL);
+			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA);
 		}
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
