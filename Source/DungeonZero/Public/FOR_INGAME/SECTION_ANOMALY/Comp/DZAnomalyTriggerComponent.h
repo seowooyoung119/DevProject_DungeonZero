@@ -36,7 +36,7 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ | TriggerComponent")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | TriggerComponent")
 	TObjectPtr<UBoxComponent> TriggerBox;
 
 #pragma endregion
