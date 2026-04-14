@@ -74,3 +74,14 @@ void UDZGA_AnomalyMotion::EndAbility(const FGameplayAbilitySpecHandle Handle,
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
+
+void UDZGA_AnomalyMotion::OnRemoveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+{
+	// 어노말리 종료 함수 실행
+	ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(GetAvatarActorFromActorInfo());
+	if (IsValid(AnomalyActor))
+	{
+		AnomalyActor->AnomalySealAdditionalFunction_Implementation();
+	}
+	Super::OnRemoveAbility(ActorInfo, Spec);
+}
