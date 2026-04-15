@@ -20,6 +20,7 @@ ADZGCN_AnomalyAttachDecal::ADZGCN_AnomalyAttachDecal()
 
 bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
+	CachedDecal.Empty();
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{
@@ -50,6 +51,15 @@ bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const 
 		}
 	}
 	return true;
+}
+
+bool ADZGCN_AnomalyAttachDecal::WhileActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
+{
+	if (CachedDecal.Num() > 0)
+	{
+		return false;
+	}
+	return OnActive_Implementation(MyTarget, Parameters);
 }
 
 bool ADZGCN_AnomalyAttachDecal::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)

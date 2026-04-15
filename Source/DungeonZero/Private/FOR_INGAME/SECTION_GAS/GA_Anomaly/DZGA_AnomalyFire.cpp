@@ -47,7 +47,7 @@ void UDZGA_AnomalyFire::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		return;			
 	}
 	FGameplayCueParameters CueParams;
-	CueParams.AggregatedSourceTags.AppendTags(GetAssetTags());
+	CueParams.AggregatedSourceTags.AppendTags(AbilityTags);
 	// 나이아가라 이펙트 부착 큐 실행
 	ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_NIAGARA, CueParams);
 	// 머티리얼 변경 큐 실행

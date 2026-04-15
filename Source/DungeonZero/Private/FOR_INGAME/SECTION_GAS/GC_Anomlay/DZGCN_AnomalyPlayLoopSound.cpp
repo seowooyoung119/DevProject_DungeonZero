@@ -18,11 +18,6 @@ bool ADZGCN_AnomalyPlayLoopSound::OnActive_Implementation(AActor* MyTarget, cons
 {
 	Super::OnActive_Implementation(MyTarget, Parameters);
 
-	if (!IsValid(AudioComponent))
-	{
-		return false;
-	}
-
 	// 스폰 후 타겟 액터에 부착
 	SpawnAndAttachLoopSound_internal(MyTarget, Parameters);
 
@@ -40,20 +35,20 @@ bool ADZGCN_AnomalyPlayLoopSound::WhileActive_Implementation(AActor* MyTarget, c
 		return true;
 	}
 
-	if (!AudioComponent->IsPlaying())
-	{
-		AudioComponent->Play();
-	}
-
 	return true;
 }
 
 bool ADZGCN_AnomalyPlayLoopSound::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
 	Super::OnRemove_Implementation(MyTarget, Parameters);
-	if (IsValid(AudioComponent) && AudioComponent->IsPlaying())
+	if (IsValid(AudioComponent))
 	{
-		AudioComponent->Stop();
+		if (AudioComponent->IsPlaying())
+		{
+			AudioComponent->Stop();
+		}
+		AudioComponent->DestroyComponent();
+		AudioComponent = nullptr;
 	}
 
 	return true;
@@ -62,6 +57,12 @@ bool ADZGCN_AnomalyPlayLoopSound::OnRemove_Implementation(AActor* MyTarget, cons
 bool ADZGCN_AnomalyPlayLoopSound::SpawnAndAttachLoopSound_internal(AActor* MyTarget,
                                                                    const FGameplayCueParameters& Parameters)
 {
+	// AudioComponent 초기화
+	if (IsValid(AudioComponent))
+	{
+		AudioComponent->DestroyComponent();
+		AudioComponent = nullptr;
+	}
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{

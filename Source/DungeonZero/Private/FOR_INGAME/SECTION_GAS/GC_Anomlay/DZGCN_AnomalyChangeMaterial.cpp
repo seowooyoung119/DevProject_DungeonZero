@@ -19,6 +19,7 @@ ADZGCN_AnomalyChangeMaterial::ADZGCN_AnomalyChangeMaterial()
 
 bool ADZGCN_AnomalyChangeMaterial::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
+	CachedMaterialCueData.Empty();
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{
@@ -37,6 +38,16 @@ bool ADZGCN_AnomalyChangeMaterial::OnActive_Implementation(AActor* MyTarget, con
 		}
 	}
 	return true;
+}
+
+bool ADZGCN_AnomalyChangeMaterial::WhileActive_Implementation(AActor* MyTarget,
+	const FGameplayCueParameters& Parameters)
+{
+	if (CachedMaterialCueData.Num() > 0)
+	{
+		return false;
+	}
+	return OnActive_Implementation(MyTarget, Parameters);
 }
 
 bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
