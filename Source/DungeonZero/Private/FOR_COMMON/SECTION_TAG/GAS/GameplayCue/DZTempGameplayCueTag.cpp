@@ -12,5 +12,6 @@ namespace DZ
 		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_END_SHADOW, "GameplayCue.DZ.Anomaly.End.Shadow");
 		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_END_FOOTPRINTGHOST,"GameplayCue.DZ.Anomaly.End.FootPrintGhost");
 		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_END_CEILINGEYES,"GameplayCue.DZ.Anomaly.End.CeilingEyes");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_END_CHANGE,"GameplayCue.DZ.Anomaly.End.Change");
 	}
 }

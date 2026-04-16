@@ -72,7 +72,7 @@ void UDZStageControlSystem::PlayerEnterTheResultWay()
 	StopTimer_internal();
 	ResetDoor_internal();
 	GCDropItems_intenral();
-	GCDecal_internal_ThisisTempAPI(); 
+	GCDecal_internal_ThisIsTempAPI(); // 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
 	
 	// 1.5. 플레이어 처리 
 	// 일정 딜레이 후 위치 이동 (암전 처리 클라 전파를 위한 시간 딜레이)
@@ -203,7 +203,7 @@ void UDZStageControlSystem::GCDropItems_intenral()
 	DropItemGarbageCollectorSystem->GCAllDropItems();
 }
 
-void UDZStageControlSystem::GCDecal_internal_ThisisTempAPI()
+void UDZStageControlSystem::GCDecal_internal_ThisIsTempAPI()
 {
 	if (!IsValid(GetWorld())) return;
 
@@ -237,6 +237,9 @@ void UDZStageControlSystem::HandlePlayersLocation_internal()
 			PlayerPawn->SetActorLocation(MoveLocation);
 		}
 	}
+	
+	// 혹시 모를 문 열림 방지 (문 초기화 재시도)
+	ResetDoor_internal();
 }
 
 void UDZStageControlSystem::HandleAnomalies_internal()

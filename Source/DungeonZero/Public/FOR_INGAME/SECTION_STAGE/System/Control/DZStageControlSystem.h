@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FOR_INGAME/SECTION_STAGE/Data/Table/DZStageBalanceDataTable.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "DZStageControlSystem.generated.h"
 
@@ -65,7 +64,7 @@ protected:
 	void StopTimer_internal();
 	void ResetDoor_internal();
 	void GCDropItems_intenral();
-	void GCDecal_internal_ThisisTempAPI();	// 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
+	void GCDecal_internal_ThisIsTempAPI();	// 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
 	
 	// 2.5위치 이동 
 	void HandlePlayersLocation_internal();
