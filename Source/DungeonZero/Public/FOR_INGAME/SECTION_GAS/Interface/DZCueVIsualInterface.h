@@ -38,5 +38,8 @@ public:
 	virtual bool GetMaterialCueData(const FGameplayTag& GATag, TArray<FDZMaterialCueData>& OutData);
 	
 	UFUNCTION(BlueprintCallable, Category = "DZ | Cue")
+	virtual void SetOriginalMaterial(const FGameplayTag& GATag);
+	
+	UFUNCTION(BlueprintCallable, Category = "DZ | Cue")
 	virtual void SetRecieveDecals(bool bEnable);
 };

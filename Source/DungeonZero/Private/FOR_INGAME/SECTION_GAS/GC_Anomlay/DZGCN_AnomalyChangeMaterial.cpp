@@ -3,6 +3,7 @@
 
 #include "FOR_INGAME/SECTION_GAS/GC_Anomlay/DZGCN_AnomalyChangeMaterial.h"
 
+#include "Abilities/GameplayAbilityTypes.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/GameplayCue/DZGameplayCueTag.h"
 #include "FOR_INGAME/SECTION_GAS/Interface/DZCueVIsualInterface.h"
 
@@ -19,16 +20,19 @@ ADZGCN_AnomalyChangeMaterial::ADZGCN_AnomalyChangeMaterial()
 
 bool ADZGCN_AnomalyChangeMaterial::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
-	CachedMaterialCueData.Empty();
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{
 		return false;
 	}
 	IDZCueVIsualInterface* MyTargetInterface = Cast<IDZCueVIsualInterface>(MyTarget);
+
 	// 어노말리 머티리얼 오버라이드
 	for (auto& Tag : Parameters.AggregatedSourceTags)
 	{
+		// 원본 머티리얼 저장
+		MyTargetInterface->SetOriginalMaterial(Tag);
+		// 어노말리 머티리얼 적용
 		if (MyTargetInterface->GetMaterialCueData(Tag, CachedMaterialCueData))
 		{
 			for (auto& MaterialData : CachedMaterialCueData)
@@ -41,7 +45,7 @@ bool ADZGCN_AnomalyChangeMaterial::OnActive_Implementation(AActor* MyTarget, con
 }
 
 bool ADZGCN_AnomalyChangeMaterial::WhileActive_Implementation(AActor* MyTarget,
-	const FGameplayCueParameters& Parameters)
+                                                              const FGameplayCueParameters& Parameters)
 {
 	if (CachedMaterialCueData.Num() > 0)
 	{
@@ -56,8 +60,10 @@ bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, con
 	{
 		return false;
 	}
+
 	if (!IsValid(MyTarget))
 	{
+		CachedMaterialCueData.Empty();
 		return false;
 	}
 	// 원본 머티리얼로 복원
@@ -68,6 +74,7 @@ bool ADZGCN_AnomalyChangeMaterial::OnRemove_Implementation(AActor* MyTarget, con
 			ApplyOriginalMaterial(MyTarget, MaterialData);
 		}
 	}
+	CachedMaterialCueData.Empty();
 	return true;
 }
 #pragma endregion
@@ -89,8 +96,6 @@ void ADZGCN_AnomalyChangeMaterial::ApplyAnomalyMaterial(AActor* MyTarget, FDZMat
 	// 해당 타겟 메시의 머티리얼 변경
 	for (auto& SlotOverride : CueData.SlotOverrides)
 	{
-		// 원본 머티리얼 저장
-		SlotOverride.OriginalMaterial = TargetMesh->GetMaterial(SlotOverride.SlotIndex);
 		// 어노말리 머티리얼로 변경
 		TargetMesh->SetMaterial(SlotOverride.SlotIndex, SlotOverride.OverrideMaterial);
 	}

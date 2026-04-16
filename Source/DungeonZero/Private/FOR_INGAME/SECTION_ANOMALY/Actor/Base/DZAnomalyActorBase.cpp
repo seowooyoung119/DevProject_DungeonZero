@@ -183,6 +183,30 @@ bool ADZAnomalyActorBase::GetMaterialCueData(const FGameplayTag& GATag, TArray<F
 	return false;
 }
 
+void ADZAnomalyActorBase::SetOriginalMaterial(const FGameplayTag& GATag)
+{
+	if (!MaterialMap.Find(GATag))
+	{
+		return;
+	}
+
+	for (auto& CueData : MaterialMap.Find(GATag)->MaterialCueDataArray)
+	{
+		UStaticMeshComponent* Mesh = Cast<UStaticMeshComponent>(
+			FindComponentByTag(UStaticMeshComponent::StaticClass(), CueData.TargetMeshTag));
+		if (!IsValid(Mesh)) continue;
+
+		for (auto& SlotOverride : CueData.SlotOverrides)
+		{
+			if (SlotOverride.OriginalMaterial != nullptr)
+			{
+				continue;
+			}
+			SlotOverride.OriginalMaterial = Mesh->GetMaterial(SlotOverride.SlotIndex);
+		}
+	}
+}
+
 void ADZAnomalyActorBase::SetRecieveDecals(bool bEnable)
 {
 	// 컴포넌트의 리시브 데칼 변경

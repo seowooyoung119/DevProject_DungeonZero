@@ -16,11 +16,11 @@
 ADZGCN_AnomalyAttachDecal::ADZGCN_AnomalyAttachDecal()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	bAutoDestroyOnRemove = true;
 }
 
 bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
-	CachedDecal.Empty();
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{
@@ -34,7 +34,7 @@ bool ADZGCN_AnomalyAttachDecal::OnActive_Implementation(AActor* MyTarget, const 
 	}
 	// 리시브 데칼 활성화
 	MyTargetInterface->SetRecieveDecals(true);
-	
+
 	// 데칼 부착
 	TArray<FDZDecalCueData> DecalCueData;
 	for (auto& Tag : Parameters.AggregatedSourceTags)
@@ -69,8 +69,10 @@ bool ADZGCN_AnomalyAttachDecal::OnRemove_Implementation(AActor* MyTarget, const 
 	{
 		return false;
 	}
+
 	if (!IsValid(MyTarget) || !MyTarget->Implements<UDZCueVIsualInterface>())
 	{
+		CachedDecal.Empty();
 		return false;
 	}
 	// 리시브 데칼 비활성화
@@ -86,6 +88,8 @@ bool ADZGCN_AnomalyAttachDecal::OnRemove_Implementation(AActor* MyTarget, const 
 			Decal->Destroy();
 		}
 	}
+	CachedDecal.Empty();
+
 	return true;
 }
 #pragma endregion
@@ -107,7 +111,7 @@ void ADZGCN_AnomalyAttachDecal::ApplyDecal(AActor* MyTarget, FDZDecalCueData& Cu
 
 		UStaticMeshComponent* TargetStaticMesh = CastChecked<UStaticMeshComponent>(TargetMesh);
 		if (!IsValid(TargetStaticMesh)) continue;
-		
+
 		// 데칼 스폰해서 소켓에 부착 
 		const UStaticMeshSocket* Socket = TargetStaticMesh->GetSocketByName(CueData.SocketName);
 		if (!Socket->IsValidLowLevel()) continue;

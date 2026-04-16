@@ -124,6 +124,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
 	virtual bool GetMaterialCueData(const FGameplayTag& GATag, TArray<FDZMaterialCueData>& OutData) override;
 	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
+	virtual void SetOriginalMaterial(const FGameplayTag& GATag) override;
+	UFUNCTION(BlueprintCallable, Category = "DZ | AnomalyActor | CueVisual")
 	virtual void SetRecieveDecals(bool bEnable) override;
 
 protected:

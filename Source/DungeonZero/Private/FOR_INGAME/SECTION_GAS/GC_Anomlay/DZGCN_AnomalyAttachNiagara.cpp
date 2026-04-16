@@ -21,7 +21,6 @@ ADZGCN_AnomalyAttachNiagara::ADZGCN_AnomalyAttachNiagara()
 
 bool ADZGCN_AnomalyAttachNiagara::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
-	CachedNiagaraEffects.Empty();
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{
@@ -59,6 +58,7 @@ bool ADZGCN_AnomalyAttachNiagara::OnRemove_Implementation(AActor* MyTarget, cons
 	{
 		return false;
 	}
+
 	// 나이아가라 이펙트 비활성화
 	for (auto& NiagaraEffect : CachedNiagaraEffects)
 	{
@@ -67,6 +67,8 @@ bool ADZGCN_AnomalyAttachNiagara::OnRemove_Implementation(AActor* MyTarget, cons
 			NiagaraEffect->Deactivate();
 		}
 	}
+	CachedNiagaraEffects.Empty();
+
 	return true;
 }
 #pragma endregion

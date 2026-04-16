@@ -10,6 +10,7 @@ ADZStaticMeshAnomalyActor::ADZStaticMeshAnomalyActor()
 	MainMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainMesh"));
 	SetRootComponent(MainMeshComp);
 	MainMeshComp->ComponentTags.Add(TEXT("MainMesh"));
+	MainMeshComp->SetIsReplicated(true);
 }
 
 

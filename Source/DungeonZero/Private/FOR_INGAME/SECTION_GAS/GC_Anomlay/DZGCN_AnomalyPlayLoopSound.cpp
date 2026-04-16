@@ -32,7 +32,14 @@ bool ADZGCN_AnomalyPlayLoopSound::WhileActive_Implementation(AActor* MyTarget, c
 	if (!IsValid(AudioComponent))
 	{
 		SpawnAndAttachLoopSound_internal(MyTarget, Parameters);
-		return true;
+	}
+	else
+	{
+		// 이미 컴포넌트는 있는데 위치가 안 따라가는 경우를 대비해 부착 상태 재강제
+		if (AudioComponent->GetAttachParent() != MyTarget->GetRootComponent())
+		{
+			AudioComponent->AttachToComponent(MyTarget->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+		}
 	}
 
 	return true;
@@ -50,6 +57,7 @@ bool ADZGCN_AnomalyPlayLoopSound::OnRemove_Implementation(AActor* MyTarget, cons
 		AudioComponent->DestroyComponent();
 		AudioComponent = nullptr;
 	}
+	AudioComponent = nullptr;
 
 	return true;
 }
@@ -57,12 +65,6 @@ bool ADZGCN_AnomalyPlayLoopSound::OnRemove_Implementation(AActor* MyTarget, cons
 bool ADZGCN_AnomalyPlayLoopSound::SpawnAndAttachLoopSound_internal(AActor* MyTarget,
                                                                    const FGameplayCueParameters& Parameters)
 {
-	// AudioComponent 초기화
-	if (IsValid(AudioComponent))
-	{
-		AudioComponent->DestroyComponent();
-		AudioComponent = nullptr;
-	}
 	// DZCueVisualInterface 상속 받은 액터만 진행
 	if (!MyTarget->Implements<UDZCueVIsualInterface>())
 	{
@@ -85,11 +87,18 @@ bool ADZGCN_AnomalyPlayLoopSound::SpawnAndAttachLoopSound_internal(AActor* MyTar
 				MyTarget->GetRootComponent(),
 				NAME_None,
 				FVector::ZeroVector,
-				EAttachLocation::SnapToTarget,
+				EAttachLocation::KeepRelativeOffset,
 				true,
 				1.f, 1.f, 0,
 				LoopSoundCueData.Attenuation
 			);
+			if (AudioComponent)
+			{
+				// 클라이언트에서 부모 컴포넌트와의 상대 좌표를 강제로 0으로 맞춤
+				AudioComponent->SetRelativeLocation(FVector::ZeroVector);
+				// Absolute 위치를 사용하지 않도록 보장
+				AudioComponent->SetUsingAbsoluteLocation(false);
+			}
 			return true;
 		}
 	}
