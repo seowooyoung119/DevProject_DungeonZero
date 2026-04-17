@@ -44,13 +44,13 @@ void ADZLeverActor::ToggleInteractWidget_Implementation(bool InWantOn)
 	else if (InWantOn == false) InteractWidgetComp->GetUserWidgetObject()->SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void ADZLeverActor::DoStandAloneInteractLogic_Implementation()
+void ADZLeverActor::DoStandAloneInteractLogic_Implementation(FDZInteractData& InteractData)
 {
 	if (!HasAuthority()) return;
 	if (!IsValid(TargetDoor)) return;
 
 	if (!TargetDoor->GetClass()->ImplementsInterface(UDZCommonInteractInterface::StaticClass())) return;
-	IDZCommonInteractInterface::Execute_DoStandAloneInteractLogic(TargetDoor);
+	IDZCommonInteractInterface::Execute_DoStandAloneInteractLogic(TargetDoor, InteractData);
 }
 
 #pragma endregion

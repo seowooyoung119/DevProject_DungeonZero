@@ -183,7 +183,7 @@ void ADZAnomalyDoor::ToggleInteractWidget_Implementation(bool InWantOn)
 	else if (InWantOn == false) InteractWidgetComp->GetUserWidgetObject()->SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void ADZAnomalyDoor::DoStandAloneInteractLogic_Implementation()
+void ADZAnomalyDoor::DoStandAloneInteractLogic_Implementation(FDZInteractData& InteractData)
 {
 	// 어노말리 해제 여부 체크
 	if (!bIsAnomalySealed) return;

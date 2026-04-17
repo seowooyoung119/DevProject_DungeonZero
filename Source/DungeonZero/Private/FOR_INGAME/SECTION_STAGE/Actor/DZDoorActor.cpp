@@ -184,7 +184,7 @@ void ADZDoorActor::ToggleInteractWidget_Implementation(bool InWantOn)
 	else if (InWantOn == false) InteractWidgetComp->GetUserWidgetObject()->SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void ADZDoorActor::DoStandAloneInteractLogic_Implementation()
+void ADZDoorActor::DoStandAloneInteractLogic_Implementation(FDZInteractData& InteractData)
 {
 	if (bIsOpened == true ) ToggleDoor(false);
 	else if (bIsOpened == false) ToggleDoor(true);

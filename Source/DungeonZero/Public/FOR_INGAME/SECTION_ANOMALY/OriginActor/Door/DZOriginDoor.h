@@ -155,7 +155,7 @@ protected:
 public:
 	// IDZCommonInteractInterface ~ 
 	virtual void ToggleInteractWidget_Implementation(bool InWantOn) override;
-	virtual void DoStandAloneInteractLogic_Implementation() override;
+	virtual void DoStandAloneInteractLogic_Implementation(FDZInteractData& InteractData) override;
 	// ~ IDZCommonInteractInterface
 	
 protected:

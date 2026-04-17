@@ -52,7 +52,9 @@ void UDZGA_SpecialInteract::ActivateAbility(const FGameplayAbilitySpecHandle Han
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 		if (!ConstRemovedTarget->GetClass()->ImplementsInterface(UDZCommonInteractInterface::StaticClass()))  { K2_EndAbility(); return; } 
-		IDZCommonInteractInterface::Execute_DoStandAloneInteractLogic(ConstRemovedTarget);
+		FDZInteractData InteractData;
+		InteractData.Instigator = GetAvatarActorFromActorInfo();
+		IDZCommonInteractInterface::Execute_DoStandAloneInteractLogic(ConstRemovedTarget, InteractData);
 		K2_EndAbility();
 	}
 }
