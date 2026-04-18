@@ -60,11 +60,13 @@ protected:
 	// 위치 이동 
 	void HandlePlayersInputAndSee_internal();
 	
-	// 2. 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
+	// 2. 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리, AI 처리, 죽음 체킹 초기화 처리
 	void StopTimer_internal();
 	void ResetDoor_internal();
 	void GCDropItems_intenral();
 	void GCDecal_internal_ThisIsTempAPI();	// 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
+	void CGAIs_internal();
+	void CheckDeathReset_internal();
 	
 	// 2.5위치 이동 
 	void HandlePlayersLocation_internal();
@@ -90,13 +92,18 @@ protected:
 	
 	// 6. 후 처리 
 	// 레벨 번호 알림
-	// 일정 딜레이 후 플레이어 암전 해제 및 입력 작동
-	// 타이머 시작 (문 열면 시작하도록 바꿈)
+	// 일정 딜레이 후 플레이어 암전 해제 및 입력 작동 및 죽음 초기화
 	void NoticeCurrentLevel_internal();
 	void AllowPlayerSeeAndMove_internal();
 	
 public:
+	// 7. 후 처리
+	// 타이머 시작 (문 열면 시작하도록 바꿈)
 	void AllowStartTimeTick();
+	
+protected:
+	// 문 열 경우 AI 작동 시작 (AllowStartTimeTick 내부에서 호출)
+	void StartAI_Internal();
 	
 #pragma endregion
 //======================================================================================================================	

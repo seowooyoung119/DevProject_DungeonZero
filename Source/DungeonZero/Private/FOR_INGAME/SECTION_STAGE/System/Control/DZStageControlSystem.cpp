@@ -2,12 +2,17 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/System/Control/DZStageControlSystem.h"
+
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAIGCMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAllowPlayerControlMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
+#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZGameModeMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZOriginMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZTimeMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/EndingMSG.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
+#include "FOR_INGAME/SECTION_AI/SpawnNode/DZSpawnNode.h"
+#include "FOR_INGAME/SECTION_AI/System/DZAISpawnSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/Decal/DZDecalGarbageCollector.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZChangeToAnomalyActorHelperSystem.h"
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZChooseBecomeAnomalyActorHelperSystem.h"
@@ -68,11 +73,13 @@ void UDZStageControlSystem::PlayerEnterTheResultWay()
 	// 플레이어 암전 처리
 	HandlePlayersInputAndSee_internal();
 	
-	// 2. 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리
+	// 2. 타이머 처리, 문 처리, 드랍 아이템 처리, 데칼 액터 처리, AI 처리, 죽음 체킹 초기화 처리
 	StopTimer_internal();
 	ResetDoor_internal();
 	GCDropItems_intenral();
 	GCDecal_internal_ThisIsTempAPI(); // 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
+	CGAIs_internal();
+	CheckDeathReset_internal();
 	
 	// 1.5. 플레이어 처리 
 	// 일정 딜레이 후 위치 이동 (암전 처리 클라 전파를 위한 시간 딜레이)
@@ -210,6 +217,22 @@ void UDZStageControlSystem::GCDecal_internal_ThisIsTempAPI()
 	ADZDecalGarbageCollector* DecalGarbageCollector = Cast<ADZDecalGarbageCollector>(UGameplayStatics::GetActorOfClass(this, ADZDecalGarbageCollector::StaticClass()));
 	if (!IsValid(DecalGarbageCollector)) return;
 	DecalGarbageCollector->GCAllDecals();
+}
+
+void UDZStageControlSystem::CGAIs_internal()
+{
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZAIGCMSG Payload;
+	MessageSubsystem.BroadcastMessage(DZ::AIMSG::DZ_SEND_AIGC, Payload);
+	
+}
+
+void UDZStageControlSystem::CheckDeathReset_internal()
+{
+	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
+	FDZGameModeDeathResetMSG Payload;
+	MessageSubsystem.BroadcastMessage(DZ::GameModeMSG::DZ_GAMEMODE_DEADRESET, Payload);
+	
 }
 
 void UDZStageControlSystem::HandlePlayersLocation_internal()
@@ -354,8 +377,40 @@ void UDZStageControlSystem::AllowStartTimeTick()
 	
 	// 타이머 시작
 	TimeReduceManager->StartTime();
+	
+	// 문 열 경우 AI 작동 시작 (AllowStartTimeTick 내부에서 호출)
+	StartAI_Internal();
 }
 
+void UDZStageControlSystem::StartAI_Internal()
+{
+	if (!IsValid(GetWorld()))
+	{
+		return;
+	}
+	
+	AActor* SpawnNode = UGameplayStatics::GetActorOfClass(this, ADZSpawnNode::StaticClass());
+	if (!IsValid(SpawnNode))
+	{
+		return;
+	}
+	
+	ADZSpawnNode* SpawnNodeCast = Cast<ADZSpawnNode>(SpawnNode);
+	if (!IsValid(SpawnNodeCast))
+	{
+		return;
+	}
+
+	UDZAISpawnSystem* AISpawnSystem = UDZAISpawnSystem::Get(this);
+	if (!IsValid(AISpawnSystem))
+	{
+		return;
+	}
+	
+	FVector SpawnLocation = SpawnNodeCast->GetActorLocation();
+	FRotator SpawnRotation = SpawnNodeCast->GetActorRotation();
+	AISpawnSystem->SpawnNewAI(SpawnNodeCast->GetSpawnAIClassID(), SpawnLocation, SpawnRotation);
+}
 
 
 #pragma endregion

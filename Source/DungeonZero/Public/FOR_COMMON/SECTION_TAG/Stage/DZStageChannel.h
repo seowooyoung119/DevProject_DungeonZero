@@ -46,4 +46,16 @@ namespace DZ
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_SEND_FIND_ANOMLAY);			// 어노말리인 것 같으면 이거다 찍을 때 호출하는 채널	
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_RESOULT_OF_FIND_ANOMLAY);		// 어노말리 찾기 결과 			
 	}
+	
+	namespace AIMSG
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_SEND_AIGC) // AI GC 
+	}
+	
+	namespace GameModeMSG
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_GAMEMODE_DEADCOUNT);	// 플레이어가 죽을 때마다 호출
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(DZ_GAMEMODE_DEADRESET);	// 스테이지 초기화 시 호출 
+	}
+	
 }

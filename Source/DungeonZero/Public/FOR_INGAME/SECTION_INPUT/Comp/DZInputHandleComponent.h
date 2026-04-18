@@ -89,6 +89,17 @@ protected:
 	void HotKey_internal7(const FInputActionValue& Value);
 	void HotKey_internal8(const FInputActionValue& Value);
 	void HotKey_internal9(const FInputActionValue& Value);
+
+#pragma endregion
+//======================================================================================================================	
+#pragma region 내부유틸
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 내부유틸
+	//━━━━━━━━━━━━━━━━━━━━	
+	
+protected:
+	bool HasPlayerDead();
 	
 #pragma endregion
 //======================================================================================================================	
@@ -98,6 +109,7 @@ protected:
 	// 데이터
 	//━━━━━━━━━━━━━━━━━━━━	
 	
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DZ | Input")
 	TObjectPtr<UDZInputDataAsset> InputData = nullptr;
 	

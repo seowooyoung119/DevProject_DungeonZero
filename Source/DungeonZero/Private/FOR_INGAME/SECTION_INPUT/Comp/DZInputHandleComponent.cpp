@@ -11,6 +11,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "FOR_COMMON/SECTION_PLAY_ROLE/interface/DZCommonPlayRoleInterface.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/Dead/DZDeadTag.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/Interact/DZInteractTag.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/RightClick/DZRightClickTag.h"
 #include "FOR_COMMON/SECTION_TAG/Inventory/DZHotKeyTag.h"
@@ -117,6 +118,7 @@ void UDZInputHandleComponent::Move_internal(const FInputActionValue& Value)
 {
 	if (!IsValid(OwnerCharacter)) return;
 	if (!IsValid(OwnerController)) return;
+	if (HasPlayerDead() == true) return;
 	
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	if(MovementVector.IsNearlyZero()) return;
@@ -135,7 +137,7 @@ void UDZInputHandleComponent::Look_internal(const FInputActionValue& Value)
 {
 	if (!IsValid(OwnerCharacter)) return;
 	if (!IsValid(OwnerController)) return;
-	
+
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 	if (LookAxisVector.IsNearlyZero()) return;
 
@@ -156,7 +158,7 @@ void UDZInputHandleComponent::RunStart_internal(const FInputActionValue& Value)
 {
 	if (!IsValid(OwnerCharacter)) return;
 	if (!IsValid(OwnerController)) return;
-	
+
 	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
 	if (IsValid(ASC)) ASC->TryActivateAbilitiesByTag(DZ::Movement::DZ_MOVEMENT_RUN.GetTag().GetSingleTagContainer());
 }
@@ -394,6 +396,22 @@ void UDZInputHandleComponent::HotKey_internal9(const FInputActionValue& Value)
 	
 	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
 	if (IsValid(ASC)) ASC->TryActivateAbilitiesByTag(DZ::Inventory::DZ_INVNETORY_HOTKEY9.GetTag().GetSingleTagContainer());
+}
+
+#pragma endregion
+//======================================================================================================================	
+#pragma region 내부유틸
+	
+	//━━━━━━━━━━━━━━━━━━━━
+	// 내부유틸
+	//━━━━━━━━━━━━━━━━━━━━	
+
+bool UDZInputHandleComponent::HasPlayerDead()
+{
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerCharacter);
+	if (!IsValid(ASC)) return true;
+	if (ASC->HasMatchingGameplayTag(DZ::Dead::DZ_DEAD_PLAYER)) return true;
+	return false;
 }
 
 #pragma endregion

@@ -82,6 +82,7 @@ DerivedDataCache/*
 /Content/Asset/
 /Content/ThirParty/
 /Content/TempThirdParty/
+/Content/ThirParty_TMEP/
 
 # 테스트 폴더 일부 제외
 /Content/TEST/FOOT_SYSTEM_TEST/

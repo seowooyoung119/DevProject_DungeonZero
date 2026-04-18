@@ -44,4 +44,15 @@ namespace DZ
 		UE_DEFINE_GAMEPLAY_TAG(DZ_SEND_FIND_ANOMLAY, "DZ.MSG.FindAnomaly.Send");			
 		UE_DEFINE_GAMEPLAY_TAG(DZ_RESOULT_OF_FIND_ANOMLAY, "DZ.MSG.FindAnomaly.Result");		
 	}
+	
+	namespace AIMSG
+	{
+		UE_DEFINE_GAMEPLAY_TAG(DZ_SEND_AIGC, "DZ.MSG.AI.GC.Send");		
+	}
+	
+	namespace GameModeMSG
+	{
+		UE_DEFINE_GAMEPLAY_TAG(DZ_GAMEMODE_DEADCOUNT, "DZ.MSG.GameMode.DeadCount");	
+		UE_DEFINE_GAMEPLAY_TAG(DZ_GAMEMODE_DEADRESET, "DZ.MSG.GameMode.DeadReset");	
+	}
 }

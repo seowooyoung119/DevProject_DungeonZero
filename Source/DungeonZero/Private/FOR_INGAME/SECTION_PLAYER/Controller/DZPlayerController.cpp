@@ -3,7 +3,10 @@
 
 #include "DungeonZero/Public/FOR_INGAME/SECTION_PLAYER/Controller/DZPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAllowPlayerControlMSG.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/Dead/DZDeadTag.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
 #include "Net/UnrealNetwork.h"
 
@@ -99,6 +102,17 @@ void ADZPlayerController::OnCanMoveAndSeeReceived(FGameplayTag Channel, const FD
 		if (IsValid(PlayerCameraManager))  PlayerCameraManager->StartCameraFade(0.f, 1.f, 3.f, FLinearColor::Black,
 			true, true);
 		IsVisibleAndMovable = false;
+	}
+	
+	// 죽음 초기화
+	if (Payload.CanMoveAndSee == true)
+	{
+		UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+		if (IsValid(ASC))
+		{
+			FGameplayTagContainer DeadTag = DZ::Dead::DZ_DEAD_PLAYER.GetTag().GetSingleTagContainer();
+			ASC->CancelAbilities(&DeadTag);
+		}
 	}
 }
 
