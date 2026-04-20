@@ -8,7 +8,7 @@
 #include "FOR_COMMON/SECTION_TAG/GAS/GameplayCue/DZGameplayCueTag.h"
 #include "FOR_COMMON/SECTION_TAG/GAS/Status/DZAnomalyStatus.h"
 #include "FOR_INGAME/SECTION_GAS/Data/Struct/DZPhysicsImpactData.h"
-#include "FOR_LIBRARY/LineTarce/DZLineTraceHelperLibrary.h"
+#include "FOR_LIBRARY/LineTarce/DZSurfaceTraceHelperLibrary.h"
 #include "FOR_INGAME/SECTION_SOUND/FootStep/Data/Asset/DZAnomalySoundDataAsset.h"
 
 
@@ -71,7 +71,7 @@ TObjectPtr<USoundBase> UDZAnomalyPhysicsImpactComponent::GetImpactSound(const FH
 	}
 
 	// 라이브러리 호출
-	EPhysicalSurface SurfaceType = UDZLineTraceHelperLibrary::GetSurfaceTypeFromHit(Hit);
+	EPhysicalSurface SurfaceType = UDZSurfaceTraceHelperLibrary::GetSurfaceTypeFromHit(Hit);
 
 	// 타입에 매핑된 사운드 출력
 	Sound = ImpactSoundDataAsset->AnomalySounds.FindRef(SurfaceType);

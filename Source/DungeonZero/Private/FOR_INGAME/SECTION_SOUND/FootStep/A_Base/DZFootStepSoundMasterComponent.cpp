@@ -3,7 +3,7 @@
 
 #include "FOR_INGAME/SECTION_SOUND/FootStep/A_Base/DZFootStepSoundMasterComponent.h"
 #include "FOR_INGAME/SECTION_SOUND/FootStep/Data/Asset/DZFootStepSoundDataAsset.h"
-#include "FOR_LIBRARY/LineTarce/DZLineTraceHelperLibrary.h"
+#include "FOR_LIBRARY/LineTarce/DZSurfaceTraceHelperLibrary.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -51,7 +51,7 @@ void UDZFootStepSoundMasterComponent::PlayFootstepSound(const FVector& Location,
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
-	EPhysicalSurface SurfaceType = UDZLineTraceHelperLibrary::GetSurfaceTypeBelow(this, Location, 50.f,CollisionQueryParams,HitResult);
+	EPhysicalSurface SurfaceType = UDZSurfaceTraceHelperLibrary::GetSurfaceTypeBelow(this, Location, 50.f,CollisionQueryParams,HitResult);
 	
 	// 타입에 매핑된 사운드 출력
 	const auto* Sounds = FootStepSoundDataAsset->FootstepSounds.Find(SurfaceType);
@@ -88,7 +88,7 @@ void UDZFootStepSoundMasterComponent::OnLanded(const FHitResult& Hit)
 	}
 	
 	// 라이브러리 호출
-	EPhysicalSurface SurfaceType = UDZLineTraceHelperLibrary::GetSurfaceTypeFromHit(Hit);
+	EPhysicalSurface SurfaceType = UDZSurfaceTraceHelperLibrary::GetSurfaceTypeFromHit(Hit);
 	
 	// 타입에 매핑된 사운드 출력
 	const auto* Sounds = FootStepSoundDataAsset->FootstepSounds.Find(SurfaceType);

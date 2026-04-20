@@ -93,6 +93,12 @@ void UDZTimeReduceManager::TimeReduceHandle()
 		FDZTimeMSG Payload;
 		Payload.RemainTime = StageRuntimePlayDataModule->GetRemainingTime();
 		MessageSubsystem.BroadcastMessage(DZ::TimeMSG::DZ_TIME_REDUCE, Payload);
+		
+		// 1분이 되었나?
+		if (StageRuntimePlayDataModule->GetRemainingTime() % 60 == 0)
+		{
+			MessageSubsystem.BroadcastMessage(DZ::TimeMSG::DZ_TIME_MIN_NOITCE, Payload);
+		}
 	}
 	
 	// 타임 오버인 경우 
@@ -106,6 +112,9 @@ void UDZTimeReduceManager::TimeReduceHandle()
 		
 		// 타이머 종료 
 		if (IsValid(GetWorld())) GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+		
+		// 1분 충족 알림
+		MessageSubsystem.BroadcastMessage(DZ::TimeMSG::DZ_TIME_MIN_NOITCE, Payload);
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("UDZTimeReduceManager : TimeReduceHandle"));

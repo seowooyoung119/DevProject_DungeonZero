@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "DZLineTraceHelperLibrary.generated.h"
+#include "DZSurfaceTraceHelperLibrary.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class DUNGEONZERO_API UDZLineTraceHelperLibrary : public UBlueprintFunctionLibrary
+class DUNGEONZERO_API UDZSurfaceTraceHelperLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 	

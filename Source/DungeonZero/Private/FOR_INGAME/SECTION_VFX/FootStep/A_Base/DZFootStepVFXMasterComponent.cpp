@@ -3,7 +3,7 @@
 
 #include "FOR_INGAME/SECTION_VFX/FootStep/A_Base/DZFootStepVFXMasterComponent.h"
 #include "FOR_INGAME/SECTION_VFX/FootStep/Data/Asset/DZFootStepVFXDataAsset.h"
-#include "FOR_LIBRARY/LineTarce/DZLineTraceHelperLibrary.h"
+#include "FOR_LIBRARY/LineTarce/DZSurfaceTraceHelperLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/DecalComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -54,7 +54,7 @@ void UDZFootStepVFXMasterComponent::PlayFootstepVFX(const FVector& SocketLocatio
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
-	EPhysicalSurface SurfaceType = UDZLineTraceHelperLibrary::GetSurfaceTypeBelow(this, SocketLocation, 50.f,CollisionQueryParams, HitResult);
+	EPhysicalSurface SurfaceType = UDZSurfaceTraceHelperLibrary::GetSurfaceTypeBelow(this, SocketLocation, 50.f,CollisionQueryParams, HitResult);
 	
 	// 타입에 매핑된 vfx 출력
 	const FDZFootstepVFXData* VfxData = FootStepVfxDataAsset->SurfaceVFXMap.Find(SurfaceType);
@@ -81,7 +81,7 @@ void UDZFootStepVFXMasterComponent::OnLandedVFX(const FHitResult& Hit)
 	}
 	
 	// 라이브러리 호출
-	EPhysicalSurface SurfaceType = UDZLineTraceHelperLibrary::GetSurfaceTypeFromHit(Hit);
+	EPhysicalSurface SurfaceType = UDZSurfaceTraceHelperLibrary::GetSurfaceTypeFromHit(Hit);
 	
 	// 타입에 매핑된 vfx 출력
 	const FDZFootstepVFXData* VfxData = FootStepVfxDataAsset->SurfaceVFXMap.Find(SurfaceType);
