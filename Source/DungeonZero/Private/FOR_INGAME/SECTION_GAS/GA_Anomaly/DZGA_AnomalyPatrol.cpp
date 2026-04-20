@@ -2,8 +2,11 @@
 
 
 #include "FOR_INGAME/SECTION_GAS/GA_Anomaly/DZGA_AnomalyPatrol.h"
-
+#include "AbilitySystemComponent.h"
 #include "NavigationSystem.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/GA/DZGATag.h"
+#include "FOR_COMMON/SECTION_TAG/GAS/GameplayCue/DZGameplayCueTag.h"
+#include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 //======================================================================================================================	
 #pragma region 라이프_사이클
 
@@ -14,6 +17,11 @@ UDZGA_AnomalyPatrol::UDZGA_AnomalyPatrol()
 {
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+	
+	// 에셋 태그
+    FGameplayTagContainer AssetTags;
+    AssetTags.AddTag(DZ::GA::DZ_GA_ANOMALY_PATROL);
+    SetAssetTags(AssetTags);
 }
 
 void UDZGA_AnomalyPatrol::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -32,7 +40,30 @@ void UDZGA_AnomalyPatrol::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
-
+	
+	UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+	if (ASC)
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.AggregatedSourceTags.AppendTags(AbilityTags);
+		// 머티리얼 변경 큐 실행
+		ASC->AddGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL, CueParams);
+	}
+	// // 메시 설정 변경
+	// ADZAnomalyActorBase* AnomalyActor = Cast<ADZAnomalyActorBase>(AvatarActor);
+	// if (AnomalyActor)
+	// {
+	// 	UPrimitiveComponent* AnomalyPrimitive = AnomalyActor->GetAnomalyPrimitiveComponent();
+	// 	AnomalyPrimitive->SetCanEverAffectNavigation( false);
+	// 	// 콜리전 프로파일을 Custom으로 설정
+	// 	AnomalyPrimitive->SetCollisionProfileName(TEXT("Custom"));
+	// 	// 모든 채널을 Ignore로 초기화
+	// 	AnomalyPrimitive->SetCollisionResponseToAllChannels(ECR_Ignore);
+	// 	// Visibility 채널만 Block으로 설정
+	// 	AnomalyPrimitive->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	// 	// 물리 충돌은 끄고 쿼리(라인트레이스 등)만 허용
+	// 	AnomalyPrimitive->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	// }
 	StartIdlePhase(AvatarActor);
 }
 
@@ -43,7 +74,15 @@ void UDZGA_AnomalyPatrol::EndAbility(const FGameplayAbilitySpecHandle Handle, co
 		GetWorld()->GetTimerManager().ClearTimer(PatrolPhaseTimerHandle);
 		GetWorld()->GetTimerManager().ClearTimer(PatrolMoveTickTimerHandle);
 	}
-
+	if (HasAuthority(&ActivationInfo))
+	{
+		UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+		if (ASC)
+		{
+			ASC->RemoveGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_MATERIAL);
+			ASC->ExecuteGameplayCue(DZ::GameplayCue::DZ_CUE_ANOMALY_END_PATROL);
+		}
+	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 #pragma endregion

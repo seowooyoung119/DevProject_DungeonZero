@@ -14,6 +14,7 @@ namespace DZ
 		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_IMPACTSOUND, "GameplayCue.DZ.Anomaly.ImpactSound");
 		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_LOOPSOUND, "GameplayCue.DZ.Anomaly.LoopSound");
 		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_MOTION, "GameplayCue.DZ.Anomaly.Motion");
+		UE_DEFINE_GAMEPLAY_TAG(DZ_CUE_ANOMALY_END_PATROL, "GameplayCue.DZ.Anomaly.End.Patrol");
 		
 	}
 }

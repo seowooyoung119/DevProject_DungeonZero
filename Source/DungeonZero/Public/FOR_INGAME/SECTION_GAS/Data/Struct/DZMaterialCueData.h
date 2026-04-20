@@ -20,7 +20,7 @@ struct FDZMaterialSlotOverride
 	TObjectPtr<UMaterialInterface> OverrideMaterial = nullptr;
 	
 	// 복원용 원본 머티리얼
-	UPROPERTY(BlueprintReadWrite, Category = "DZ | Cue | Material")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DZ | Cue | Material")
 	TObjectPtr<UMaterialInterface> OriginalMaterial = nullptr;
 };
 
