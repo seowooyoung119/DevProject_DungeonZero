@@ -67,6 +67,10 @@ public:
 	// 다음 스테이지를 위해 캐싱된 모든 어노말리들
 	TArray<AActor*> GetAnomalyActorsForClearForNextStage() { return AnomalyActorsForClearForNextStage; };
 	void SetAnomalyActorsForClearForNextStage(const TArray<AActor*>& InArray) { AnomalyActorsForClearForNextStage = InArray; };
+
+	// 가짜 어노말리들
+	TArray<AActor*> GetFakeAnomalyActors() { return FakeAnomalyActors; };
+	void SetFakeAnomalyActors(const TArray<AActor*>& InArray) { FakeAnomalyActors = InArray; };
 	
 protected:
 	// 현재 스테이지 레벨 (기본 0)
@@ -88,6 +92,10 @@ protected:
 	// 남은 시간
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
 	float RemainingTime = 0.0f;
+	
+	// 가짜 어노말리들
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
+	TArray<AActor*> FakeAnomalyActors;
 	
 #pragma endregion
 //======================================================================================================================	

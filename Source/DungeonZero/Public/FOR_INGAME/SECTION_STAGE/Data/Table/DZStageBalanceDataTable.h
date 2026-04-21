@@ -19,10 +19,16 @@ public:
 	float Time = 300.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DZ", DisplayName="최소 어노말리 갯수")
-	int32 MinAnomalyCount = 5;
+	int32 MinAnomalyCount = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DZ", DisplayName="최대 어노말리 갯수")
-	int32 MaxAnomalyCount = 5;
+	int32 MaxAnomalyCount = 1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=" DZ ",DisplayName="가짜 어노말리 최소 갯수")
+	int32 MinFakeAnomalyCount = 3;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=" DZ ",DisplayName="가짜 어노말리 최대 갯수")
+	int32 MaxFakeAnomalyCount = 4;
 };
 
 /*

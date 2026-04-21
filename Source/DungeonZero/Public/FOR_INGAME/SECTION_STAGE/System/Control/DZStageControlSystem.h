@@ -66,6 +66,7 @@ protected:
 	void GCDropItems_intenral();
 	void GCDecal_internal_ThisIsTempAPI();	// 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
 	void CGAIs_internal();
+	void GCFakeAnomalies_internal();
 	void CheckDeathReset_internal();
 	
 	// 2.5위치 이동 

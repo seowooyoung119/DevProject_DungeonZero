@@ -2,7 +2,6 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/System/Control/DZStageControlSystem.h"
-
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAIGCMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZAllowPlayerControlMSG.h"
 #include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
@@ -79,6 +78,7 @@ void UDZStageControlSystem::PlayerEnterTheResultWay()
 	GCDropItems_intenral();
 	GCDecal_internal_ThisIsTempAPI(); // 현재 안 쓰는 중 (쓰러면 레벨에 데칼 가비지 컬렉터 액터 배치 필요
 	CGAIs_internal();
+	GCFakeAnomalies_internal();
 	CheckDeathReset_internal();
 	
 	// 1.5. 플레이어 처리 
@@ -227,6 +227,21 @@ void UDZStageControlSystem::CGAIs_internal()
 	
 }
 
+void UDZStageControlSystem::GCFakeAnomalies_internal()
+{
+	// 스테이지 데이터 모듈 시스템 가져오기 
+	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
+	if (!IsValid(StageRuntimePlayDataModule)) return;
+	
+	for (auto& FakeAnomaly : StageRuntimePlayDataModule->GetFakeAnomalyActors())
+	{
+		if (IsValid(FakeAnomaly))
+		{
+			FakeAnomaly->Destroy();
+		}
+	}
+}
+
 void UDZStageControlSystem::CheckDeathReset_internal()
 {
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
@@ -292,42 +307,77 @@ void UDZStageControlSystem::HandleOriginActors_internal()
 
 void UDZStageControlSystem::RefreshAnomalyActors_internal()
 {
-	// 원본 액터들 가져오기
+	//-----------------------------------
+	// 원본 액터 목록 가져오기 
+	//-----------------------------------
+
+	// 원본 액터 등록 시스템 가져오기
 	UDZRegisterAllCanBeAnomalyActorHelperSystem* RegisterAllCanBeAnomalyActorHelperSystem = UDZRegisterAllCanBeAnomalyActorHelperSystem::Get(this);
 	if (!IsValid(RegisterAllCanBeAnomalyActorHelperSystem)) return;
+
+	// 원본 액터들 가져오기
 	TArray<AActor*>& Origins = RegisterAllCanBeAnomalyActorHelperSystem->GetPossibleActors();
 	
-	UE_LOG(LogTemp, Warning, TEXT("Origins %d"), Origins.Num())
+	//-----------------------------------
+	// 레벨에 따른 최소 최대 갯수 가져오기
+	//-----------------------------------
 	
-	// 현재 레벨 가져오기
+	// 스테이지 데이터 모듈 시스템 가져오기 
 	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
 	if (!IsValid(StageRuntimePlayDataModule)) return;
+
+	// 현재 레벨 가져오기
 	int32 CurrentStageLevel = StageRuntimePlayDataModule->GetCurrentLevel();
 	
-	// 레벨에 따른 최소 최대 겟수
+	// 스테이지 밸런스 모듈 가져오기
 	UDZStageBalanceDataModule* StageBalanceDataModule = UDZStageBalanceDataModule::Get(this);
 	if (!IsValid(StageBalanceDataModule)) return;
+
+	// 레벨에 맞는 밸런스 데이터 가져오기
 	FDZStageBalanceRow* BalanceRow = StageBalanceDataModule->GetStageBalanceRow(CurrentStageLevel);
 	if (!BalanceRow) return;
+
+	// 레벨에 따른 최소 최대 겟수 (진짜)
 	int32 MinCount = BalanceRow->MinAnomalyCount;
 	int32 MaxCount = BalanceRow->MaxAnomalyCount;
 	
-	// 랜덤 고르기 실시 
+	// 레벨에 따른 최소 최대 갯수 (가짜)
+	int32 FakeMinCount = BalanceRow->MinFakeAnomalyCount;
+	int32 FakeMaxCount = BalanceRow->MinFakeAnomalyCount;
+	
+	//-----------------------------------
+	// 진짜 이상현 랜덤 고르기 실시 
+	//-----------------------------------
+	
+	// 랜덤 고르기 시스템 가져오기 
 	UDZChooseBecomeAnomalyActorHelperSystem* ChooseBecomeAnomalyActorHelperSystem = UDZChooseBecomeAnomalyActorHelperSystem::Get(this);
 	if (!IsValid(ChooseBecomeAnomalyActorHelperSystem)) return;
-	TArray<AActor*> SelectedActors = ChooseBecomeAnomalyActorHelperSystem->ChooseRandomAnomalyActors_internal(Origins, MinCount, MaxCount);
+
+	// 랜덤 고르기 실시
+	TArray<AActor*> SelectedActors = ChooseBecomeAnomalyActorHelperSystem->ChooseRealAnomalyActors_internal(Origins, MinCount, MaxCount);
 	
-	// 변환 실시
+	// 변환 시스템 가져오기 
 	UDZChangeToAnomalyActorHelperSystem* ChangeToAnomalyActorHelperSystem = UDZChangeToAnomalyActorHelperSystem::Get(this);
 	if (!IsValid(ChangeToAnomalyActorHelperSystem)) return;
-	TArray<AActor*> NewAnomalies = ChangeToAnomalyActorHelperSystem->ReplaceWithAnomalyActors_internal(SelectedActors);
 	
-	UE_LOG(LogTemp, Warning, TEXT("NewAnomalies %d"), NewAnomalies.Num())
+	// 변환 실시 (진짜)
+	TArray<AActor*> NewAnomalies = ChangeToAnomalyActorHelperSystem->ReplaceWithRealAnomalyActors_internal(SelectedActors);
+	
+	//-----------------------------------
+	// 가짜 이상현 랜덤 고르기 실시 
+	//-----------------------------------
+	
+	// 랜덤 고르기 실시 (가짜)
+	TArray<FDZFakeAnomalySeeInfo> SelectedFakeAnomalies = ChooseBecomeAnomalyActorHelperSystem->ChooseFakeAnomalyActors_internal(Origins, SelectedActors, FakeMinCount, FakeMaxCount);
+	
+	// 변환 실시 (가짜)
+	TArray<AActor*> NewFakeAnomalies = ChangeToAnomalyActorHelperSystem->ReplaceWithFakeAnomalyActors_internal(SelectedFakeAnomalies);
 	
 	// 캐싱(확인용 어노말리 배열, 어노말리 카운트, 스테이지 클리어용 어노말리 배열)
 	StageRuntimePlayDataModule->SetAnomalyActors(NewAnomalies);
 	StageRuntimePlayDataModule->SetAnomalyCount(NewAnomalies.Num());
 	StageRuntimePlayDataModule->SetAnomalyActorsForClearForNextStage(NewAnomalies);
+	StageRuntimePlayDataModule->SetFakeAnomalyActors(NewFakeAnomalies);
 }
 
 void UDZStageControlSystem::HandleRemainingTime_internal()

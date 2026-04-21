@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Data/Table/DZAnomalySettingTable.h"
+#include "FOR_INGAME/SECTION_STAGE/Data/Struct/DZFakeAnomalySeeInfo.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "DZChangeToAnomalyActorHelperSystem.generated.h"
 
@@ -35,11 +36,17 @@ public:
 	//━━━━━━━━━━━━━━━━━━━━
 	
 	/**
-	 * @param SelectedActors 이전에 선택된 원본 액터들 (자동으로 숨김)
-	 * @return 생성된 어노말리 액터들의 배열
+	 * @param SelectedActors 이전에 선택된 원본 액터들 for 진짜 (자동으로 숨김)
+	 * @return 생성된 진짜 어노말리 액터들의 배열
 	 */
-	TArray<AActor*> ReplaceWithAnomalyActors_internal(const TArray<AActor*>& SelectedActors);
+	TArray<AActor*> ReplaceWithRealAnomalyActors_internal(const TArray<AActor*>& SelectedActors);
 	
+	/**
+    	 * @param FakeSelectedActors 이전에 선택된 원본 액터들 for 가짜 (자동으로 숨김)
+    	 * @return 생성된 가짜 어노말리 액터들의 배열
+    	 */
+	TArray<AActor*> ReplaceWithFakeAnomalyActors_internal(const TArray<FDZFakeAnomalySeeInfo>& FakeSelectedActors);
+
 #pragma endregion	
 //======================================================================================================================
 };
