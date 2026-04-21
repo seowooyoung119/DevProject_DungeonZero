@@ -3,9 +3,7 @@
 
 #include "DungeonZero/Public/FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
 #include "AbilitySystemComponent.h"
-#include "Components/BoxComponent.h"
 #include "FOR_INGAME/SECTION_ANOMALY/Comp/DZAnomalyTriggerComponent.h"
-#include "FOR_INGAME/SECTION_GAS/Data/Asset/DZAnomalyGrantDataAsset.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -36,10 +34,7 @@ void ADZAnomalyActorBase::BeginPlay()
 
 	AnomalyAbilitySystemComponent->InitAbilityActorInfo(this, this);
 	
-	// 리시브 데칼 설정 초기화
-	SetRecieveDecals(false);
-	
-	if (!HasAuthority() || !IsValid(AnomalyGrantData))
+	if (!HasAuthority() || !IsValid(AnomalyGameplayAbility))
 	{
 		return;
 	}
@@ -51,6 +46,12 @@ void ADZAnomalyActorBase::BeginPlay()
 	ActivateAnomaly_internal(AnomalyAbilitySystemComponent);
 }
 
+void ADZAnomalyActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ADZAnomalyActorBase, FakeAnomalySeeInfo);
+}
+
 void ADZAnomalyActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// 활성화된 어빌리티 정리
@@ -59,6 +60,20 @@ void ADZAnomalyActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		AnomalyAbilitySystemComponent->CancelAllAbilities();
 	}
 	Super::EndPlay(EndPlayReason);
+}
+#pragma endregion
+//======================================================================================================================		
+#pragma region 게터/세터
+
+//──────────────
+// 게터/세터
+//──────────────	
+
+void ADZAnomalyActorBase::SetFakeAnomalySeeInfo(const FDZFakeAnomalySeeInfo& InInfo)
+{	
+	if (!HasAuthority()) return; // 서버만 설정 가능
+	FakeAnomalySeeInfo = InInfo;
+	OnRep_FakeAnomalySeeInfo();
 }
 
 #pragma endregion
@@ -69,39 +84,12 @@ void ADZAnomalyActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // 어노말리
 //──────────────	
 
-void ADZAnomalyActorBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ADZAnomalyActorBase, ReplicatedAnomalyScale);
-}
-
-void ADZAnomalyActorBase::SetAnomalyScale(float InScale)
-{
-	ReplicatedAnomalyScale = InScale;
-	SetActorScale3D(FVector(InScale));
-}
-
 void ADZAnomalyActorBase::InitGAS_internal(UAbilitySystemComponent* InASC)
 {
-	if (!IsValid(InASC) || !IsValid(AnomalyGrantData)) return;
+	if (!IsValid(InASC) || !IsValid(AnomalyGameplayAbility)) return;
 
-	// 랜덤한 하나의 어빌리티만 부여
-	// 유효한 어빌리티로 배열 생성
-	TArray<FDZAnomalyGrantData> ValidAbilities;
-	for (auto& GAData : AnomalyGrantData->GrantedAbilities)
-	{
-		if (IsValid(GAData.GameplayAbility))
-		{
-			ValidAbilities.Add(GAData);
-		}
-	}
-	const FDZAnomalyGrantData& SelectedData = ValidAbilities[FMath::RandRange(0, ValidAbilities.Num() - 1)];
-	// 트리거 여부 저장
-	bActivateOnTrigger = SelectedData.bActivateOnTrigger;
-	bDeactivateOnTrigger = SelectedData.bDeactivateOnTrigger;
 	// 어빌리티 부여
-	FGameplayAbilitySpec AbilitySpec(SelectedData.GameplayAbility, 1, INDEX_NONE,
-	                                 this);
+	FGameplayAbilitySpec AbilitySpec(AnomalyGameplayAbility, 1, INDEX_NONE,this);
 	AnomalyAbilitySpecHandle = InASC->GiveAbility(AbilitySpec);
 }
 
@@ -131,92 +119,52 @@ void ADZAnomalyActorBase::ActivateAnomaly_internal(UAbilitySystemComponent* InAS
 		InASC->TryActivateAbility(AnomalyAbilitySpecHandle);
 	}
 }
-
-void ADZAnomalyActorBase::OnRep_AnomalyScale()
-{
-	SetActorScale3D(FVector(ReplicatedAnomalyScale));
-}
 #pragma endregion
 //======================================================================================================================		
-#pragma region Cue Visual Interface
+#pragma region 가짜 어노말리
 
 //──────────────
-// Cue Visual Interface
+// 가짜 어노말리
 //──────────────	
-bool ADZAnomalyActorBase::GetLoopSoundCueData(const FGameplayTag& GATag, FDZLoopSoundCueData& OutData)
-{
-	if (LoopSoundMap.Find(GATag))
-	{
-		OutData = LoopSoundMap[GATag];
-		return true;
-	}
-	return false;
-}
 
-bool ADZAnomalyActorBase::GetNiagaraCueData(const FGameplayTag& GATag, TArray<FDZNiagaraCueData>& OutData)
+void ADZAnomalyActorBase::OnRep_FakeAnomalySeeInfo()
 {
-	if (NiagaraMap.Find(GATag))
-	{
-		OutData = NiagaraMap[GATag].NiagaraCueDataArray;
-		return true;
-	}
-	return false;
-}
-
-bool ADZAnomalyActorBase::GetDecalCueData(const FGameplayTag& GATag, TArray<FDZDecalCueData>& OutData)
-{
-	if (DecalMap.Find(GATag))
-	{
-		OutData = DecalMap[GATag].DecalCueDataArray;
-		return true;
-	}
-	return false;
-}
-
-bool ADZAnomalyActorBase::GetMaterialCueData(const FGameplayTag& GATag, TArray<FDZMaterialCueData>& OutData)
-{
-	if (MaterialMap.Find(GATag))
-	{
-		OutData = MaterialMap[GATag].MaterialCueDataArray;
-		return true;
-	}
-	return false;
-}
-
-void ADZAnomalyActorBase::SetOriginalMaterial(const FGameplayTag& GATag)
-{
-	if (!MaterialMap.Find(GATag))
+	if (!IsFakeAnomaly())
 	{
 		return;
 	}
 
-	for (auto& CueData : MaterialMap.Find(GATag)->MaterialCueDataArray)
+	// 각 클라이언트가 자기 PlayerState로 독립 판단
+	APlayerController* LocalPC = GetWorld()->GetFirstPlayerController();
+	if (!LocalPC)
 	{
-		UStaticMeshComponent* Mesh = Cast<UStaticMeshComponent>(
-			FindComponentByTag(UStaticMeshComponent::StaticClass(), CueData.TargetMeshTag));
-		if (!IsValid(Mesh)) continue;
-
-		for (auto& SlotOverride : CueData.SlotOverrides)
-		{
-			if (SlotOverride.OriginalMaterial != nullptr)
-			{
-				continue;
-			}
-			SlotOverride.OriginalMaterial = Mesh->GetMaterial(SlotOverride.SlotIndex);
-		}
+		return;
 	}
-}
 
-void ADZAnomalyActorBase::SetRecieveDecals(bool bEnable)
-{
-	// 컴포넌트의 리시브 데칼 변경
-	TArray<UPrimitiveComponent*> PrimitiveComponents;
-	GetComponents<UPrimitiveComponent>(PrimitiveComponents);
-	for (auto& PrimitiveComponent : PrimitiveComponents)
+	APlayerState* LocalPS = LocalPC->PlayerState;
+	if (!LocalPS)
 	{
-		PrimitiveComponent->bReceivesDecals = bEnable;
-		PrimitiveComponent->MarkRenderStateDirty();
+		return;
 	}
+
+	const bool bShouldSee = FakeAnomalySeeInfo.CanSeePlayers.Contains(LocalPS);
+	
+	// 가짜 액터
+	GetRootComponent()->SetVisibility(bShouldSee, true);
+	if (UPrimitiveComponent* Prim = GetAnomalyPrimitiveComponent())
+	{
+		if (bShouldSee)
+			Prim->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+		else
+			Prim->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	// 원본 액터 (로컬에서만 판단)
+	AActor* OriginActor = FakeAnomalySeeInfo.OriginActor;
+	if (!IsValid(OriginActor)) return;
+
+	OriginActor->SetActorHiddenInGame(bShouldSee);       // 볼 수 있으면 원본 숨김
+	OriginActor->SetActorEnableCollision(!bShouldSee);   // 볼 수 있으면 원본 콜리전 끔
 }
 #pragma endregion
-//======================================================================================================================	
+//======================================================================================================================		
