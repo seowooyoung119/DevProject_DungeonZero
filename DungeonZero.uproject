@@ -3,14 +3,12 @@
 	"EngineAssociation": "5.7",
 	"Category": "",
 	"Description": "",
-	"Modules": 
-	[
+	"Modules": [
 		{
 			"Name": "DungeonZero",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"AdditionalDependencies":
-			[
+			"AdditionalDependencies": [
 				"GameplayAbilities",
 				"GameplayTags",
 				"GameplayTasks",
@@ -19,13 +17,11 @@
 			]
 		}
 	],
-	"Plugins": 
-	[
+	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
-			"TargetAllowList":
-			[
+			"TargetAllowList": [
 				"Editor"
 			]
 		},
@@ -52,10 +48,17 @@
 		{
 			"Name": "SoundUtilities",
 			"Enabled": true
+		},
+		{
+			"Name": "ContextualAnimation",
+			"Enabled": true
+		},
+		{
+			"Name": "MotionWarping",
+			"Enabled": true
 		}
 	],
-	"TargetPlatforms":
-	[
+	"TargetPlatforms": [
 		"Windows"
 	]
 }
