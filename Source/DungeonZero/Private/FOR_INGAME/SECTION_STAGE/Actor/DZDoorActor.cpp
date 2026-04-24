@@ -5,8 +5,6 @@
 #include "Components/SlateWrapperTypes.h"
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
-#include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
-#include "FOR_INGAME/SECTION_STAGE/System/Control/DZStageControlSystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
@@ -73,17 +71,6 @@ void ADZDoorActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(ADZDoorActor, DoorSoundVarForRep);
 }
 
-void ADZDoorActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	// 메시지 구독 해제
-	if (UGameplayMessageSubsystem::HasInstance(this))
-	{
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		MessageSubsystem.UnregisterListener(TimeResetListenerHandle);
-	}
-	Super::EndPlay(EndPlayReason);
-}
-
 void ADZDoorActor::BeginPlay()
 {
 	Super::BeginPlay();
@@ -103,9 +90,6 @@ void ADZDoorActor::BeginPlay()
 		UpdateDoorRotation(1.0f); // 문을 열린 상태로 즉시 회전
 	}
 	
-	// 리셋 메시지 구독
-	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	TimeResetListenerHandle = MessageSubsystem.RegisterListener<FDZDoorMSG>(DZ::DoorMSG::DZ_DOOR_DOORRESET, this, &ADZDoorActor::OnDoorResetReceived);
 }
 
 #pragma endregion
@@ -129,11 +113,6 @@ void ADZDoorActor::ToggleDoor(bool WantOpen)
 	// 최초로 1회에 한정 (스테이지 넘어갈 때마다 리셋됨)
 	if (bIsDoorForStartTimeHasBeenUsed == true) return;
 	
-	// 타이머 시작 요청
-	UDZStageControlSystem* StageControlSystem = UDZStageControlSystem::Get(this);
-	if (!IsValid(StageControlSystem)) return;
-	StageControlSystem->AllowStartTimeTick();
-	
 	// 1회 사용 마크
 	bIsDoorForStartTimeHasBeenUsed = true;
 }
@@ -143,27 +122,6 @@ void ADZDoorActor::UpdateDoorRotation(float Value)
 	FRotator NewRotation = FMath::Lerp(ClosedRotation, OpenedRotation, Value);
 	DoorMesh->SetRelativeRotation(NewRotation);
 }
-
-#pragma endregion
-//======================================================================================================================
-#pragma region 게임플레이_메시지
-	
-	//━━━━━━━━━━━━━━━━━━━━
-	// 게임플레이_메시지
-	//━━━━━━━━━━━━━━━━━━━━
-
-void ADZDoorActor::OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload)
-{
-	// onRep 호출 (클라 동기화)
-	bIsOpened = Payload.bIsDoorOpen;
-	
-	// 서버 로직 호출 (사운드 제외)
-	if (HasAuthority()) OnRep_IsOpened();
-	
-	// 1회 사용 마크 리셋
-	bIsDoorForStartTimeHasBeenUsed = false;
-}
-
 
 #pragma endregion
 //======================================================================================================================

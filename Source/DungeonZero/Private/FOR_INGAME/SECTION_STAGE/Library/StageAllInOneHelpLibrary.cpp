@@ -28,29 +28,12 @@ void UStageAllInOneHelpLibrary::CacheStageDataToMap(TMap<int32, FDZStageBalanceR
 	// 5. TMap에 데이터 채우기 (Key: Level)
 	for (const FDZStageBalanceRow* Row : AllRows)
 	{
-		if (Row) OutStageMap.Add(Row->Level, *Row);
+		if (Row) OutStageMap.Add(Row->PlayerNum, *Row);
 	}
 }
 
 void UStageAllInOneHelpLibrary::DebugLogStageMap(const TMap<int32, FDZStageBalanceRow>& InStageMap)
 {
-	UE_LOG(DZStageDataMgrLog, Warning, TEXT("----------- [Stage Balance Map Debug Start] -----------"));
-	UE_LOG(DZStageDataMgrLog, Warning, TEXT("Total Stages Cached: %d"), InStageMap.Num());
-
-	for (const auto& Pair : InStageMap)
-	{
-		int32 LevelKey = Pair.Key;
-		const FDZStageBalanceRow& Row = Pair.Value;
-
-		// 한 줄에 모든 정보를 보기 쉽게 출력
-		UE_LOG(DZStageDataMgrLog, Log, TEXT("[Level %d] -> Time: %.1fs | AnomalyCount: %d ~ %d"), 
-			LevelKey, 
-			Row.Time, 
-			Row.MinAnomalyCount, 
-			Row.MaxAnomalyCount);
-	}
-
-	UE_LOG(DZStageDataMgrLog, Warning, TEXT("----------- [Stage Balance Map Debug End] -------------"));
 }
 
 void UStageAllInOneHelpLibrary::CacheAnomalyDataToMap(TMap<FName, FDZAnomalySettingTable>& OutStageMap)

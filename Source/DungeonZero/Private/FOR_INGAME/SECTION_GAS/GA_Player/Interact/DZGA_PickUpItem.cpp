@@ -12,7 +12,6 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Interface/DZItemInterface.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
 #include "FOR_INGAME/SECTION_PLAYER/Interface/PlayerCompGetterInterface.h"
-#include "FOR_INGAME/SECTION_STAGE/System/Item/DZRegisterLevelPlacedItemHelperSystem.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "AbilitySystemComponent.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Inventory/Inventory/Library/DZInventoryInternalHelperLibrary.h"
@@ -189,10 +188,6 @@ bool UDZGA_PickUpItem::AddItemToInventory_internal(FDZItemRuntimeData& ItemRunTi
 {
 	if (!IsValid(TargetItem)) return false;
 
-	// 레벨 배치 시스템 가져오기
-	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
-	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
-	
 	// 플레이어 핫키 인벤토리 가져오기
 	UDZHotKeyInventoryComponent* HotKeyInventoryComponent = IPlayerCompGetterInterface::Execute_GetDZHotKeyInventoryComponent(GetAvatarActorFromActorInfo());
 	if (!IsValid(HotKeyInventoryComponent)) return false; 
@@ -202,17 +197,7 @@ bool UDZGA_PickUpItem::AddItemToInventory_internal(FDZItemRuntimeData& ItemRunTi
 	if (!IsSuccess) return false; 
 					
 	// 성공시 타겟 처리 
-	// CASE A : 레벨에 배치된 경우 -> 원래 아이템 스택 카운트 (1) 다시 주고 숨김처리
-	if (LevelPlacedItemHelperSystem->IsThisItemPlaced(TargetItem) == true)
-	{
-		ItemRunTimeData.DynamicData.CurrentStack = 1;
-		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(TargetItem, false, false);
-	}
-	// CASE B : 드랍 아이템인 경우 -> 파괴철
-	else
-	{
-		TargetItem->Destroy();
-	}
+	TargetItem->Destroy();
 	
 	// 호스트 전용 (UI 알림 -> 클라는 OnRep에서 호출)
 	BroadcastItemPickUp( HotKeyInventoryComponent->GetInventoryData().InventoryType, HotKeyInventoryComponent);
@@ -223,10 +208,6 @@ bool UDZGA_PickUpItem::AddItemToBody_internal(FDZItemRuntimeData& ItemRunTimeDat
 {
 	if (!IsValid(TargetItem)) return false;
 	
-	// 레벨 배치 시스템 가져오기
-	UDZRegisterLevelPlacedItemHelperSystem* LevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(GetWorld());
-	if (!IsValid(LevelPlacedItemHelperSystem)) return false;
-	
 	// 플레이어 장비 인벤토리 가져오기
 	UDZBodyEquipInventoryComponent* BodyEquipInventoryComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipInventoryComponent(GetAvatarActorFromActorInfo());
 	if (!IsValid(BodyEquipInventoryComponent)) return false;
@@ -236,17 +217,7 @@ bool UDZGA_PickUpItem::AddItemToBody_internal(FDZItemRuntimeData& ItemRunTimeDat
 	if (!IsSuccess)  return false;
 					
 	// 성공시 타겟 처리 
-	// CASE A : 레벨에 배치된 경우 -> 원래 아이템 스택 카운트 (1) 다시 주고 숨김처리
-	if (LevelPlacedItemHelperSystem->IsThisItemPlaced(TargetItem) == true)
-	{
-		ItemRunTimeData.DynamicData.CurrentStack = 1;
-		IDZCommonPlayRoleInterface::Execute_ToggleHiddenInGame(TargetItem, false, false);
-	}
-	// CASE B : 버려진 아이템인 경우 -> 파괴철
-	else
-	{
-		TargetItem->Destroy();
-	}	
+	TargetItem->Destroy();
 
 	// 잠기 비주얼 가져오기
 	UDZBodyEquipVisualComponent* BodyEquipVisualComponent = IPlayerCompGetterInterface::Execute_GetBodyEquipVisualComponent(GetAvatarActorFromActorInfo());

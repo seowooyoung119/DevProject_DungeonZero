@@ -2,14 +2,12 @@
 
 
 #include "FOR_INGAME/SECTION_STAGE/System/Anomaly/DZAnomalyFindHandleSystem.h"
-
-#include "AbilitySystemBlueprintLibrary.h"
-#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZStageMSG.h"
-
-#include "AbilitySystemComponent.h"
-#include "FOR_INGAME/SECTION_STAGE/System/Data/UDZStageRuntimePlayDataModule.h"
+#include "FOR_INGAME/SECTION_FRAMEWORK/GameState/DZInGameGameState.h"
 #include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
-#include "FOR_INGAME/SECTION_ANOMALY/Actor/Base/DZAnomalyActorBase.h"
+#include "GameFramework/GameStateBase.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 //======================================================================================================================	
 #pragma region 게터
@@ -71,17 +69,20 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 	if (!IsValid(GetWorld())) return;
 	if (GetWorld()->GetNetMode() == NM_Client) return;
 
-	// 데이터 모듈 체크 
-	UUDZStageRuntimePlayDataModule* StageRuntimePlayDataModule = UUDZStageRuntimePlayDataModule::Get(this);
-	if (!IsValid(StageRuntimePlayDataModule)) return;
+	// 게임 스테이트 
+	AGameStateBase* GameStateBase = UGameplayStatics::GetGameState(this);
+	if (!IsValid(GameStateBase)) return;
+	
+	ADZInGameGameState* InGameGameState = Cast<ADZInGameGameState>(GameStateBase);
+	if (!IsValid(InGameGameState)) return;
 
 	// 어노말리 있는지 확인 
-	bool FindResult = StageRuntimePlayDataModule->HandleIsThereAnyAnomaly(Payload.FindAnomalyActor);
+	bool FindResult = InGameGameState->HandleIsThereAnyAnomaly(Payload.FindAnomalyActor);
 
 	// 성공 핸들 처리 
 	if (FindResult == true)
 	{
-		StageRuntimePlayDataModule->HandleOnFoundAnomaly(Payload.FindAnomalyActor);
+		InGameGameState->HandleOnFoundAnomaly(Payload.FindAnomalyActor);
 		
 		//-------------------------------------
 		// 복원 임시 테스트 
@@ -112,15 +113,6 @@ void UDZAnomalyFindHandleSystem::OnFindAnomalyMessageReceived(FGameplayTag Chann
 		FindResultPayload.bIsFindAnomaly = false;
 		MessageSubsystem.BroadcastMessage(DZ::FindAnomalyMSG::DZ_RESOULT_OF_FIND_ANOMLAY, FindResultPayload);
 	}
-	
-	// 남은 어노 말리 발송 (성공, 실패 여부 상관 없이)
-	{
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		FDZStageRemainAnomalyMSG StageRemainAnomalyMSG;
-		StageRemainAnomalyMSG.StageRemainAnomaly = StageRuntimePlayDataModule->GetAnomalyCount();
-		MessageSubsystem.BroadcastMessage(DZ::StageMSG::DZ_STAGE_REMAINANOMLAY_NOTICE, StageRemainAnomalyMSG);
-		
-	}	
 }
 
 #pragma endregion

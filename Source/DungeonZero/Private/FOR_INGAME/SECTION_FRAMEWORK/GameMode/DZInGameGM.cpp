@@ -22,6 +22,7 @@ void ADZInGameGM::BeginPlay()
 	
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
 	PlayerDeathListenerHandle = MessageSubsystem.RegisterListener(DZ::GameModeMSG::DZ_GAMEMODE_DEADCOUNT, this, &ADZInGameGM::OnPlayerDeathReceived);
+	
 }
 
 void ADZInGameGM::EndPlay(const EEndPlayReason::Type EndPlayReason)

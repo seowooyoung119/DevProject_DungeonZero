@@ -4,12 +4,9 @@
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Actor/Base/DZItemActorBase.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/Data/Struct/DZITemStaticData.h"
 #include "FOR_INGAME/SECTION_ITEM_AND_INVENTORY/Item/System/DZItemDataSubSystem.h"
-#include "FOR_INGAME/SECTION_STAGE/System/Item/DZDropItemGarbageCollectorSystem.h"
-#include "FOR_INGAME/SECTION_STAGE/System/Item/DZRegisterLevelPlacedItemHelperSystem.h"
 #include "FOR_INGAME/SECTION_UI/Interact/Item/DZItemInteractToggleUI.h"
-#include "FOR_COMMON/SECTION_TAG/Stage/DZStageChannel.h"
-#include "Components/WidgetComponent.h"
 #include "GameFramework/GameNetworkManager.h"
+#include "Components/WidgetComponent.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -111,32 +108,10 @@ void ADZItemActorBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (bIsLayOnLevel == true)
-	{
-		// 레벨 배치 아이템 액터 등록
-		UDZRegisterLevelPlacedItemHelperSystem* RegisterLevelPlacedItemHelperSystem = UDZRegisterLevelPlacedItemHelperSystem::Get(this);
-		if (IsValid(RegisterLevelPlacedItemHelperSystem)) RegisterLevelPlacedItemHelperSystem->RegisterLevelPlacedItem(this);
-	
-		// 레벨 배치 아이템 핸들 시스템 메시지 구독 (현재 원본 액터와 같이 함)
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		OriginVisibleListenerHandle = MessageSubsystem.RegisterListener<FDZOriginMSG>(DZ::OriginMSG::DZ_ORIGIN_VISIBILE_NOTICE, this, &ADZItemActorBase::OnOriginVisibleReceived);
-	}
-	else
-	{
-		// 드랍 아이템 가비지 컬렉터 구독
-		UDZDropItemGarbageCollectorSystem* DropItemGarbageCollectorSystem = UDZDropItemGarbageCollectorSystem::Get(this);
-		if (IsValid(DropItemGarbageCollectorSystem)) DropItemGarbageCollectorSystem->RegisterDropItem(this);
-	}
 }
 
 void ADZItemActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	// 게임 플레이 메시지 해제
-	if (UGameplayMessageSubsystem::HasInstance(this))
-	{
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		if (OriginVisibleListenerHandle.IsValid()) MessageSubsystem.UnregisterListener(OriginVisibleListenerHandle);
-	}
 	Super::EndPlay(EndPlayReason);
 }
 

@@ -46,16 +46,11 @@ public:
 	
 public:
 	FORCEINLINE FDZStageBalanceRow* GetStageBalanceRow(const int32 StageLevel) { return StageDataMap.Find(StageLevel);};
-	FORCEINLINE int32 GetLastStageLevel() const { return LastStageLevel; };
 	
 protected:
 	// 스테이지 밸런스 데이터
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
 	TMap<int32, FDZStageBalanceRow> StageDataMap;
-	
-	// 마지막 스테이지 키값 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DZ")
-	int32 LastStageLevel = -1;
 	
 #pragma endregion
 //======================================================================================================================	

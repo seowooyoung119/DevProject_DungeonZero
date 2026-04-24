@@ -3,11 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
-#include "FOR_COMMON/SECTION_GAMEPLAYMESSAGE/Stage/DZDoorMSG.h"
 #include "FOR_INGAME/SECTION_ANOMALY/OriginActor/StaticMeshActor/DZStaticMeshOriginActor.h"
 #include "FOR_INGAME/SECTION_INTERACT/Interface/DZCommonInteractInterface.h"
-#include "GameFramework/GameplayMessageSubsystem.h"
 #include "DZOriginDoor.generated.h"
 
 class UWidgetComponent;
@@ -43,7 +40,6 @@ public:
 	ADZOriginDoor();
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 #pragma endregion
 //======================================================================================================================	
@@ -128,21 +124,6 @@ protected:
 
 	// 스테이지마다 리셋되어 딱 한번만 타이머 시작이 가능하도록 중복 방지하는 변수
 	bool bIsDoorForStartTimeHasBeenUsed = true;
-	
-#pragma endregion
-//======================================================================================================================
-#pragma region 게임플레이_메시지
-	
-	//━━━━━━━━━━━━━━━━━━━━
-	// 게임플레이_메시지
-	//━━━━━━━━━━━━━━━━━━━━
-protected:
-	
-	// 메시지 수신 함수 (리셋용)
-	void OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload);
-
-	// 구독 핸들
-	FGameplayMessageListenerHandle TimeResetListenerHandle;
 	
 #pragma endregion
 //======================================================================================================================

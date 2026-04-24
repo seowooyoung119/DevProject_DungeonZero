@@ -72,17 +72,6 @@ void ADZOriginDoor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME(ADZOriginDoor, DoorSoundVarForRep);
 }
 
-void ADZOriginDoor::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	// 메시지 구독 해제
-	if (UGameplayMessageSubsystem::HasInstance(this))
-	{
-		UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-		MessageSubsystem.UnregisterListener(TimeResetListenerHandle);
-	}
-	Super::EndPlay(EndPlayReason);
-}
-
 void ADZOriginDoor::BeginPlay()
 {
 	Super::BeginPlay();
@@ -101,10 +90,6 @@ void ADZOriginDoor::BeginPlay()
 		DoorTimeline->SetPlaybackPosition(DoorTimeline->GetTimelineLength(), false);
 		UpdateDoorRotation(1.0f); // 문을 열린 상태로 즉시 회전
 	}
-	
-	// 리셋 메시지 구독
-	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(this);
-	TimeResetListenerHandle = MessageSubsystem.RegisterListener<FDZDoorMSG>(DZ::DoorMSG::DZ_DOOR_DOORRESET, this, &ADZOriginDoor::OnDoorResetReceived);
 }
 
 #pragma endregion
@@ -137,27 +122,6 @@ void ADZOriginDoor::UpdateDoorRotation(float Value)
 	FRotator NewRotation = FMath::Lerp(ClosedRotation, OpenedRotation, Value);
 	DoorMesh->SetRelativeRotation(NewRotation);
 }
-
-#pragma endregion
-//======================================================================================================================
-#pragma region 게임플레이_메시지
-	
-	//━━━━━━━━━━━━━━━━━━━━
-	// 게임플레이_메시지
-	//━━━━━━━━━━━━━━━━━━━━
-
-void ADZOriginDoor::OnDoorResetReceived(FGameplayTag Channel, const FDZDoorMSG& Payload)
-{
-	// onRep 호출 (클라 동기화)
-	bIsOpened = Payload.bIsDoorOpen;
-	
-	// 서버 로직 호출 (사운드 제외)
-	if (HasAuthority()) OnRep_IsOpened();
-	
-	// 1회 사용 마크 리셋
-	bIsDoorForStartTimeHasBeenUsed = false;
-}
-
 
 #pragma endregion
 //======================================================================================================================
